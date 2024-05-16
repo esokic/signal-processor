@@ -19,13 +19,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     ansamblSignala.ispisiSveSignale();
 
-    prikaz1.setPointerQPlot(ui->mojCustomPlot);
+    prikaz1.setPointerQPlot(ui->mojCustomPlot1);
     Signal* test = ansamblSignala.dajSignal(19);
     prikaz1.dodajSignaluGrupuZaPrikaz(test);
     prikaz1.osvjeziPrikaz();
 
+    prikaz2.setPointerQPlot(ui->mojCustomPlot2);
+    Signal* testout = new Signal;
+    testout->ucitajSignalIzDrugogSignala(test);
+    prikaz2.dodajSignaluGrupuZaPrikaz(testout);
+    prikaz2.osvjeziPrikaz();
 
-
+    //connect(this,ui->)
 
     /*
 

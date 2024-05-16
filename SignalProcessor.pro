@@ -14,6 +14,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     prikaz.cpp \
+    procesor.cpp \
     qcustomplot/qcustomplot.cpp \
     signal.cpp
 
@@ -21,6 +22,7 @@ HEADERS += \
     ansamblsignala.h \
     mainwindow.h \
     prikaz.h \
+    procesor.h \
     qcustomplot/qcustomplot.h \
     signal.h
 

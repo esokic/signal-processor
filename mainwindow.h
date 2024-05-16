@@ -24,5 +24,6 @@ private:
 
     Ui::MainWindow *ui;
     Prikaz prikaz1;
+    Prikaz prikaz2;
 };
 #endif // MAINWINDOW_H

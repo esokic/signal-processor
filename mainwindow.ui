@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>524</width>
-    <height>562</height>
+    <width>978</width>
+    <height>862</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,12 +16,53 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QFormLayout" name="formLayout">
     <item row="0" column="0">
-     <widget class="QCustomPlot" name="mojCustomPlot" native="true">
+     <widget class="QCustomPlot" name="mojCustomPlot1" native="true">
       <property name="minimumSize">
        <size>
-        <width>800</width>
-        <height>800</height>
+        <width>500</width>
+        <height>500</height>
        </size>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QCustomPlot" name="mojCustomPlot2" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>500</width>
+        <height>500</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Start time [s] :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QDoubleSpinBox" name="doubleSpinBox_startTime"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QDoubleSpinBox" name="doubleSpinBox_duration">
+      <property name="value">
+       <double>1.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Duration [s] :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QPushButton" name="pushButton_Refresh">
+      <property name="text">
+       <string>Refresh</string>
       </property>
      </widget>
     </item>
@@ -32,7 +73,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>524</width>
+     <width>978</width>
      <height>22</height>
     </rect>
    </property>

@@ -15,6 +15,6 @@ void AnsamblSignala::dodajUAnsambl(Signal *pSignal)
 void AnsamblSignala::ispisiSveSignale()
 {
     for (Signal *pSignal : vektor_pSignala) {
-            qDebug() << pSignal->ime() << pSignal->ispisi_dimenzije();
+            qDebug() << pSignal->ime() ;//<< pSignal->ispisi_dimenzije();
     }
 }
