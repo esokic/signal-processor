@@ -83,6 +83,9 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala& ansamb
         Mat_VarFree(matvar);
     }
 
+    //Po zavrsetku napraviti dodjelu markerValue na sve signale iz tog seta
+    ansamblSignala.dodijeliMarkerValueSvimSignalima();
+
     // Zatvaranje .mat datoteke
     Mat_Close(mat);
 
@@ -90,7 +93,14 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala& ansamb
 
 void MainWindow::on_pushButton_Refresh_clicked()
 {
-    procesor_signala.promjena_startTime(ui->doubleSpinBox_startTime->value());
+    double startTime = ui->doubleSpinBox_startTime->value();
+    double offsetTime = ui->doubleSpinBox_offsetTime->value();
+    procesor_signala.promjena_startTime(startTime + offsetTime);
     procesor_signala.promjena_durationTime(ui->doubleSpinBox_duration->value());
     prikaz2.osvjeziPrikaz();
+}
+
+void MainWindow::on_pushButton_AutoReadMarker_clicked()
+{
+    ui->doubleSpinBox_startTime->setValue(procesor_signala.getStartTimeFromMarkerValue());
 }

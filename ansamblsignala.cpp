@@ -18,3 +18,21 @@ void AnsamblSignala::ispisiSveSignale()
             qDebug() << pSignal->ime() ;//<< pSignal->ispisi_dimenzije();
     }
 }
+
+void AnsamblSignala::dodijeliMarkerValueSvimSignalima()
+{
+    //Prvo odredi marker value
+    double MarkerValue = 0.0;
+    for (Signal *pSignal : vektor_pSignala) {
+        if (pSignal->isMarkerValueAssigned())
+        {
+            MarkerValue = pSignal->getMarkerValue();
+            for (Signal *pSignal2 : vektor_pSignala) {
+                //Sada svima dodijeli
+                if (!(pSignal2->isMarkerValueAssigned())) {pSignal2->setMarkerValue(MarkerValue);}
+            }
+            break;
+        }
+    }
+
+}

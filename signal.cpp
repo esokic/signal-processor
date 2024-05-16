@@ -37,6 +37,10 @@ void Signal::ucitajSignalIzMatlabVarijable(matvar_t* matvar)
             if (QString::fromStdString(matvar->name) != "MarkerValue")
             {
                 yData.push_back(matrica_C_Double[1][i]);
+            } else
+            {
+                MarkerValue = matrica_C_Double[0][i];
+                markerValueAssigned = true;
             }
         }
 

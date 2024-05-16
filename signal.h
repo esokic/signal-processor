@@ -28,6 +28,8 @@ public:
 */
     QVector<double> get_xData(){return xData;}
     QVector<double> get_yData(){return yData;}
+    double getMarkerValue(){return MarkerValue;}
+    bool isMarkerValueAssigned(){return markerValueAssigned;}
 
 
 
@@ -39,6 +41,7 @@ public:
     //Ovdje ima problem jer se mora paziti da se sve mijenja
     void set_xData(QVector<double> xd){xData = xd;}
     void set_yData(QVector<double> yd){yData = yd;}
+    void setMarkerValue(double _mv){MarkerValue = _mv; markerValueAssigned = true;}
 
 
 
@@ -49,16 +52,10 @@ private:
     QVector<double> xData;
     QVector<double> yData;
     //Ogranicit cemo se na dvije dimenzije i jednake dimenzije signala
-    //std::vector<ulong> dimenzijePodatka; //Npr. 20,30 oznacava matricu 20x30
 
-    //std::vector<std::vector<double>> Matrica_C_Double;
+    double MarkerValue = 0.0; //Ovo je za onaj specificni fajl od KEME
+    bool markerValueAssigned = false;
 
-    //Privatni getteri
-    /*
-    ulong getDimenzionalnostPodatka(){return dimenzijePodatka.size();}
-    ulong getDimenzijaPodatka(ulong i){
-        if (dimenzijePodatka.size()>0) {return dimenzijePodatka[i];} else {return 0;}}
-*/
     //Pomocni pokazivac na graph
     QCPGraph *graph;
 signals:

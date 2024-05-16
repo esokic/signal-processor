@@ -16,6 +16,8 @@ public:
     void setPointerSignalUlazni1(Signal* psig){pSignal_ulazni_1 = psig;}
     void setPointerSignalIzlazni1(Signal* psig){pSignal_izlazni_1 = psig;}
 
+    //Getteri
+    double getStartTimeFromMarkerValue(){return pSignal_ulazni_1->getMarkerValue();}
 signals:
 
 private:

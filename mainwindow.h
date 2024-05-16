@@ -22,6 +22,8 @@ public:
 private slots:
     void on_pushButton_Refresh_clicked();
 
+    void on_pushButton_AutoReadMarker_clicked();
+
 private:
     void citajIzMatFajla(const QString& filePath, AnsamblSignala& ansamblSignala);
 

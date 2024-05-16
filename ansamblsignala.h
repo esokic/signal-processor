@@ -14,6 +14,7 @@ public:
     Signal* dajSignal(ulong rbr) {return vektor_pSignala[rbr];}
 
     void ispisiSveSignale();
+    void dodijeliMarkerValueSvimSignalima();
 
 signals:
 
