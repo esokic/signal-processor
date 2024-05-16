@@ -20,15 +20,23 @@ MainWindow::MainWindow(QWidget *parent)
     ansamblSignala.ispisiSveSignale();
 
     prikaz1.setPointerQPlot(ui->mojCustomPlot1);
-    Signal* test = ansamblSignala.dajSignal(19);
+    Signal* ptest = new Signal;
+    test = ptest;
+    test = ansamblSignala.dajSignal(19);
     prikaz1.dodajSignaluGrupuZaPrikaz(test);
     prikaz1.osvjeziPrikaz();
 
     prikaz2.setPointerQPlot(ui->mojCustomPlot2);
-    Signal* testout = new Signal;
+    //Signal* testout = new Signal;
+    Signal* ptestout = new Signal;
+    testout = ptestout;
     testout->ucitajSignalIzDrugogSignala(test);
+
     prikaz2.dodajSignaluGrupuZaPrikaz(testout);
     prikaz2.osvjeziPrikaz();
+
+    procesor_signala.setPointerSignalUlazni1(test);
+    procesor_signala.setPointerSignalIzlazni1(testout);
 
     //connect(this,ui->)
 
@@ -78,4 +86,10 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala& ansamb
     // Zatvaranje .mat datoteke
     Mat_Close(mat);
 
+}
+
+void MainWindow::on_pushButton_Refresh_clicked()
+{
+    procesor_signala.promjena_startTime(ui->doubleSpinBox_startTime->value());
+    prikaz2.osvjeziPrikaz();
 }

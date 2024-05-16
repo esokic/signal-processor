@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "prikaz.h"
 #include "ansamblsignala.h"
+#include "procesor.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,6 +19,9 @@ public:
     ~MainWindow();
 
 
+private slots:
+    void on_pushButton_Refresh_clicked();
+
 private:
     void citajIzMatFajla(const QString& filePath, AnsamblSignala& ansamblSignala);
 
@@ -25,5 +29,11 @@ private:
     Ui::MainWindow *ui;
     Prikaz prikaz1;
     Prikaz prikaz2;
+
+    Signal* test;
+    Signal* testout;
+
+    Procesor procesor_signala;
+
 };
 #endif // MAINWINDOW_H

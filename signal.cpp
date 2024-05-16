@@ -102,9 +102,9 @@ QVector<double> Signal::get_yData()
 }
 
 */
-void Signal::ucitajSignalIzDrugogSignala(Signal* signal)
+void Signal::ucitajSignalIzDrugogSignala(Signal*& signal)
 {
-    imeSignala = signal->ime();
+    imeSignala = signal->imeSignala;
     tipPodatka = signal->tipPodatka;
 
     set_xData(signal->get_xData());

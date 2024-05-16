@@ -13,7 +13,7 @@ public:
 
 
     void ucitajSignalIzMatlabVarijable(matvar_t*);
-    void ucitajSignalIzDrugogSignala(Signal* signal); //prakticno kopija
+    void ucitajSignalIzDrugogSignala(Signal*& signal); //prakticno kopija
 
 
     void promijeni_startTime(double t);
