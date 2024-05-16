@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "prikaz.h"
+#include "ansamblsignala.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,7 +17,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
 private:
+    void citajIzMatFajla(const QString& filePath, AnsamblSignala& ansamblSignala);
+
+
     Ui::MainWindow *ui;
+    Prikaz prikaz1;
 };
 #endif // MAINWINDOW_H
