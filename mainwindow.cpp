@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     ansamblSignala.ispisiSveSignale();
 
+    ui->label_nazivFajla->setText(filePath);
+
     prikaz1.setPointerQPlot(ui->mojCustomPlot1);
     Signal* ptest = new Signal;
     test = ptest;
@@ -97,6 +99,10 @@ void MainWindow::on_pushButton_Refresh_clicked()
     double offsetTime = ui->doubleSpinBox_offsetTime->value();
     procesor_signala.promjena_startTime(startTime + offsetTime);
     procesor_signala.promjena_durationTime(ui->doubleSpinBox_duration->value());
+
+    if (ui->checkBox_changeTimeStep->isChecked()) procesor_signala.promjena_vremenaSempliranja(ui->doubleSpinBox_timeStep->value()/1000.0);
+
+
     prikaz2.osvjeziPrikaz();
 }
 

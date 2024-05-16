@@ -16,7 +16,7 @@ public:
     void ucitajSignalIzDrugogSignala(Signal*& signal); //prakticno kopija
 
 
-    void promijeni_startTime(double t);
+   // void promijeni_startTime(double t);
 
 
     //getteri

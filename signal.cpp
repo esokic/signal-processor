@@ -60,7 +60,7 @@ void Signal::podesiQCPgraph(QCPGraph* vanjski_graph)
     graph->setData(get_xData(), get_yData());
 
     //Prikaz originalnih podataka
-    graph->setLineStyle(QCPGraph::lsNone);
+    graph->setLineStyle(QCPGraph::lsLine);
     graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));
     //graph_org->setPen(QPen(Qt::blue));
 

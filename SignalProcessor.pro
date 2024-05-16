@@ -29,7 +29,7 @@ HEADERS += \
 FORMS += \
     mainwindow.ui \
 
-LIBS += -lmatio
+LIBS += -lmatio -larmadillo
 
 INCLUDEPATH += qcustomplot/
 
