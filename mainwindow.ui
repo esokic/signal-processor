@@ -6,16 +6,147 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
-    <height>702</height>
+    <width>1294</width>
+    <height>818</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Signal Processor v1</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QFormLayout" name="formLayout">
-    <item row="1" column="0">
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="3" column="1">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="1" column="1">
+       <widget class="QPushButton" name="pushButton_AutoReadMarker">
+        <property name="text">
+         <string>Auto determine</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QDoubleSpinBox" name="doubleSpinBox_offsetTime">
+        <property name="minimum">
+         <double>-5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Start time from marker:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Start time [s] :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Time step [ms]</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Duration [s] :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Change timestep:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="doubleSpinBox_startTime"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Offset from marker [s] :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QPushButton" name="pushButton_Refresh">
+        <property name="text">
+         <string>Refresh</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QDoubleSpinBox" name="doubleSpinBox_duration">
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QCheckBox" name="checkBox_changeTimeStep">
+        <property name="text">
+         <string>Yes / No</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QDoubleSpinBox" name="doubleSpinBox_timeStep">
+        <property name="maximum">
+         <double>200.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="2" column="1">
+     <layout class="QHBoxLayout" name="horizontalLayout_7">
+      <item>
+       <widget class="QListWidget" name="listWidget">
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCustomPlot" name="mojCustomPlot1" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>500</width>
+          <height>500</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCustomPlot" name="mojCustomPlot2" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>500</width>
+          <height>500</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="0" colspan="2">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QPushButton" name="pushButton_importFile">
@@ -40,135 +171,6 @@
       </item>
      </layout>
     </item>
-    <item row="3" column="0">
-     <widget class="QCustomPlot" name="mojCustomPlot1" native="true">
-      <property name="minimumSize">
-       <size>
-        <width>500</width>
-        <height>500</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QCustomPlot" name="mojCustomPlot2" native="true">
-      <property name="minimumSize">
-       <size>
-        <width>500</width>
-        <height>500</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="9" column="1">
-     <widget class="QPushButton" name="pushButton_Refresh">
-      <property name="text">
-       <string>Refresh</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Start time [s] :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Start time from marker:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="doubleSpinBox_startTime"/>
-      </item>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="pushButton_AutoReadMarker">
-        <property name="text">
-         <string>Auto determine</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QDoubleSpinBox" name="doubleSpinBox_offsetTime">
-        <property name="minimum">
-         <double>-5.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>5.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>Offset from marker [s] :</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="5" column="1">
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Duration [s] :</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QDoubleSpinBox" name="doubleSpinBox_duration">
-        <property name="value">
-         <double>1.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="6" column="1">
-     <layout class="QHBoxLayout" name="horizontalLayout_5">
-      <item>
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Change timestep:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="checkBox_changeTimeStep">
-        <property name="text">
-         <string>Yes / No</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="7" column="1">
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Time step [ms]</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QDoubleSpinBox" name="doubleSpinBox_timeStep">
-        <property name="maximum">
-         <double>200.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>1.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -176,7 +178,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1024</width>
+     <width>1294</width>
      <height>22</height>
     </rect>
    </property>
