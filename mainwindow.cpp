@@ -91,5 +91,6 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala& ansamb
 void MainWindow::on_pushButton_Refresh_clicked()
 {
     procesor_signala.promjena_startTime(ui->doubleSpinBox_startTime->value());
+    procesor_signala.promjena_durationTime(ui->doubleSpinBox_duration->value());
     prikaz2.osvjeziPrikaz();
 }
