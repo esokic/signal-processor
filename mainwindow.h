@@ -21,8 +21,10 @@ public:
 
 private slots:
     void on_pushButton_Refresh_clicked();
-
     void on_pushButton_AutoReadMarker_clicked();
+
+    void onListWidgetItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
+
 
 private:
     void citajIzMatFajla(const QString& filePath, AnsamblSignala& ansamblSignala);
@@ -36,6 +38,8 @@ private:
     Signal* testout;
 
     Procesor procesor_signala;
+
+    QListWidget *listWidget;
 
 };
 #endif // MAINWINDOW_H

@@ -13,6 +13,8 @@ public:
     void dodajUAnsambl(Signal* signal);
     Signal* dajSignal(ulong rbr) {return vektor_pSignala[rbr];}
 
+    std::vector<Signal*> dajVektorSignala(){return vektor_pSignala;}
+
     void ispisiSveSignale();
     void dodijeliMarkerValueSvimSignalima();
 

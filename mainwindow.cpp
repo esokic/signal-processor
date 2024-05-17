@@ -18,17 +18,35 @@ MainWindow::MainWindow(QWidget *parent)
     citajIzMatFajla(filePath, ansamblSignala);
 
     ansamblSignala.ispisiSveSignale();
-
     ui->label_nazivFajla->setText(filePath);
 
+    //Popunjavanje tabele signala
+    //QListWidget *listWidget = new QListWidget(this);
+    listWidget = ui->listWidget_Signali;
+
+    for (auto &signal : ansamblSignala.dajVektorSignala()) {
+        QListWidgetItem *item = new QListWidgetItem(signal->ime());
+        item->setData(Qt::UserRole, QVariant::fromValue(static_cast<void*>(signal)));
+        listWidget->addItem(item);
+    }
+
+    // Povezivanje signala sa slotom
+    connect(listWidget, &QListWidget::currentItemChanged, this, &MainWindow::onListWidgetItemChanged);
+
+
+
     prikaz1.setPointerQPlot(ui->mojCustomPlot1);
+    prikaz2.setPointerQPlot(ui->mojCustomPlot2);
+
+
+    /*
     Signal* ptest = new Signal;
     test = ptest;
     test = ansamblSignala.dajSignal(19);
     prikaz1.dodajSignaluGrupuZaPrikaz(test);
     prikaz1.osvjeziPrikaz();
 
-    prikaz2.setPointerQPlot(ui->mojCustomPlot2);
+
     //Signal* testout = new Signal;
     Signal* ptestout = new Signal;
     testout = ptestout;
@@ -39,18 +57,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     procesor_signala.setPointerSignalUlazni1(test);
     procesor_signala.setPointerSignalIzlazni1(testout);
+    */
 
-    //connect(this,ui->)
-
-    /*
-
-    prikaz1.qplot = _plt1;
-        prikaz2.qplot = _plt2;
-        prikaz3.qplot = _plt3;
-        prikaz4.qplot = _plt4;
-
-        QCPLegend* legend1 = new QCPLegend(); prikaz1.legend = legend1;
-        */
 }
 
 MainWindow::~MainWindow()
@@ -129,3 +137,32 @@ void MainWindow::on_pushButton_AutoReadMarker_clicked()
 {
     ui->doubleSpinBox_startTime->setValue(procesor_signala.getStartTimeFromMarkerValue());
 }
+
+void MainWindow::onListWidgetItemChanged(QListWidgetItem *current, QListWidgetItem *previous) {
+    if (current) {
+        Signal *selectedSignal = static_cast<Signal*>(current->data(Qt::UserRole).value<void*>());
+        // Sada možeš koristiti selectedSignal kako ti je potrebno
+
+        Signal* ptest = selectedSignal;
+        test = ptest;
+        //test = ansamblSignala.dajSignal(19);
+        prikaz1.ocistiPrikaz();
+        prikaz1.dodajSignaluGrupuZaPrikaz(test);
+        prikaz1.osvjeziPrikaz();
+
+
+        //Signal* testout = new Signal;
+        Signal* ptestout = new Signal;
+        testout = ptestout;
+        testout->ucitajSignalIzDrugogSignala(test);
+
+        prikaz2.ocistiPrikaz();
+        prikaz2.dodajSignaluGrupuZaPrikaz(testout);
+        prikaz2.osvjeziPrikaz();
+
+        procesor_signala.setPointerSignalUlazni1(test);
+        procesor_signala.setPointerSignalIzlazni1(testout);
+    }
+}
+
+

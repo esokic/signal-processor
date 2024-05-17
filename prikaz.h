@@ -14,6 +14,7 @@ public:
 
     void setPointerQPlot(QCustomPlot* _qplt){qplot = _qplt;}
     void dodajSignaluGrupuZaPrikaz(Signal* signal){vektor_pSignala.push_back(signal);}
+    void ocistiPrikaz(){vektor_pSignala.clear();}
 
     void osvjeziPrikaz();
 
