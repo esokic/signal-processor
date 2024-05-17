@@ -13,7 +13,12 @@ public:
 
     void promjena_startTime(double startTime);
     void promjena_durationTime(double durationTime);
-    void promjena_vremenaSempliranja(double samplingTime);
+    //Stara funkcija
+    //void promjena_vremenaSempliranja(double samplingTime);
+    void promjena_resempliraj(double samplingTime, bool resempliraj,
+                                        double tmin1, double tmax1, bool cut1,
+                                        double tmin2, double tmax2, bool cut2,
+                                        double tmin3, double tmax3, bool cut3);
     //Setteri
     void setPointerSignalUlazni1(Signal* psig){pSignal_ulazni_1 = psig;}
     void setPointerSignalIzlazni1(Signal* psig){pSignal_izlazni_1 = psig;}

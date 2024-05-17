@@ -17,14 +17,89 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="3" column="1">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="1">
+      <item row="6" column="1">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Change timestep:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>tmin2:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="doubleSpinBox_tmin2"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>tmax2:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="doubleSpinBox_tmax2"/>
+        </item>
+       </layout>
+      </item>
+      <item row="9" column="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>tmin1:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="doubleSpinBox_tmin1"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>tmax1:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="doubleSpinBox_tmax1"/>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="0">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="2">
        <widget class="QPushButton" name="pushButton_AutoReadMarker">
         <property name="text">
          <string>Auto determine</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="9" column="1">
+       <widget class="QCheckBox" name="checkBox_cutPart_1">
+        <property name="text">
+         <string>Interpolate (cut) part 1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
        <widget class="QDoubleSpinBox" name="doubleSpinBox_offsetTime">
         <property name="minimum">
          <double>-5.000000000000000</double>
@@ -34,79 +109,110 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Start time from marker:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
+      <item row="0" column="1">
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Start time [s] :</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="0">
+      <item row="8" column="1">
        <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Time step [ms]</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Duration [s] :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Change timestep:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="doubleSpinBox_startTime"/>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>Offset from marker [s] :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="0">
-       <widget class="QPushButton" name="pushButton_Refresh">
-        <property name="text">
-         <string>Refresh</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QDoubleSpinBox" name="doubleSpinBox_duration">
-        <property name="value">
-         <double>1.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1">
+      <item row="6" column="2">
        <widget class="QCheckBox" name="checkBox_changeTimeStep">
         <property name="text">
          <string>Yes / No</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="1">
+      <item row="3" column="1">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Offset from marker [s] :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="QCheckBox" name="checkBox_cutPart_2">
+        <property name="text">
+         <string>Interpolate (cut) part 2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QDoubleSpinBox" name="doubleSpinBox_duration">
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="2">
        <widget class="QDoubleSpinBox" name="doubleSpinBox_timeStep">
         <property name="maximum">
          <double>200.000000000000000</double>
         </property>
         <property name="value">
          <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="QCheckBox" name="checkBox_cutPart_3">
+        <property name="text">
+         <string>Interpolate (cut) part 3</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Duration [s] :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>tmin3:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="doubleSpinBox_tmin3"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>tmax3:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="doubleSpinBox_tmax3"/>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="2">
+       <widget class="QDoubleSpinBox" name="doubleSpinBox_startTime"/>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Start time from marker:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="1" colspan="2">
+       <widget class="QPushButton" name="pushButton_Refresh">
+        <property name="text">
+         <string>Process!</string>
         </property>
        </widget>
       </item>
@@ -158,14 +264,14 @@
       <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Učitani fajl:</string>
+         <string>Loaded file:</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_nazivFajla">
         <property name="text">
-         <string>(naziv fajla)</string>
+         <string>(file name)</string>
         </property>
        </widget>
       </item>

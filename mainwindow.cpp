@@ -100,7 +100,26 @@ void MainWindow::on_pushButton_Refresh_clicked()
     procesor_signala.promjena_startTime(startTime + offsetTime);
     procesor_signala.promjena_durationTime(ui->doubleSpinBox_duration->value());
 
-    if (ui->checkBox_changeTimeStep->isChecked()) procesor_signala.promjena_vremenaSempliranja(ui->doubleSpinBox_timeStep->value()/1000.0);
+    double samplingTime = ui->doubleSpinBox_timeStep->value()/1000.0;
+    bool resemplirati = ui->checkBox_changeTimeStep->isChecked();
+    double tmin1= ui->doubleSpinBox_tmin1->value();
+    double tmax1 = ui->doubleSpinBox_tmax1->value();
+    bool cut1 =  ui->checkBox_cutPart_1->isChecked();
+    double tmin2= ui->doubleSpinBox_tmin2->value();
+    double tmax2= ui->doubleSpinBox_tmax2->value();
+    bool cut2 = ui->checkBox_cutPart_2->isChecked();
+    double tmin3 = ui->doubleSpinBox_tmin3->value();
+    double tmax3 = ui->doubleSpinBox_tmax3->value();
+    bool cut3 = ui->checkBox_cutPart_3->isChecked();
+
+
+    procesor_signala.promjena_resempliraj(samplingTime, resemplirati,
+                                        tmin1, tmax1, cut1,
+                                        tmin2, tmax2, cut2,
+                                        tmin3, tmax3, cut3);
+
+    //Stara
+    //if (ui->checkBox_changeTimeStep->isChecked()) procesor_signala.promjena_vremenaSempliranja(samplingTime);
 
 
     prikaz2.osvjeziPrikaz();
