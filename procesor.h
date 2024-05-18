@@ -105,6 +105,8 @@ signals:
 private slots:
     void on_pushButton_Update_clicked();
 
+    void on_pushButton_AutoReadMarker_clicked();
+
 private:
 
     QString ime = "(unnamed)";

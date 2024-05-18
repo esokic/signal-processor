@@ -40,33 +40,6 @@ MainWindow::MainWindow(QWidget *parent)
     prikaz2.setPointerQPlot(ui->mojCustomPlot2);
 
 
-    /*
-    Signal* ptest = new Signal;
-    test = ptest;
-    test = ansamblSignala.dajSignal(19);
-    prikaz1.dodajSignaluGrupuZaPrikaz(test);
-    prikaz1.osvjeziPrikaz();
-
-
-    //Signal* testout = new Signal;
-    Signal* ptestout = new Signal;
-    testout = ptestout;
-    testout->ucitajSignalIzDrugogSignala(test);
-
-    prikaz2.dodajSignaluGrupuZaPrikaz(testout);
-    prikaz2.osvjeziPrikaz();
-
-    procesor_signala.setPointerSignalUlazni1(test);
-    procesor_signala.setPointerSignalIzlazni1(testout);
-    */
-
-    //procesor_signala.show();
-
-
-
-    // Dodavanje nekoliko Procesor objekata za demonstraciju
-
-
     manipulatorProc.show();
 }
 
@@ -114,57 +87,12 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala& ansamb
 void MainWindow::on_pushButton_Refresh_clicked()
 {
 
-    double startTime = ui->doubleSpinBox_startTime->value(); procesor_signala.setStartTime(startTime);
-    double offsetTime = ui->doubleSpinBox_offsetTime->value(); procesor_signala.setOffsetTime(offsetTime);
-    double samplingTime = ui->doubleSpinBox_timeStep->value()/1000.0; procesor_signala.setSamplingTime(samplingTime);
-    double durationTime = ui->doubleSpinBox_duration->value(); procesor_signala.setDurationTime(durationTime);
-
-    bool changeStartTime = ui->checkBox_changeStartTime->isChecked(); procesor_signala.setPromjenaStartTime(changeStartTime);
-    bool changeOffsetTime = ui->checkBox_changeOffset->isChecked(); procesor_signala.setPromjenaOffsetTime(changeOffsetTime);
-    bool changeDurationTime = ui->checkBox_changeDuration->isChecked(); procesor_signala.setPromjenaDurationTime(changeDurationTime);
-
-    bool resemplirati = ui->checkBox_changeTimeStep->isChecked(); procesor_signala.setResempliraj(resemplirati);
-    double tmin1= ui->doubleSpinBox_tmin1->value(); procesor_signala.setTmin1(tmin1);
-    double tmax1 = ui->doubleSpinBox_tmax1->value(); procesor_signala.setTmax1(tmax1);
-    bool cut1 =  ui->checkBox_cutPart_1->isChecked(); procesor_signala.setCut1(cut1);
-    double tmin2= ui->doubleSpinBox_tmin2->value(); procesor_signala.setTmin2(tmin2);
-    double tmax2= ui->doubleSpinBox_tmax2->value(); procesor_signala.setTmax2(tmax2);
-    bool cut2 = ui->checkBox_cutPart_2->isChecked(); procesor_signala.setCut2(cut2);
-    double tmin3 = ui->doubleSpinBox_tmin3->value(); procesor_signala.setTmin3(tmin3);
-    double tmax3 = ui->doubleSpinBox_tmax3->value(); procesor_signala.setTmax3(tmax3);
-    bool cut3 = ui->checkBox_cutPart_3->isChecked(); procesor_signala.setCut3(cut3);
-    double k = ui->doubleSpinBox_scale_k->value(); procesor_signala.setK(k);
-    double n = ui->doubleSpinBox_scale_n->value(); procesor_signala.setN(n);
-    bool scale = ui->checkBox_scale->isChecked(); procesor_signala.setScale(scale);
-
-
-    /*
-    procesor_signala.promjena_startTime(startTime + offsetTime);
-    procesor_signala.promjena_durationTime(ui->doubleSpinBox_duration->value());
-
-
-
-
-
-    procesor_signala.promjena_resempliraj(samplingTime, resemplirati,
-                                        tmin1, tmax1, cut1,
-                                        tmin2, tmax2, cut2,
-                                        tmin3, tmax3, cut3,
-                                        k, n, scale);
-                                        */
-
-    //Stara
-    //if (ui->checkBox_changeTimeStep->isChecked()) procesor_signala.promjena_vremenaSempliranja(samplingTime);
-
-    procesor_signala.osvjezi();
+    manipulatorProc.getPointerNaOdabraniProcesor()->osvjezi();
 
     prikaz2.osvjeziPrikaz();
 }
 
-void MainWindow::on_pushButton_AutoReadMarker_clicked()
-{
-    ui->doubleSpinBox_startTime->setValue(procesor_signala.getStartTimeFromMarkerValue());
-}
+
 
 void MainWindow::onListWidgetItemChanged(QListWidgetItem *current, QListWidgetItem *previous) {
     if (current) {
@@ -188,8 +116,13 @@ void MainWindow::onListWidgetItemChanged(QListWidgetItem *current, QListWidgetIt
         prikaz2.dodajSignaluGrupuZaPrikaz(testout);
         prikaz2.osvjeziPrikaz();
 
-        procesor_signala.setPointerSignalUlazni1(test);
-        procesor_signala.setPointerSignalIzlazni1(testout);
+        /*
+        if (manipulatorProc.getPointerNaOdabraniProcesor()!=nullptr)
+        {
+            manipulatorProc.getPointerNaOdabraniProcesor()->setPointerSignalUlazni1(test);
+            manipulatorProc.getPointerNaOdabraniProcesor()->setPointerSignalIzlazni1(testout);
+        }*/
+        // OVO TREBA SREDITIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII - DA SE MOGU PRIDRUZIVATI POKAZIVACI I SL.
     }
 }
 

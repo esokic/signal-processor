@@ -22,7 +22,6 @@ public:
 
 private slots:
     void on_pushButton_Refresh_clicked();
-    void on_pushButton_AutoReadMarker_clicked();
 
     void onListWidgetItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
@@ -38,7 +37,7 @@ private:
     Signal* test;
     Signal* testout;
 
-    Procesor procesor_signala;
+    //Procesor* pTrenutni_procesor_signala;
     ManipulacijaProcesorima manipulatorProc;
 
     QListWidget *listWidget;

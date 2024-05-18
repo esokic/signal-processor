@@ -413,3 +413,8 @@ void Procesor::on_pushButton_Update_clicked()
 {
     this->updejtVrijednostiIzEditBoxova();
 }
+
+void Procesor::on_pushButton_AutoReadMarker_clicked()
+{
+    ui->doubleSpinBox_startTime->setValue(getStartTimeFromMarkerValue());
+}

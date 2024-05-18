@@ -17,6 +17,7 @@ public:
     ~ManipulacijaProcesorima();
 
     void setPointerNaOdabraniProcesor(Procesor* _pOdabraniProcesor){pOdabraniProcesor = _pOdabraniProcesor;}
+    Procesor* getPointerNaOdabraniProcesor(){return pOdabraniProcesor;}
 
     void dodajProcesor(Procesor* procesor){vektorProcesora.push_back(procesor); populateTableWidget();}
 
