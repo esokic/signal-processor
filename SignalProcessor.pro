@@ -13,6 +13,7 @@ SOURCES += \
     ansamblsignala.cpp \
     main.cpp \
     mainwindow.cpp \
+    manipulacijaprocesorima.cpp \
     prikaz.cpp \
     procesor.cpp \
     qcustomplot/qcustomplot.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
 HEADERS += \
     ansamblsignala.h \
     mainwindow.h \
+    manipulacijaprocesorima.h \
     prikaz.h \
     procesor.h \
     qcustomplot/qcustomplot.h \
@@ -28,6 +30,7 @@ HEADERS += \
 
 FORMS += \
     mainwindow.ui \
+    manipulacijaprocesorima.ui \
     procesor.ui
 
 LIBS += -lmatio -larmadillo

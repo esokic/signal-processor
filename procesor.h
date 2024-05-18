@@ -42,6 +42,7 @@ public:
 
     //Setteri
     void setIme(QString _ime);
+    void setOpis(QString _description);
     void setStartTime(double _time);
     void setPromjenaStartTime(bool _promjena_start_time);
     void setPromjenaDurationTime(bool _promjena_duration_time);
@@ -66,6 +67,8 @@ public:
     void setChangeSignalName(bool _changeSignalName);
 
     // Getters
+    QString getIme() const;
+    QString getOpis() const;
     double getSamplingTime() const;
     double getStartTime() const;
     double getDurationTime() const;
@@ -99,7 +102,8 @@ signals:
 
 private:
 
-    QString ime = "sig 1 to sig 2";
+    QString ime = "(unnamed)";
+    QString opis = "";
     double startTime = -5.0;
     bool promjena_start_time = false;
     double durationTime = 5.0;

@@ -5,6 +5,7 @@
 #include "prikaz.h"
 #include "ansamblsignala.h"
 #include "procesor.h"
+#include "manipulacijaprocesorima.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -38,6 +39,7 @@ private:
     Signal* testout;
 
     Procesor procesor_signala;
+    ManipulacijaProcesorima manipulatorProc;
 
     QListWidget *listWidget;
 

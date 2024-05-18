@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "ansamblsignala.h"
+#include "manipulacijaprocesorima.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -59,8 +60,16 @@ MainWindow::MainWindow(QWidget *parent)
     procesor_signala.setPointerSignalIzlazni1(testout);
     */
 
-    procesor_signala.show();
+    //procesor_signala.show();
+
+
+
+    // Dodavanje nekoliko Procesor objekata za demonstraciju
+
+
+    manipulatorProc.show();
 }
+
 
 MainWindow::~MainWindow()
 {

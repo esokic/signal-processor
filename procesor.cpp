@@ -290,6 +290,7 @@ QVector<double> Procesor::ArmadilloVecToQVector(const arma::vec &avec) {
 
 //Setteri
 void Procesor::setIme(QString _ime) {ime =_ime;};
+void Procesor::setOpis(QString _opis) {opis =_opis;};
 void Procesor::setStartTime(double _time){startTime = _time;};
 void Procesor::setDurationTime(double _time){durationTime = _time;};
 void Procesor::setPromjenaStartTime(bool _promjena_start_time){promjena_start_time = _promjena_start_time;};
@@ -314,6 +315,8 @@ void Procesor::setNewSignalName(const QString &_newSignalName) { newSignalName =
 void Procesor::setChangeSignalName(bool _changeSignalName) { changeSignalName = _changeSignalName; }
 
 // Getters
+QString Procesor::getIme() const {return ime;}
+QString Procesor::getOpis() const {return opis;};
 double Procesor::getSamplingTime() const { return samplingTime; }
 double Procesor::getOffsetTime() const {return offsetTime;}
 double Procesor::getStartTime() const {return startTime;}
