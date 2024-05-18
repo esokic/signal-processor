@@ -4,6 +4,7 @@
 #include <QObject>
 #include <matio.h>
 #include <qcustomplot.h>
+#include "procesor.h"
 
 class Signal : public QObject
 {
@@ -15,6 +16,8 @@ public:
     void ucitajSignalIzMatlabVarijable(matvar_t*);
     void ucitajSignalIzDrugogSignala(Signal*& signal); //prakticno kopija
 
+    //Kljucna funkcija
+    void procesirajSignal(){if (pProcesor!=nullptr) {pProcesor->procesiraj(xData_ul,yData_ul,xData_izl,yData_izl);}}
 
    // void promijeni_startTime(double t);
 
@@ -26,8 +29,12 @@ public:
     QString ispisi_dimenzije(){return QString::number(dimenzijePodatka[0])+"x"+
                 QString::number(dimenzijePodatka[1]);}
 */
-    QVector<double> get_xData(){return xData;}
-    QVector<double> get_yData(){return yData;}
+
+    QVector<double> get_xData_ul(){return xData_ul;}
+    QVector<double> get_yData_ul(){return yData_ul;}
+    QVector<double> get_xData_izl(){return xData_izl;}
+    QVector<double> get_yData_izl(){return yData_izl;}
+
     double getMarkerValue(){return MarkerValue;}
     bool isMarkerValueAssigned(){return markerValueAssigned;}
 
@@ -35,22 +42,28 @@ public:
 
     //setteri
     //Sluzi za podesavanje prikaza ovog signala
-    void podesiQCPgraph(QCPGraph*);
+    void podesiQCPgraph(QCPGraph*, QString tip_grafika); //moze biti "ul" i "izl"
     void dodajSignalULegendu(QCPLegend*);
 
     //Ovdje ima problem jer se mora paziti da se sve mijenja
-    void set_xData(QVector<double> xd){xData = xd;}
-    void set_yData(QVector<double> yd){yData = yd;}
+    void set_xData_ul(QVector<double> xd){xData_ul = xd;}
+    void set_yData_ul(QVector<double> yd){yData_ul = yd;}
+    void set_xData_izl(QVector<double> xd){xData_ul = xd;}
+    void set_yData_izl(QVector<double> yd){yData_ul = yd;}
     void setMarkerValue(double _mv){MarkerValue = _mv; markerValueAssigned = true;}
 
+    void setPointerNaProcesor(Procesor* _pProcesor){pProcesor = _pProcesor;}
 
 
 private:
     QString imeSignala;                 //Npr. U1
     QString tipPodatka;                 //Npr. MAT_C_DOUBLE
 
-    QVector<double> xData;
-    QVector<double> yData;
+    QVector<double> xData_ul;
+    QVector<double> yData_ul;
+
+    QVector<double> xData_izl;
+    QVector<double> yData_izl;
     //Ogranicit cemo se na dvije dimenzije i jednake dimenzije signala
 
     double MarkerValue = 0.0; //Ovo je za onaj specificni fajl od KEME
@@ -58,6 +71,9 @@ private:
 
     //Pomocni pokazivac na graph
     QCPGraph *graph;
+
+    Procesor* pProcesor;
+
 signals:
 
 };

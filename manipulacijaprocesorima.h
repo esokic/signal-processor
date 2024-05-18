@@ -24,7 +24,7 @@ public:
     int i=0;
 private:
     Ui::ManipulacijaProcesorima *ui;
-    Procesor* pOdabraniProcesor;
+    Procesor* pOdabraniProcesor = nullptr;
 
     std::vector<Procesor*> vektorProcesora;
 
@@ -42,7 +42,7 @@ private slots:
     void onItemSelectionChanged();
     void onTableItemDoubleClicked(int row, int column);
     void on_pushButton_newProcessor_clicked();
-    void on_pushButton_3_clicked();
+    void on_pushButton_editProcessor_clicked();
 };
 
 #endif // MANIPULACIJAPROCESORIMA_H

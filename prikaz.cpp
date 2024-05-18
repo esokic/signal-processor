@@ -26,7 +26,7 @@ void Prikaz::osvjeziPrikaz()
 
     for (Signal* pSignal : vektor_pSignala)
     {
-        pSignal->podesiQCPgraph(qplot->addGraph());
+        pSignal->podesiQCPgraph(qplot->addGraph(), getTipPrikaza());
 
 
       //  qplot->xAxis->setLabel(pVekMjerenja->legendaXosa);

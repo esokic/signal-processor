@@ -14,9 +14,13 @@ public:
 
     void setPointerQPlot(QCustomPlot* _qplt){qplot = _qplt;}
     void dodajSignaluGrupuZaPrikaz(Signal* signal){vektor_pSignala.push_back(signal);}
+
     void ocistiPrikaz(){vektor_pSignala.clear();}
 
     void osvjeziPrikaz();
+
+    QString getTipPrikaza(){return tip_prikaza;}
+    void setTipPrikaza(QString _tp){tip_prikaza = _tp;}
 
 
 signals:
@@ -28,6 +32,8 @@ private:
 
        QCustomPlot* qplot;
        QCPLegend *legend;
+
+       QString tip_prikaza = "ul";
 
        //QCPAxis::ScaleType skalaXose = QCPAxis::stLogarithmic;
 

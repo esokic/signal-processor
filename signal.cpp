@@ -30,39 +30,61 @@ void Signal::ucitajSignalIzMatlabVarijable(matvar_t* matvar)
 
 
         //PREPRAVITI
-        xData.clear(); yData.clear();
+        xData_ul.clear(); yData_ul.clear();
         for (ulong i =0; i<matvar->dims[0]; i++)
         {
-            xData.push_back(matrica_C_Double[0][i]);
+            xData_ul.push_back(matrica_C_Double[0][i]);
             if (QString::fromStdString(matvar->name) != "MarkerValue")
             {
-                yData.push_back(matrica_C_Double[1][i]);
+                yData_ul.push_back(matrica_C_Double[1][i]);
             } else
             {
                 MarkerValue = matrica_C_Double[0][i];
                 markerValueAssigned = true;
             }
         }
+        xData_izl = xData_ul;
+        yData_izl = yData_ul;
+
 
 
     }
 }
 
 
-void Signal::podesiQCPgraph(QCPGraph* vanjski_graph)
+void Signal::podesiQCPgraph(QCPGraph* vanjski_graph, QString tip_grafika)
 {
-    graph = vanjski_graph;
+    if (tip_grafika == "ul")
+    {
+        graph = vanjski_graph;
 
-    graph->setName(ime());
-    graph->data()->clear();
+        graph->setName(ime());
+        graph->data()->clear();
 
-    //Crtanje originalnih podataka
-    graph->setData(get_xData(), get_yData());
+        //Crtanje originalnih podataka
+        graph->setData(get_xData_ul(), get_yData_ul());
 
-    //Prikaz originalnih podataka
-    graph->setLineStyle(QCPGraph::lsLine);
-    graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));
-    //graph_org->setPen(QPen(Qt::blue));
+        //Prikaz originalnih podataka
+        graph->setLineStyle(QCPGraph::lsLine);
+        graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));
+        //graph_org->setPen(QPen(Qt::blue));
+    }
+
+    if (tip_grafika == "izl")
+    {
+        graph = vanjski_graph;
+
+        graph->setName(ime());
+        graph->data()->clear();
+
+        //Crtanje originalnih podataka
+        graph->setData(get_xData_izl(), get_yData_izl());
+
+        //Prikaz originalnih podataka
+        graph->setLineStyle(QCPGraph::lsLine);
+        graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));
+        //graph_org->setPen(QPen(Qt::blue));
+    }
 
 }
 
@@ -111,8 +133,8 @@ void Signal::ucitajSignalIzDrugogSignala(Signal*& signal)
     imeSignala = signal->imeSignala;
     tipPodatka = signal->tipPodatka;
 
-    set_xData(signal->get_xData());
-    set_yData(signal->get_yData());
+    set_xData_ul(signal->get_xData_ul());
+    set_yData_ul(signal->get_yData_ul());
 }
 
 

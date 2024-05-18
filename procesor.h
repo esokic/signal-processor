@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include <QWidget>
-#include "signal.h"
 #include <armadillo>
 
 #include <QWidget>
@@ -25,19 +24,9 @@ private:
     void updejtVrijednostiIzEditBoxova();
 
 public:
-    //Stare funkcije
-    void promjena_startTime(double startTime);
-    void promjena_durationTime(double durationTime);
-    //Stara funkcija
-    //void promjena_vremenaSempliranja(double samplingTime);
-    void promjena_resempliraj(double samplingTime, bool resempliraj,
-                                        double tmin1, double tmax1, bool cut1,
-                                        double tmin2, double tmax2, bool cut2,
-                                        double tmin3, double tmax3, bool cut3,
-                                        double k, double n, bool scale);
 
-    void osvjezi();
-    void prikazi();
+    void prikaziGUI();
+    void procesiraj(QVector<double>& xData_ul, QVector<double>& yData_ul, QVector<double>& xData_izl, QVector<double>& yData_izl);
 
     //Setteri
 
@@ -94,13 +83,15 @@ public:
     bool getChangeSignalName() const;
 
 
-    void setPointerSignalUlazni1(Signal* psig){pSignal_ulazni_1 = psig;}
-    void setPointerSignalIzlazni1(Signal* psig){pSignal_izlazni_1 = psig;}
+    //void setPointerSignalUlazni1(Signal* psig){pSignal_ulazni_1 = psig;}
+    //void setPointerSignalIzlazni1(Signal* psig){pSignal_izlazni_1 = psig;}
 
     //Getteri
-    double getStartTimeFromMarkerValue(){return pSignal_ulazni_1->getMarkerValue();}
+    //double getStartTimeFromMarkerValue(){return pSignal_ulazni_1->getMarkerValue();}
+
+
 signals:
-    void signalOsvjezi();
+    void signalOsvjezi(); //Ovo se ne odnosi na signal, vec je to signal koji se emituje kad se promijeni parametar procesora
 
 private slots:
     void on_pushButton_Update_clicked();
@@ -141,8 +132,8 @@ private:
 
 
 
-    Signal* pSignal_ulazni_1;
-    Signal* pSignal_izlazni_1;
+    //Signal* pSignal_ulazni_1;
+    //Signal* pSignal_izlazni_1;
 
     arma::vec QVectorToArmadilloVec(const QVector<double> &qvec);
     QVector<double> ArmadilloVecToQVector(const arma::vec &avec);

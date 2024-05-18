@@ -34,8 +34,8 @@ private:
     Prikaz prikaz1;
     Prikaz prikaz2;
 
-    Signal* test;
-    Signal* testout;
+    Signal* signalUnderAnalysis;
+    //Signal* testout;
 
     //Procesor* pTrenutni_procesor_signala;
     ManipulacijaProcesorima manipulatorProc;

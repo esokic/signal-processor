@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Processor list</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="pushButton_importProcessor">
    <property name="geometry">
     <rect>
      <x>50</x>
@@ -26,7 +26,7 @@
     <string>Import ...</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="pushButton_exportProcessor">
    <property name="geometry">
     <rect>
      <x>150</x>
@@ -39,7 +39,7 @@
     <string>Export ...</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_3">
+  <widget class="QPushButton" name="pushButton_editProcessor">
    <property name="geometry">
     <rect>
      <x>250</x>

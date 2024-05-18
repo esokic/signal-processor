@@ -87,8 +87,13 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala& ansamb
 void MainWindow::on_pushButton_Refresh_clicked()
 {
 
-    manipulatorProc.getPointerNaOdabraniProcesor()->osvjezi();
+    //Postavi odabrani procesor kao procesor za odabrani signal
+    signalUnderAnalysis->setPointerNaProcesor(manipulatorProc.getPointerNaOdabraniProcesor());
 
+    //Sada procesiraj
+    signalUnderAnalysis->procesirajSignal();
+
+    //Osvjezavanje bi trebalo ici automatski ali nema veze
     prikaz2.osvjeziPrikaz();
 }
 
@@ -100,20 +105,18 @@ void MainWindow::onListWidgetItemChanged(QListWidgetItem *current, QListWidgetIt
         // Sada možeš koristiti selectedSignal kako ti je potrebno
 
         Signal* ptest = selectedSignal;
-        test = ptest;
-        //test = ansamblSignala.dajSignal(19);
+        signalUnderAnalysis = ptest;
+
+        prikaz1.setTipPrikaza("ul");
         prikaz1.ocistiPrikaz();
-        prikaz1.dodajSignaluGrupuZaPrikaz(test);
+        prikaz1.dodajSignaluGrupuZaPrikaz(signalUnderAnalysis);
         prikaz1.osvjeziPrikaz();
 
 
-        //Signal* testout = new Signal;
-        Signal* ptestout = new Signal;
-        testout = ptestout;
-        testout->ucitajSignalIzDrugogSignala(test);
 
+        prikaz2.setTipPrikaza("izl");
         prikaz2.ocistiPrikaz();
-        prikaz2.dodajSignaluGrupuZaPrikaz(testout);
+        prikaz2.dodajSignaluGrupuZaPrikaz(signalUnderAnalysis);
         prikaz2.osvjeziPrikaz();
 
         /*

@@ -1,5 +1,6 @@
 #include "manipulacijaprocesorima.h"
 #include "ui_manipulacijaprocesorima.h"
+#include <QDebug>
 
 ManipulacijaProcesorima::ManipulacijaProcesorima(QWidget *parent) :
     QWidget(parent),
@@ -113,12 +114,7 @@ void ManipulacijaProcesorima::onTableItemDoubleClicked(int row, int column) {
     // Dobijte objekat Procesor iz vektora na osnovu rednog broja
     pOdabraniProcesor = vektorProcesora[static_cast<ulong>(row)];
 
-    pOdabraniProcesor->prikazi();
-}
-
-void ManipulacijaProcesorima::on_pushButton_3_clicked()
-{
-    pOdabraniProcesor->prikazi();
+    pOdabraniProcesor->prikaziGUI();
 }
 
 
@@ -126,4 +122,9 @@ void ManipulacijaProcesorima::onProcessorOsvjezi()
 {
     //Osvjezi tabelu
     populateTableWidget();
+}
+
+void ManipulacijaProcesorima::on_pushButton_editProcessor_clicked()
+{
+    pOdabraniProcesor->prikaziGUI();
 }
