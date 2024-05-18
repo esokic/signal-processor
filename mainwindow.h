@@ -26,6 +26,10 @@ private slots:
     void onListWidgetItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
 
+    void on_pushButton_importFile_clicked();
+
+    void on_pushButton_exportFile_clicked();
+
 private:
     void citajIzMatFajla(const QString& filePath, AnsamblSignala& ansamblSignala);
 

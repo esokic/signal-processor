@@ -31,6 +31,7 @@ void AnsamblSignala::dodijeliMarkerValueSvimSignalima()
                 //Sada svima dodijeli
                 if (!(pSignal2->isMarkerValueAssigned())) {pSignal2->setMarkerValue(MarkerValue);}
             }
+            emit changedMarkerValue(MarkerValue);
             break;
         }
     }

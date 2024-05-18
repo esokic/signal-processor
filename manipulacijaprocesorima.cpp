@@ -91,6 +91,7 @@ void ManipulacijaProcesorima::on_pushButton_newProcessor_clicked()
     //procesor->setIme("test" + QString::number(i));
     //procesor->setOpis("opis" + QString::number(i));
     dodajProcesor(procesor);
+    procesor->setStartTimeFromMarkerValue(MarkerValue);
     // Povežite signal sa slotom
     connect(procesor, &Procesor::signalOsvjezi, this, &ManipulacijaProcesorima::onProcessorOsvjezi);
     // Osvježite tabelu da uključite novi procesor:

@@ -19,6 +19,7 @@ public:
     void dodijeliMarkerValueSvimSignalima();
 
 signals:
+    void changedMarkerValue(double);
 
 private:
     std::vector<Signal*> vektor_pSignala;

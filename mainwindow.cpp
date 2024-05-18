@@ -9,36 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-
-    QString executableDir = QCoreApplication::applicationDirPath();
-    QString relativeFilePath = "../60.MAT";
-    QString absoluteFilePath = QDir::cleanPath(executableDir + QDir::separator() + relativeFilePath);
-    QString filePath = absoluteFilePath;// "putanja/do/vaše/datoteke.dat";
-
-    AnsamblSignala ansamblSignala;
-    citajIzMatFajla(filePath, ansamblSignala);
-
-    ansamblSignala.ispisiSveSignale();
-    ui->label_nazivFajla->setText(filePath);
-
-    //Popunjavanje tabele signala
-    //QListWidget *listWidget = new QListWidget(this);
-    listWidget = ui->listWidget_Signali;
-
-    for (auto &signal : ansamblSignala.dajVektorSignala()) {
-        QListWidgetItem *item = new QListWidgetItem(signal->ime());
-        item->setData(Qt::UserRole, QVariant::fromValue(static_cast<void*>(signal)));
-        listWidget->addItem(item);
-    }
-
-    // Povezivanje signala sa slotom
-    connect(listWidget, &QListWidget::currentItemChanged, this, &MainWindow::onListWidgetItemChanged);
-
-
-
     prikaz1.setPointerQPlot(ui->mojCustomPlot1);
     prikaz2.setPointerQPlot(ui->mojCustomPlot2);
-
 
     manipulatorProc.show();
 }
@@ -130,3 +102,62 @@ void MainWindow::onListWidgetItemChanged(QListWidgetItem *current, QListWidgetIt
 }
 
 
+
+void MainWindow::on_pushButton_importFile_clicked()
+{
+    /*
+    QString executableDir = QCoreApplication::applicationDirPath();
+    QString relativeFilePath = "../60.MAT";
+    QString absoluteFilePath = QDir::cleanPath(executableDir + QDir::separator() + relativeFilePath);
+    QString filePath = absoluteFilePath;
+    */
+
+    // Otvaranje dijaloškog prozora za odabir datoteke
+    QString filePath = QFileDialog::getOpenFileName(this, tr("Import File"), "", tr("MAT Files (*.MAT);;All Files (*)"));
+
+    // Provjerite je li datoteka odabrana
+    if (filePath.isEmpty()) {
+        return; // Ako nije odabrana nijedna datoteka, izađite iz funkcije
+    }
+
+
+    //OVDJE NESTO NIJE OK JER SE OVO STVORI SVAKI PUT IZNOVA A PITANJE JE STA SE DESI SA STARIM
+    AnsamblSignala ansamblSignala;
+
+    //Ovo je malo varanje ali nemam druge varijante
+    connect(&ansamblSignala, &AnsamblSignala::changedMarkerValue, &manipulatorProc, &ManipulacijaProcesorima::onChangedMarkerValue);
+
+    citajIzMatFajla(filePath, ansamblSignala);
+
+    ansamblSignala.ispisiSveSignale();
+    ui->label_nazivFajla->setText(filePath);
+
+    //Popunjavanje tabele signala -------------------------
+    //QListWidget *listWidget = new QListWidget(this);
+    auto vektorSignala = ansamblSignala.dajVektorSignala();
+
+    // Poredajte vektor signala po abecednom redu prema imenu
+    std::sort(vektorSignala.begin(), vektorSignala.end(), [](Signal* a, Signal* b) {
+        return a->ime() < b->ime();
+    });
+
+    // Očistite postojeće stavke u listWidgetu
+    listWidget = ui->listWidget_Signali;
+    listWidget->clear();
+
+    // Dodajte poredane signale u listWidget
+    for (auto &signal : vektorSignala) {
+        QListWidgetItem *item = new QListWidgetItem(signal->ime());
+        item->setData(Qt::UserRole, QVariant::fromValue(static_cast<void*>(signal)));
+        listWidget->addItem(item);
+    }
+
+    // Povezivanje signala sa slotom
+    connect(listWidget, &QListWidget::currentItemChanged, this, &MainWindow::onListWidgetItemChanged);
+
+}
+
+void MainWindow::on_pushButton_exportFile_clicked()
+{
+
+}

@@ -31,7 +31,11 @@ private:
 
     void populateTableWidget();
 
+    double MarkerValue = 0.0; //To je pocetna vrijednost signala u odnosu na referentnu tacku
+
 public slots:
+
+    void onChangedMarkerValue(double value){MarkerValue = value;}
 
 private slots:
     void onProcessorOsvjezi();

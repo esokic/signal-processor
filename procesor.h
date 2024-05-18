@@ -55,6 +55,7 @@ public:
     void setScale(bool _scale);
     void setNewSignalName(const QString &_newSignalName);
     void setChangeSignalName(bool _changeSignalName);
+    void setStartTimeFromMarkerValue(double v){startTimeFromMarkerValue = v;}
 
     // Getters
     QString getIme() const;
@@ -81,6 +82,8 @@ public:
     bool getScale() const;
     QString getNewSignalName() const;
     bool getChangeSignalName() const;
+
+    double getStartTimeFromMarkerValue(){return startTimeFromMarkerValue;}
 
 
     //void setPointerSignalUlazni1(Signal* psig){pSignal_ulazni_1 = psig;}
@@ -109,6 +112,8 @@ private:
     double samplingTime = 0.1;
     double offsetTime = 0.0;
     bool promjena_offset_time = false;
+
+    double startTimeFromMarkerValue = 0.0;
 
     bool resempliraj = false;
     double tmin1 = 0.0;
