@@ -28,6 +28,7 @@ HEADERS += \
 
 FORMS += \
     mainwindow.ui \
+    procesor.ui
 
 LIBS += -lmatio -larmadillo
 
