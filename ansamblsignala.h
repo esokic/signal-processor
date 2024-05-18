@@ -17,6 +17,7 @@ public:
 
     void ispisiSveSignale();
     void dodijeliMarkerValueSvimSignalima();
+    void presloziVektorSignalaPoAbecedi();
 
 signals:
     void changedMarkerValue(double);

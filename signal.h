@@ -12,6 +12,7 @@ class Signal : public QObject
 public:
     explicit Signal(QObject *parent = nullptr);
 
+    static Procesor defaultProcesor;
 
     void ucitajSignalIzMatlabVarijable(matvar_t*);
     void ucitajSignalIzDrugogSignala(Signal*& signal); //prakticno kopija
@@ -38,7 +39,8 @@ public:
     double getMarkerValue(){return MarkerValue;}
     bool isMarkerValueAssigned(){return markerValueAssigned;}
 
-
+    QString getNewName(){return novoImeSignala;}
+    bool isMarkedForExport(){return oznacen_za_export;}
 
     //setteri
     //Sluzi za podesavanje prikaza ovog signala
@@ -53,11 +55,14 @@ public:
     void setMarkerValue(double _mv){MarkerValue = _mv; markerValueAssigned = true;}
 
     void setPointerNaProcesor(Procesor* _pProcesor){pProcesor = _pProcesor;}
-
+    Procesor* getPointerNaProcesor(){return pProcesor;}
 
 private:
     QString imeSignala;                 //Npr. U1
     QString tipPodatka;                 //Npr. MAT_C_DOUBLE
+
+    bool oznacen_za_export = false;
+    QString novoImeSignala;
 
     QVector<double> xData_ul;
     QVector<double> yData_ul;
@@ -71,6 +76,7 @@ private:
 
     //Pomocni pokazivac na graph
     QCPGraph *graph;
+
 
     Procesor* pProcesor;
 

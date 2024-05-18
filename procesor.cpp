@@ -9,6 +9,7 @@ Procesor::Procesor(QWidget *parent) :
     ui(new Ui::Procesor)
 {
     ui->setupUi(this);
+
 }
 
 Procesor::~Procesor()
@@ -229,6 +230,7 @@ void Procesor::updejtVrijednostiIzEditBoxova()
 void Procesor::on_pushButton_Update_clicked()
 {
     this->updejtVrijednostiIzEditBoxova();
+    lastUpdateTime = QDateTime::currentDateTime();
 }
 
 void Procesor::on_pushButton_AutoReadMarker_clicked()

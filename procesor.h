@@ -6,6 +6,7 @@
 #include <armadillo>
 
 #include <QWidget>
+#include "QDateTime"
 
 namespace Ui {
 class Procesor;
@@ -27,6 +28,7 @@ public:
 
     void prikaziGUI();
     void procesiraj(QVector<double>& xData_ul, QVector<double>& yData_ul, QVector<double>& xData_izl, QVector<double>& yData_izl);
+    QDateTime getLastUpdateTime(){return lastUpdateTime;}
 
     //Setteri
 
@@ -132,6 +134,7 @@ private:
     bool changeSignalName = false;
 
 
+    QDateTime lastUpdateTime;
 
 
 

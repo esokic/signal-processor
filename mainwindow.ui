@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1296</width>
-    <height>628</height>
+    <width>1740</width>
+    <height>826</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,10 +20,10 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QListWidget" name="listWidget_Signali">
+         <widget class="QTableWidget" name="tableWidget_Signali">
           <property name="minimumSize">
            <size>
-            <width>200</width>
+            <width>700</width>
             <height>0</height>
            </size>
           </property>
@@ -92,7 +92,7 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
+    <item row="5" column="1">
      <widget class="QListWidget" name="listWidget_Procesori"/>
     </item>
    </layout>
@@ -102,7 +102,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1296</width>
+     <width>1740</width>
      <height>22</height>
     </rect>
    </property>

@@ -1,6 +1,7 @@
 #include "signal.h"
 #include <QVector>
 
+
 Signal::Signal(QObject *parent) : QObject(parent)
 {
 
@@ -9,6 +10,7 @@ Signal::Signal(QObject *parent) : QObject(parent)
 void Signal::ucitajSignalIzMatlabVarijable(matvar_t* matvar)
 {
     imeSignala = matvar->name;
+    novoImeSignala = imeSignala;
     tipPodatka = matvar->class_type;
 
 

@@ -37,3 +37,17 @@ void AnsamblSignala::dodijeliMarkerValueSvimSignalima()
     }
 
 }
+
+void AnsamblSignala::presloziVektorSignalaPoAbecedi()
+{
+    //Preslozi
+    // Popunjavanje tabele signala
+    auto vektorSignala = vektor_pSignala;
+
+    // Poredajte vektor signala po abecednom redu prema imenu
+    std::sort(vektorSignala.begin(), vektorSignala.end(), [](Signal* a, Signal* b) {
+        return a->ime() < b->ime();
+    });
+
+    vektor_pSignala = vektorSignala;
+}
