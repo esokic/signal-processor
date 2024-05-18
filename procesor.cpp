@@ -284,6 +284,40 @@ QVector<double> Procesor::ArmadilloVecToQVector(const arma::vec &avec) {
     return qvec;
 }
 
+void Procesor::prikazi()
+{
+    ui->doubleSpinBox_startTime->setValue(getStartTime());
+    ui->doubleSpinBox_offsetTime->setValue(getOffsetTime());
+    ui->doubleSpinBox_timeStep->setValue(getSamplingTime() * 1000.0);  // Pretpostavljamo da je vrijeme u milisekundama
+    ui->doubleSpinBox_duration->setValue(getDurationTime());
+
+    ui->checkBox_changeStartTime->setChecked(getPromjenaStartTime());
+    ui->checkBox_changeOffset->setChecked(getPromjenaOffsetTime());
+    ui->checkBox_changeDuration->setChecked(getPromjenaDurationTime());
+
+    ui->checkBox_changeTimeStep->setChecked(getResempliraj());
+    ui->doubleSpinBox_tmin1->setValue(getTmin1());
+    ui->doubleSpinBox_tmax1->setValue(getTmax1());
+    ui->checkBox_cutPart_1->setChecked(getCut1());
+
+    ui->doubleSpinBox_tmin2->setValue(getTmin2());
+    ui->doubleSpinBox_tmax2->setValue(getTmax2());
+    ui->checkBox_cutPart_2->setChecked(getCut2());
+
+    ui->doubleSpinBox_tmin3->setValue(getTmin3());
+    ui->doubleSpinBox_tmax3->setValue(getTmax3());
+    ui->checkBox_cutPart_3->setChecked(getCut3());
+
+    ui->doubleSpinBox_scale_k->setValue(getK());
+    ui->doubleSpinBox_scale_n->setValue(getN());
+    ui->checkBox_scale->setChecked(getScale());
+
+    ui->plainTextEdit_ProcesorName->setPlainText(getIme());
+    ui->plainTextEdit_ProcesorDescription->setPlainText(getOpis());
+
+
+    this->show();
+}
 
 
 
@@ -340,3 +374,42 @@ double Procesor::getN() const { return n; }
 bool Procesor::getScale() const { return scale; }
 QString Procesor::getNewSignalName() const { return newSignalName; }
 bool Procesor::getChangeSignalName() const { return changeSignalName; }
+
+
+void Procesor::updejtVrijednostiIzEditBoxova()
+{
+    // Logika za osvježavanje
+    double startTime = ui->doubleSpinBox_startTime->value(); setStartTime(startTime);
+    double offsetTime = ui->doubleSpinBox_offsetTime->value(); setOffsetTime(offsetTime);
+    double samplingTime = ui->doubleSpinBox_timeStep->value()/1000.0; setSamplingTime(samplingTime);
+    double durationTime = ui->doubleSpinBox_duration->value(); setDurationTime(durationTime);
+
+    bool changeStartTime = ui->checkBox_changeStartTime->isChecked(); setPromjenaStartTime(changeStartTime);
+    bool changeOffsetTime = ui->checkBox_changeOffset->isChecked(); setPromjenaOffsetTime(changeOffsetTime);
+    bool changeDurationTime = ui->checkBox_changeDuration->isChecked(); setPromjenaDurationTime(changeDurationTime);
+
+    bool resemplirati = ui->checkBox_changeTimeStep->isChecked(); setResempliraj(resemplirati);
+    double tmin1= ui->doubleSpinBox_tmin1->value(); setTmin1(tmin1);
+    double tmax1 = ui->doubleSpinBox_tmax1->value(); setTmax1(tmax1);
+    bool cut1 =  ui->checkBox_cutPart_1->isChecked(); setCut1(cut1);
+    double tmin2= ui->doubleSpinBox_tmin2->value(); setTmin2(tmin2);
+    double tmax2= ui->doubleSpinBox_tmax2->value(); setTmax2(tmax2);
+    bool cut2 = ui->checkBox_cutPart_2->isChecked(); setCut2(cut2);
+    double tmin3 = ui->doubleSpinBox_tmin3->value(); setTmin3(tmin3);
+    double tmax3 = ui->doubleSpinBox_tmax3->value(); setTmax3(tmax3);
+    bool cut3 = ui->checkBox_cutPart_3->isChecked(); setCut3(cut3);
+    double k = ui->doubleSpinBox_scale_k->value(); setK(k);
+    double n = ui->doubleSpinBox_scale_n->value(); setN(n);
+    bool scale = ui->checkBox_scale->isChecked(); setScale(scale);
+
+    QString ime = ui->plainTextEdit_ProcesorName->toPlainText(); setIme(ime);
+    QString opis = ui->plainTextEdit_ProcesorDescription->toPlainText(); setOpis(opis);
+
+    // Emitiranje signala
+    emit signalOsvjezi();
+}
+
+void Procesor::on_pushButton_Update_clicked()
+{
+    this->updejtVrijednostiIzEditBoxova();
+}

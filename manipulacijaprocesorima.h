@@ -31,11 +31,17 @@ private:
     void populateTableWidget();
 
 public slots:
-    void onItemSelectionChanged();
+
+private slots:
+    void onProcessorOsvjezi();
+
 
 private slots:
 
+    void onItemSelectionChanged();
+    void onTableItemDoubleClicked(int row, int column);
     void on_pushButton_newProcessor_clicked();
+    void on_pushButton_3_clicked();
 };
 
 #endif // MANIPULACIJAPROCESORIMA_H

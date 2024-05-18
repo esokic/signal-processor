@@ -8,7 +8,8 @@ ManipulacijaProcesorima::ManipulacijaProcesorima(QWidget *parent) :
     ui->setupUi(this);
 
     // Postavljanje broja redova i kolona
-    ui->tableWidget_tabelaProcesora->setRowCount(30);
+
+    ui->tableWidget_tabelaProcesora->setRowCount(static_cast<int>(vektorProcesora.size()));
     ui->tableWidget_tabelaProcesora->setColumnCount(2);
     QStringList headers;
     headers << "Processor name" << "Description";
@@ -19,7 +20,13 @@ ManipulacijaProcesorima::ManipulacijaProcesorima(QWidget *parent) :
     // Popunjavanje QTableWidget-a
     populateTableWidget();
 
+    // Povezivanje signala za svaki procesor sa slotom za osvježavanje tabele
+    for (auto *procesor : vektorProcesora) {
+        connect(procesor, &Procesor::signalOsvjezi, this, &ManipulacijaProcesorima::onProcessorOsvjezi);
+    }
+
     connect(ui->tableWidget_tabelaProcesora, &QTableWidget::itemSelectionChanged, this, &ManipulacijaProcesorima::onItemSelectionChanged);
+    connect(ui->tableWidget_tabelaProcesora, &QTableWidget::cellDoubleClicked, this, &ManipulacijaProcesorima::onTableItemDoubleClicked);
 }
 
 ManipulacijaProcesorima::~ManipulacijaProcesorima()
@@ -28,6 +35,9 @@ ManipulacijaProcesorima::~ManipulacijaProcesorima()
 }
 
 void ManipulacijaProcesorima::populateTableWidget() {
+
+    ui->tableWidget_tabelaProcesora->clearContents();
+    ui->tableWidget_tabelaProcesora->setRowCount(static_cast<int>(vektorProcesora.size()));
     for (size_t row = 0; row < vektorProcesora.size(); ++row) {
         const auto &procesor = vektorProcesora[row];
         QTableWidgetItem *nameItem = new QTableWidgetItem(procesor->getIme());
@@ -77,11 +87,43 @@ void ManipulacijaProcesorima::onItemSelectionChanged() {
 void ManipulacijaProcesorima::on_pushButton_newProcessor_clicked()
 {
     Procesor *procesor = new Procesor;
-    procesor->setIme("test" + QString::number(i));
-    procesor->setOpis("opis" + QString::number(i));
+    //procesor->setIme("test" + QString::number(i));
+    //procesor->setOpis("opis" + QString::number(i));
     dodajProcesor(procesor);
+    // Povežite signal sa slotom
+    connect(procesor, &Procesor::signalOsvjezi, this, &ManipulacijaProcesorima::onProcessorOsvjezi);
+    // Osvježite tabelu da uključite novi procesor:
+    populateTableWidget();
+
     procesor->show();
 
     i++;
 
+}
+
+void ManipulacijaProcesorima::onTableItemDoubleClicked(int row, int column) {
+
+    // Provjerite da li je redni broj u granicama vektora
+    if (row < 0 || row >= static_cast<int>(vektorProcesora.size())) {
+        // Ako nije, poništite odabir i izađite iz metode
+        ui->tableWidget_tabelaProcesora->clearSelection();
+        return;
+    }
+
+    // Dobijte objekat Procesor iz vektora na osnovu rednog broja
+    pOdabraniProcesor = vektorProcesora[static_cast<ulong>(row)];
+
+    pOdabraniProcesor->prikazi();
+}
+
+void ManipulacijaProcesorima::on_pushButton_3_clicked()
+{
+    pOdabraniProcesor->prikazi();
+}
+
+
+void ManipulacijaProcesorima::onProcessorOsvjezi()
+{
+    //Osvjezi tabelu
+    populateTableWidget();
 }

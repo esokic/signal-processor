@@ -22,6 +22,7 @@ public:
 
 private:
     Ui::Procesor *ui;
+    void updejtVrijednostiIzEditBoxova();
 
 public:
     //Stare funkcije
@@ -36,7 +37,7 @@ public:
                                         double k, double n, bool scale);
 
     void osvjezi();
-
+    void prikazi();
 
     //Setteri
 
@@ -99,6 +100,10 @@ public:
     //Getteri
     double getStartTimeFromMarkerValue(){return pSignal_ulazni_1->getMarkerValue();}
 signals:
+    void signalOsvjezi();
+
+private slots:
+    void on_pushButton_Update_clicked();
 
 private:
 

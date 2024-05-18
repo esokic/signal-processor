@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>636</width>
-    <height>520</height>
+    <width>647</width>
+    <height>799</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Processor properties</string>
   </property>
   <widget class="QWidget" name="formLayoutWidget">
    <property name="geometry">
@@ -19,7 +19,7 @@
      <x>60</x>
      <y>40</y>
      <width>513</width>
-     <height>392</height>
+     <height>591</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
@@ -31,7 +31,7 @@
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QPlainTextEdit" name="plainTextEdit">
+     <widget class="QPlainTextEdit" name="plainTextEdit_ProcesorName">
       <property name="maximumSize">
        <size>
         <width>300</width>
@@ -281,7 +281,7 @@
     <item row="11" column="0">
      <widget class="QCheckBox" name="checkBox_changeSignalName">
       <property name="text">
-       <string>Change signal name:</string>
+       <string>Change signal name to:</string>
       </property>
      </widget>
     </item>
@@ -295,7 +295,30 @@
       </property>
      </widget>
     </item>
+    <item row="12" column="1">
+     <widget class="QPlainTextEdit" name="plainTextEdit_ProcesorDescription"/>
+    </item>
+    <item row="12" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Processor description :</string>
+      </property>
+     </widget>
+    </item>
    </layout>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Update">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>680</y>
+     <width>89</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Update ...</string>
+   </property>
   </widget>
  </widget>
  <resources/>
