@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1740</width>
-    <height>826</height>
+    <height>628</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -85,15 +85,12 @@
       </item>
      </layout>
     </item>
-    <item row="3" column="1">
+    <item row="4" column="1">
      <widget class="QPushButton" name="pushButton_Refresh">
       <property name="text">
        <string>Process!</string>
       </property>
      </widget>
-    </item>
-    <item row="5" column="1">
-     <widget class="QListWidget" name="listWidget_Procesori"/>
     </item>
    </layout>
   </widget>

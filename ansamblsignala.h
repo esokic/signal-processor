@@ -19,6 +19,8 @@ public:
     void dodijeliMarkerValueSvimSignalima();
     void presloziVektorSignalaPoAbecedi();
 
+    void ocisti(){vektor_pSignala.clear();} //Ovo treba preko delete sve pojedinacno
+
 signals:
     void changedMarkerValue(double);
 

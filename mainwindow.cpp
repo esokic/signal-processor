@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
+
     defaultniProcesor.setIme("---");
 
     prikaz1.setPointerQPlot(ui->mojCustomPlot1);
@@ -64,6 +65,9 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
         Mat_VarFree(matvar);
     }
 
+    //Ovo je malo varanje ali nemam druge varijante
+     connect(pAnsamblSignala, &AnsamblSignala::changedMarkerValue, &manipulatorProc, &ManipulacijaProcesorima::onChangedMarkerValue);
+
     //Po zavrsetku napraviti dodjelu markerValue na sve signale iz tog seta
     ansamblSignala->dodijeliMarkerValueSvimSignalima();
 
@@ -85,6 +89,7 @@ void MainWindow::on_pushButton_Refresh_clicked()
 
     //Osvjezavanje bi trebalo ici automatski ali nema veze
     prikaz2.osvjeziPrikaz();
+    populateTableWidget_zaSignale(pAnsamblSignala);
 }
 
 
@@ -163,43 +168,17 @@ void MainWindow::on_pushButton_importFile_clicked()
         return; // Ako nije odabrana nijedna datoteka, izađite iz funkcije
     }
 
-
-
-
-    //Ovo je malo varanje ali nemam druge varijante
-    connect(pAnsamblSignala, &AnsamblSignala::changedMarkerValue, &manipulatorProc, &ManipulacijaProcesorima::onChangedMarkerValue);
+    //Opcija brisanja prije ponovnog ucitavanja?
+    pAnsamblSignala->ocisti();
 
     citajIzMatFajla(filePath, pAnsamblSignala);
-
-
 
     pAnsamblSignala->ispisiSveSignale();
     ui->label_nazivFajla->setText(filePath);
 
-    /*
-    //Popunjavanje tabele signala -------------------------
-    //QListWidget *listWidget = new QListWidget(this);
-    auto vektorSignala = ansamblSignala.dajVektorSignala();
 
-    // Poredajte vektor signala po abecednom redu prema imenu
-    std::sort(vektorSignala.begin(), vektorSignala.end(), [](Signal* a, Signal* b) {
-        return a->ime() < b->ime();
-    });
 
-    // Očistite postojeće stavke u listWidgetu
-    listWidget = ui->listWidget_Signali;
-    listWidget->clear();
 
-    // Dodajte poredane signale u listWidget
-    for (auto &signal : vektorSignala) {
-        QListWidgetItem *item = new QListWidgetItem(signal->ime());
-        item->setData(Qt::UserRole, QVariant::fromValue(static_cast<void*>(signal)));
-        listWidget->addItem(item);
-    }
-
-    // Povezivanje signala sa slotom
-    connect(listWidget, &QListWidget::currentItemChanged, this, &MainWindow::onListWidgetItemChanged);
-    */
     populateTableWidget_zaSignale(pAnsamblSignala);
 
 }
