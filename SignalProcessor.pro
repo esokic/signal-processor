@@ -11,27 +11,32 @@ CONFIG += c++11
 
 SOURCES += \
     ansamblsignala.cpp \
+    exportfilesetting.cpp \
     main.cpp \
     mainwindow.cpp \
     manipulacijaprocesorima.cpp \
     prikaz.cpp \
     procesor.cpp \
     qcustomplot/qcustomplot.cpp \
-    signal.cpp
+    signal.cpp \
+    signalsexport.cpp
 
 HEADERS += \
     ansamblsignala.h \
+    exportfilesetting.h \
     mainwindow.h \
     manipulacijaprocesorima.h \
     prikaz.h \
     procesor.h \
     qcustomplot/qcustomplot.h \
-    signal.h
+    signal.h \
+    signalsexport.h
 
 FORMS += \
     mainwindow.ui \
     manipulacijaprocesorima.ui \
-    procesor.ui
+    procesor.ui \
+    signalsexport.ui
 
 LIBS += -lmatio -larmadillo
 
