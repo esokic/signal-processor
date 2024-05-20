@@ -28,6 +28,8 @@ public:
     void setListaSignalaZaExport(const std::vector<Signal*>& value) { listaSignalaZaExport = value; }
     void setExportFileType(const QString& value) { exportFileType = value; }
 
+    void dodajUListuSignalaZaExport(Signal* signal){listaSignalaZaExport.push_back(signal);}
+
 signals:
 
 private:

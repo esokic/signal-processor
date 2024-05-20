@@ -1,6 +1,8 @@
 #include "signalsexport.h"
 #include "ui_signalsexport.h"
 #include "exportfilesetting.h"
+#include "selectsignalsdialog.h"
+#include <QItemSelection>
 
 SignalsExport::SignalsExport(QWidget *parent) :
     QWidget(parent),
@@ -14,6 +16,13 @@ SignalsExport::SignalsExport(QWidget *parent) :
     // Connect signal for table widget item selection
     connect(ui->tableWidget_ExportFileSettings->selectionModel(), &QItemSelectionModel::currentRowChanged,
                     this, &SignalsExport::onTableWidgetSelectionChanged);
+
+    // Povežite signal itemSelectionChanged sa slotom onTableWidgetSettingsSelectionChanged
+    connect(ui->tableWidget_ExportFileSettings->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, &SignalsExport::onTableWidgetSettingsSelectionChanged);
+
+    // Inicijalno postavite groupBox na disabled
+    ui->groupBox->setEnabled(false);
 }
 
 SignalsExport::~SignalsExport()
@@ -36,6 +45,7 @@ void SignalsExport::addNewExportFileSetting(const QString& fileDescription, cons
 
     // Refresh the table widget
     populateTableWidget();
+
 }
 
 
@@ -85,6 +95,15 @@ void SignalsExport::onTableWidgetSelectionChanged(const QModelIndex &current, co
     }
 }
 
+void SignalsExport::onTableWidgetSettingsSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    // Proverite da li je nešto selektovano
+    bool hasSelection = !ui->tableWidget_ExportFileSettings->selectionModel()->selectedRows().isEmpty();
+
+    // Postavite enabled stanje groupBox-a u zavisnosti od selekcije
+    ui->groupBox->setEnabled(hasSelection);
+}
+
 // Funkcija za postavljanje varijabli prema stanju UI elemenata
 void SignalsExport::updateVariablesFromUI(ExportFileSetting& settings) {
     settings.setFileDescription(ui->lineEdit_fileDescription->text());
@@ -121,11 +140,17 @@ void SignalsExport::updateUIFromVariables(ExportFileSetting& settings){
     } else if (settings.getExportFileType() == "output") {
         ui->radioButton_fileTypeOutput->setChecked(true);
     }
+
+    populateSignalsTableWidget(&settings);
 }
 
 void SignalsExport::on_pushButton_newFileExportSettings_clicked()
 {
+    int rowCount = ui->tableWidget_ExportFileSettings->rowCount();
     addNewExportFileSetting("(description)", "Travel, current and arc voltage", "(file setting ...)", "1ph", "input");
+    ui->tableWidget_listaSignalaZaExport->clear();
+    ui->tableWidget_ExportFileSettings->selectRow(rowCount+1);
+
 }
 
 void SignalsExport::on_pushButton_updateSettings_clicked()
@@ -140,5 +165,52 @@ void SignalsExport::on_pushButton_updateSettings_clicked()
 
         // Osvježavanje tabele nakon ažuriranja
         populateTableWidget();
+        populateSignalsTableWidget(currentSetting);
+    }
+    ui->tableWidget_ExportFileSettings->selectRow(currentRow);
+}
+
+void SignalsExport::on_pushButton_addSignaToFile_clicked()
+{
+    // Dobijanje trenutno selektovanog reda
+    int currentRow = ui->tableWidget_ExportFileSettings->currentRow();
+    if (currentRow >= 0 && currentRow < static_cast<int>(vektorFileSettingsa.size())) {
+        ExportFileSetting *currentSetting = vektorFileSettingsa[static_cast<size_t>(currentRow)];
+
+        // Otvori dijalog za odabir signala
+        SelectSignalsDialog dialog(pAnsamblSignala->dajVektorSignala(), this);
+        if (dialog.exec() == QDialog::Accepted) {
+            // Dodaj odabrane signale u listaSignalaZaExport
+            auto selectedSignals = dialog.getSelectedSignals();
+            for (const auto& signal : selectedSignals) {
+                currentSetting->dodajUListuSignalaZaExport(signal);
+            }
+
+            populateSignalsTableWidget(currentSetting);
+
+        }
+
+        // Osvježavanje tabele nakon ažuriranja
+        populateTableWidget();
+
+        ui->tableWidget_ExportFileSettings->selectRow(currentRow);
+
+    }
+
+
+
+}
+
+void SignalsExport::populateSignalsTableWidget(ExportFileSetting *currentSetting)
+{
+    // Osvježi tableWidget_listaSignalaZaExport
+    ui->tableWidget_listaSignalaZaExport->setRowCount(currentSetting->getListaSignalaZaExport().size());
+    ui->tableWidget_listaSignalaZaExport->setColumnCount(1);
+    for (size_t i = 0; i < currentSetting->getListaSignalaZaExport().size(); ++i) {
+        ui->tableWidget_listaSignalaZaExport->setItem(i, 0, new QTableWidgetItem(currentSetting->getListaSignalaZaExport()[i]->ime()));
+       // ui->tableWidget_listaSignalaZaExport->setItem(i, 1, new QTableWidgetItem("N/A")); // Ovdje možete dodati ime procesora
+       // ui->tableWidget_listaSignalaZaExport->setItem(i, 2, new QTableWidgetItem("N/A")); // Ovdje možete dodati datum i vrijeme osvježavanja
+       // ui->tableWidget_listaSignalaZaExport->setItem(i, 3, new QTableWidgetItem("New name")); // Ovo je placeholder
+       // ui->tableWidget_listaSignalaZaExport->setCellWidget(i, 4, new QCheckBox(this));
     }
 }

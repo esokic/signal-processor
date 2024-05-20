@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "ansamblsignala.h"
 #include "manipulacijaprocesorima.h"
+#include "signalsexport.h"
 
 
 
@@ -21,6 +22,11 @@ MainWindow::MainWindow(QWidget *parent)
     prikaz2.setPointerQPlot(ui->mojCustomPlot2);
 
     manipulatorProc.show();
+
+    SignalsExport* sigExp = new SignalsExport();
+    pSigExp = sigExp;
+    pSigExp->setPtrAnsamblSignala(pAnsamblSignala);
+
 
 }
 
@@ -239,7 +245,7 @@ void MainWindow::on_pushButton_importFile_clicked()
 
 void MainWindow::on_pushButton_exportFile_clicked()
 {
-
+    pSigExp->show();
 }
 
 

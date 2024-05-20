@@ -18,6 +18,7 @@ SOURCES += \
     prikaz.cpp \
     procesor.cpp \
     qcustomplot/qcustomplot.cpp \
+    selectsignalsdialog.cpp \
     signal.cpp \
     signalsexport.cpp
 
@@ -29,6 +30,7 @@ HEADERS += \
     prikaz.h \
     procesor.h \
     qcustomplot/qcustomplot.h \
+    selectsignalsdialog.h \
     signal.h \
     signalsexport.h
 
@@ -36,6 +38,7 @@ FORMS += \
     mainwindow.ui \
     manipulacijaprocesorima.ui \
     procesor.ui \
+    selectsignalsdialog.ui \
     signalsexport.ui
 
 LIBS += -lmatio -larmadillo

@@ -6,6 +6,7 @@
 #include "ansamblsignala.h"
 #include "procesor.h"
 #include "manipulacijaprocesorima.h"
+#include "signalsexport.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -50,5 +51,7 @@ private:
     AnsamblSignala* pAnsamblSignala;
     Signal* signalUnderAnalysis;
 
+    SignalsExport sigExpObj;
+    SignalsExport* pSigExp;
 };
 #endif // MAINWINDOW_H

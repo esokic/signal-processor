@@ -24,8 +24,6 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    SignalsExport sigExp;
-    sigExp.show();
 
 
     return a.exec();

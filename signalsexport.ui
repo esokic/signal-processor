@@ -161,31 +161,6 @@
      <string>Remove signal</string>
     </property>
    </widget>
-   <widget class="QListWidget" name="listWidget">
-    <property name="geometry">
-     <rect>
-      <x>400</x>
-      <y>30</y>
-      <width>256</width>
-      <height>171</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text">
-      <string>Time [ms]</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Signal 1 - (opis)</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Signal 2 - (opis)</string>
-     </property>
-    </item>
-   </widget>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
@@ -358,6 +333,16 @@
     </property>
     <property name="text">
      <string>Update settings</string>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_listaSignalaZaExport">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>30</y>
+      <width>251</width>
+      <height>221</height>
+     </rect>
     </property>
    </widget>
   </widget>
