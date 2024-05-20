@@ -90,7 +90,7 @@
      <x>60</x>
      <y>300</y>
      <width>951</width>
-     <height>291</height>
+     <height>431</height>
     </rect>
    </property>
    <property name="title">
@@ -100,13 +100,13 @@
     <property name="geometry">
      <rect>
       <x>670</x>
-      <y>120</y>
-      <width>121</width>
+      <y>150</y>
+      <width>211</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
-     <string>Down</string>
+     <string>Signal Down</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_4">
@@ -127,12 +127,12 @@
      <rect>
       <x>670</x>
       <y>30</y>
-      <width>121</width>
+      <width>211</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
-     <string>Add signal</string>
+     <string>Add signal (s)</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_fileHeader">
@@ -152,8 +152,8 @@
     <property name="geometry">
      <rect>
       <x>670</x>
-      <y>60</y>
-      <width>121</width>
+      <y>90</y>
+      <width>211</width>
       <height>25</height>
      </rect>
     </property>
@@ -191,13 +191,13 @@
     <property name="geometry">
      <rect>
       <x>670</x>
-      <y>90</y>
-      <width>121</width>
+      <y>120</y>
+      <width>211</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
-     <string>Up</string>
+     <string>Signal Up</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_5">
@@ -325,10 +325,10 @@
    <widget class="QPushButton" name="pushButton_updateSettings">
     <property name="geometry">
      <rect>
-      <x>740</x>
-      <y>240</y>
-      <width>121</width>
-      <height>25</height>
+      <x>810</x>
+      <y>354</y>
+      <width>131</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="text">
@@ -341,8 +341,135 @@
       <x>400</x>
       <y>30</y>
       <width>251</width>
-      <height>221</height>
+      <height>381</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>300</y>
+      <width>91</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Voltage (U):</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>330</y>
+      <width>81</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Current (I):</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>360</y>
+      <width>91</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pressure (P):</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_10">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>390</y>
+      <width>81</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Travel (T):</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_11">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>260</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Scale:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_12">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>260</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Position:</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="formLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>290</y>
+      <width>138</width>
+      <height>124</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_US"/>
+     </item>
+     <item row="0" column="1">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_UP"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_IS"/>
+     </item>
+     <item row="1" column="1">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_IP"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_PS"/>
+     </item>
+     <item row="2" column="1">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_PP"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_TS"/>
+     </item>
+     <item row="3" column="1">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_TP"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QPushButton" name="pushButton_addSignaToFile_2">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>60</y>
+      <width>211</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Add signal (s) automatically</string>
     </property>
    </widget>
   </widget>

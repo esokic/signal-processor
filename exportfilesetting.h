@@ -30,6 +30,10 @@ public:
 
     void dodajUListuSignalaZaExport(Signal* signal){listaSignalaZaExport.push_back(signal);}
 
+    void izbrisiElementIzVektoraSignalaZaEksport(ulong currentRow);
+    void shiftUpElementIzVektoraSignalaZaEksport(ulong currentRow);
+    void shiftDownElementIzVektoraSignalaZaEksport(ulong currentRow);
+
 signals:
 
 private:

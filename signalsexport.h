@@ -37,6 +37,9 @@ private:
     void updateVariablesFromUI(ExportFileSetting& settings);
 
 
+    ExportFileSetting* getCurrentFileSettings();
+
+
 
 private slots:
     void on_pushButton_newFileExportSettings_clicked();
@@ -44,6 +47,12 @@ private slots:
     void on_pushButton_updateSettings_clicked();
 
     void on_pushButton_addSignaToFile_clicked();
+
+    void on_pushButton_removeSignalToFile_clicked();
+
+    void on_pushButton_signalUpList_clicked();
+
+    void on_pushButton_signalDownList_clicked();
 
 private:
     Ui::SignalsExport *ui;

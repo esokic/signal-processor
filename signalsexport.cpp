@@ -170,6 +170,20 @@ void SignalsExport::on_pushButton_updateSettings_clicked()
     ui->tableWidget_ExportFileSettings->selectRow(currentRow);
 }
 
+void SignalsExport::populateSignalsTableWidget(ExportFileSetting *currentSetting)
+{
+    // Osvježi tableWidget_listaSignalaZaExport
+    ui->tableWidget_listaSignalaZaExport->setRowCount(currentSetting->getListaSignalaZaExport().size());
+    ui->tableWidget_listaSignalaZaExport->setColumnCount(1);
+    for (size_t i = 0; i < currentSetting->getListaSignalaZaExport().size(); ++i) {
+        ui->tableWidget_listaSignalaZaExport->setItem(i, 0, new QTableWidgetItem(currentSetting->getListaSignalaZaExport()[i]->ime()));
+       // ui->tableWidget_listaSignalaZaExport->setItem(i, 1, new QTableWidgetItem("N/A")); // Ovdje možete dodati ime procesora
+       // ui->tableWidget_listaSignalaZaExport->setItem(i, 2, new QTableWidgetItem("N/A")); // Ovdje možete dodati datum i vrijeme osvježavanja
+       // ui->tableWidget_listaSignalaZaExport->setItem(i, 3, new QTableWidgetItem("New name")); // Ovo je placeholder
+       // ui->tableWidget_listaSignalaZaExport->setCellWidget(i, 4, new QCheckBox(this));
+    }
+}
+
 void SignalsExport::on_pushButton_addSignaToFile_clicked()
 {
     // Dobijanje trenutno selektovanog reda
@@ -197,20 +211,77 @@ void SignalsExport::on_pushButton_addSignaToFile_clicked()
 
     }
 
+}
 
+ExportFileSetting* SignalsExport::getCurrentFileSettings()
+{
+    ExportFileSetting *currentSetting = nullptr;
+    //Uzimamo trenutno selektovan settings
+    int currentRow = ui->tableWidget_ExportFileSettings->currentRow();
+    if (currentRow >= 0 && currentRow < static_cast<int>(vektorFileSettingsa.size())) {
+        currentSetting = vektorFileSettingsa[static_cast<size_t>(currentRow)];
+    }
+    return currentSetting;
+}
+
+
+void SignalsExport::on_pushButton_removeSignalToFile_clicked()
+{
+    //Uzimamo trenutno selektovan settings
+    ExportFileSetting *currentSetting = getCurrentFileSettings();
+    if (currentSetting==nullptr) return;
+
+    // Dobijanje trenutno selektovanog reda signala
+    int currentRow = ui->tableWidget_listaSignalaZaExport->currentRow();
+    if (currentRow >= 0 && currentRow < static_cast<int>(currentSetting->getListaSignalaZaExport().size())) {
+        //To znaci da smo selektovali nesto u listi signala za eksport
+        currentSetting->izbrisiElementIzVektoraSignalaZaEksport(currentRow);
+        //repopuliraj tabelu
+        populateSignalsTableWidget(currentSetting);
+    }
+
+    // Osvježavanje tabele nakon ažuriranja
+    //populateTableWidget();
+    //ui->tableWidget_ExportFileSettings->selectRow(currentRow);
 
 }
 
-void SignalsExport::populateSignalsTableWidget(ExportFileSetting *currentSetting)
+void SignalsExport::on_pushButton_signalUpList_clicked()
 {
-    // Osvježi tableWidget_listaSignalaZaExport
-    ui->tableWidget_listaSignalaZaExport->setRowCount(currentSetting->getListaSignalaZaExport().size());
-    ui->tableWidget_listaSignalaZaExport->setColumnCount(1);
-    for (size_t i = 0; i < currentSetting->getListaSignalaZaExport().size(); ++i) {
-        ui->tableWidget_listaSignalaZaExport->setItem(i, 0, new QTableWidgetItem(currentSetting->getListaSignalaZaExport()[i]->ime()));
-       // ui->tableWidget_listaSignalaZaExport->setItem(i, 1, new QTableWidgetItem("N/A")); // Ovdje možete dodati ime procesora
-       // ui->tableWidget_listaSignalaZaExport->setItem(i, 2, new QTableWidgetItem("N/A")); // Ovdje možete dodati datum i vrijeme osvježavanja
-       // ui->tableWidget_listaSignalaZaExport->setItem(i, 3, new QTableWidgetItem("New name")); // Ovo je placeholder
-       // ui->tableWidget_listaSignalaZaExport->setCellWidget(i, 4, new QCheckBox(this));
+    //Uzimamo trenutno selektovan settings
+    ExportFileSetting *currentSetting = getCurrentFileSettings();
+    if (currentSetting==nullptr) return;
+
+    // Dobijanje trenutno selektovanog reda signala
+    int currentRow = ui->tableWidget_listaSignalaZaExport->currentRow();
+    if (currentRow >= 0 && currentRow < static_cast<int>(currentSetting->getListaSignalaZaExport().size())) {
+        //To znaci da smo selektovali nesto u listi signala za eksport
+        currentSetting->shiftUpElementIzVektoraSignalaZaEksport(currentRow);
+        //repopuliraj tabelu
+        populateSignalsTableWidget(currentSetting);
     }
+
+    // Osvježavanje tabele nakon ažuriranja
+    //populateTableWidget();
+    //ui->tableWidget_listaSignalaZaExport->selectRow(currentRow);
+}
+
+void SignalsExport::on_pushButton_signalDownList_clicked()
+{
+    //Uzimamo trenutno selektovan settings
+    ExportFileSetting *currentSetting = getCurrentFileSettings();
+    if (currentSetting==nullptr) return;
+
+    // Dobijanje trenutno selektovanog reda signala
+    int currentRow = ui->tableWidget_listaSignalaZaExport->currentRow();
+    if (currentRow >= 0 && currentRow < static_cast<int>(currentSetting->getListaSignalaZaExport().size())) {
+        //To znaci da smo selektovali nesto u listi signala za eksport
+        currentSetting->shiftDownElementIzVektoraSignalaZaEksport(currentRow);
+        //repopuliraj tabelu
+        populateSignalsTableWidget(currentSetting);
+    }
+
+    // Osvježavanje tabele nakon ažuriranja
+    //populateTableWidget();
+   // ui->tableWidget_ExportFileSettings->selectRow(currentRow);
 }
