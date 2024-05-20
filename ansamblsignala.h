@@ -21,6 +21,8 @@ public:
 
     void ocisti(){vektor_pSignala.clear();} //Ovo treba preko delete sve pojedinacno
 
+    void citajIzMatFajla(const QString& filePath);
+
 signals:
     void changedMarkerValue(double);
 

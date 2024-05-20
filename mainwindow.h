@@ -21,40 +21,34 @@ public:
 
 
 private slots:
-    void on_pushButton_Refresh_clicked();
 
-    //Stara
-    void onListWidgetItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
-    //Nova
-    void onTableWidgetItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);
+
+    //void onTableWidgetItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);
 
     void onItemSelectionChanged();
 
 
-
     void on_pushButton_importFile_clicked();
-
     void on_pushButton_exportFile_clicked();
+    void on_pushButton_Refresh_clicked();
 
 private:
-    void citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansamblSignala);
 
     void populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala);
 
+    //Izbaciti
+    void citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansamblSignala);
 
     Ui::MainWindow *ui;
+    QListWidget *listWidget;
     Prikaz prikaz1;
-    Prikaz prikaz2;
+    Prikaz prikaz2;    
 
-    Signal* signalUnderAnalysis;
-    //Signal* testout;
-
-    //Procesor* pTrenutni_procesor_signala;
     ManipulacijaProcesorima manipulatorProc;
     Procesor defaultniProcesor;
 
-    QListWidget *listWidget;
     AnsamblSignala* pAnsamblSignala;
+    Signal* signalUnderAnalysis;
 
 };
 #endif // MAINWINDOW_H

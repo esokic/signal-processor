@@ -12,22 +12,15 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-
     AnsamblSignala ansamblSignala;
     pAnsamblSignala = &ansamblSignala;
 
-
-
-
-    defaultniProcesor.setIme("---");
+    defaultniProcesor.setIme("-");
 
     prikaz1.setPointerQPlot(ui->mojCustomPlot1);
     prikaz2.setPointerQPlot(ui->mojCustomPlot2);
 
     manipulatorProc.show();
-
-
-
 
 }
 
@@ -37,156 +30,12 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+//Dio koji se tice manipulacije nad prikazima u QTableWidgetu
+//------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------
 
-void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansamblSignala)
-{
-
-    // Pretvorite QString u char* jer MatIO koristi char*
-    const char* filename = filePath.toLocal8Bit().constData();
-
-    // Otvaranje .mat datoteke za čitanje
-    mat_t *mat = Mat_Open(filename, MAT_ACC_RDONLY);
-//    if (mat == NULL) {
-//        qDebug() << "Nije moguće otvoriti datoteku";
-//        return;
-//    }
-
-    matvar_t *matvar;
-    while ((matvar = Mat_VarReadNext(mat)) != nullptr) {
-
-        Signal* pSignal = new Signal;
-        pSignal->ucitajSignalIzMatlabVarijable(matvar);
-
-        pSignal->setPointerNaProcesor(&defaultniProcesor);
-
-        ansamblSignala->dodajUAnsambl(pSignal);
-
-        // Ne zaboravite osloboditi varijablu nakon što završite s njom
-        Mat_VarFree(matvar);
-    }
-
-    //Ovo je malo varanje ali nemam druge varijante
-     connect(pAnsamblSignala, &AnsamblSignala::changedMarkerValue, &manipulatorProc, &ManipulacijaProcesorima::onChangedMarkerValue);
-
-    //Po zavrsetku napraviti dodjelu markerValue na sve signale iz tog seta
-    ansamblSignala->dodijeliMarkerValueSvimSignalima();
-
-    ansamblSignala->presloziVektorSignalaPoAbecedi();
-
-    // Zatvaranje .mat datoteke
-    Mat_Close(mat);
-
-}
-
-void MainWindow::on_pushButton_Refresh_clicked()
-{
-
-    //Postavi odabrani procesor kao procesor za odabrani signal
-    signalUnderAnalysis->setPointerNaProcesor(manipulatorProc.getPointerNaOdabraniProcesor());
-
-    //Sada procesiraj
-    signalUnderAnalysis->procesirajSignal();
-
-    //Osvjezavanje bi trebalo ici automatski ali nema veze
-    prikaz2.osvjeziPrikaz();
-    populateTableWidget_zaSignale(pAnsamblSignala);
-}
-
-
-void MainWindow::onTableWidgetItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous)
-{
-    if (current) {
-        int row = current->row();
-        Signal* selectedSignal = static_cast<Signal*>(ui->tableWidget_Signali->item(row, 0)->data(Qt::UserRole).value<void*>());
-
-        Signal* ptest = selectedSignal;
-        signalUnderAnalysis = ptest;
-
-        prikaz1.setTipPrikaza("ul");
-        prikaz1.ocistiPrikaz();
-        prikaz1.dodajSignaluGrupuZaPrikaz(signalUnderAnalysis);
-        prikaz1.osvjeziPrikaz();
-
-
-
-        prikaz2.setTipPrikaza("izl");
-        prikaz2.ocistiPrikaz();
-        prikaz2.dodajSignaluGrupuZaPrikaz(signalUnderAnalysis);
-        prikaz2.osvjeziPrikaz();
-
-    }
-}
-
-
-
-void MainWindow::onListWidgetItemChanged(QListWidgetItem *current, QListWidgetItem *previous) {
-    if (current) {
-        Signal *selectedSignal = static_cast<Signal*>(current->data(Qt::UserRole).value<void*>());
-        // Sada možeš koristiti selectedSignal kako ti je potrebno
-
-        Signal* ptest = selectedSignal;
-        signalUnderAnalysis = ptest;
-
-        prikaz1.setTipPrikaza("ul");
-        prikaz1.ocistiPrikaz();
-        prikaz1.dodajSignaluGrupuZaPrikaz(signalUnderAnalysis);
-        prikaz1.osvjeziPrikaz();
-
-
-
-        prikaz2.setTipPrikaza("izl");
-        prikaz2.ocistiPrikaz();
-        prikaz2.dodajSignaluGrupuZaPrikaz(signalUnderAnalysis);
-        prikaz2.osvjeziPrikaz();
-
-        /*
-        if (manipulatorProc.getPointerNaOdabraniProcesor()!=nullptr)
-        {
-            manipulatorProc.getPointerNaOdabraniProcesor()->setPointerSignalUlazni1(test);
-            manipulatorProc.getPointerNaOdabraniProcesor()->setPointerSignalIzlazni1(testout);
-        }*/
-        // OVO TREBA SREDITIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII - DA SE MOGU PRIDRUZIVATI POKAZIVACI I SL.
-    }
-}
-
-
-
-void MainWindow::on_pushButton_importFile_clicked()
-{
-    /*
-    QString executableDir = QCoreApplication::applicationDirPath();
-    QString relativeFilePath = "../60.MAT";
-    QString absoluteFilePath = QDir::cleanPath(executableDir + QDir::separator() + relativeFilePath);
-    QString filePath = absoluteFilePath;
-    */
-
-    // Otvaranje dijaloškog prozora za odabir datoteke
-    QString filePath = QFileDialog::getOpenFileName(this, tr("Import File"), "", tr("MAT Files (*.MAT);;All Files (*)"));
-
-    // Provjerite je li datoteka odabrana
-    if (filePath.isEmpty()) {
-        return; // Ako nije odabrana nijedna datoteka, izađite iz funkcije
-    }
-
-    //Opcija brisanja prije ponovnog ucitavanja?
-    pAnsamblSignala->ocisti();
-
-    citajIzMatFajla(filePath, pAnsamblSignala);
-
-    pAnsamblSignala->ispisiSveSignale();
-    ui->label_nazivFajla->setText(filePath);
-
-
-
-
-    populateTableWidget_zaSignale(pAnsamblSignala);
-
-}
-
-void MainWindow::on_pushButton_exportFile_clicked()
-{
-
-}
 
 void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
 {
@@ -268,7 +117,6 @@ void MainWindow::onItemSelectionChanged() {
     }
 
 
-
     // Dobijte redni broj izabranog reda
     int selectedRow = selectedItems[0]->row();
 
@@ -295,4 +143,103 @@ void MainWindow::onItemSelectionChanged() {
     prikaz2.dodajSignaluGrupuZaPrikaz(signalUnderAnalysis);
     prikaz2.osvjeziPrikaz();
 }
+
+
+//Callback nad dugmicima
+//------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------
+
+
+void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansamblSignala)
+{
+
+    // Pretvorite QString u char* jer MatIO koristi char*
+    const char* filename = filePath.toLocal8Bit().constData();
+
+    // Otvaranje .mat datoteke za čitanje
+    mat_t *mat = Mat_Open(filename, MAT_ACC_RDONLY);
+//    if (mat == NULL) {
+//        qDebug() << "Nije moguće otvoriti datoteku";
+//        return;
+//    }
+
+    matvar_t *matvar;
+    while ((matvar = Mat_VarReadNext(mat)) != nullptr) {
+
+        Signal* pSignal = new Signal;
+        pSignal->ucitajSignalIzMatlabVarijable(matvar);
+
+        pSignal->setPointerNaProcesor(&defaultniProcesor);
+
+        ansamblSignala->dodajUAnsambl(pSignal);
+
+        // Ne zaboravite osloboditi varijablu nakon što završite s njom
+        Mat_VarFree(matvar);
+    }
+
+    //Ovo je malo varanje ali nemam druge varijante
+     connect(pAnsamblSignala, &AnsamblSignala::changedMarkerValue, &manipulatorProc, &ManipulacijaProcesorima::onChangedMarkerValue);
+
+    //Po zavrsetku napraviti dodjelu markerValue na sve signale iz tog seta
+    ansamblSignala->dodijeliMarkerValueSvimSignalima();
+
+    ansamblSignala->presloziVektorSignalaPoAbecedi();
+
+    // Zatvaranje .mat datoteke
+    Mat_Close(mat);
+
+}
+
+void MainWindow::on_pushButton_Refresh_clicked()
+{
+
+    //Postavi odabrani procesor kao procesor za odabrani signal
+    signalUnderAnalysis->setPointerNaProcesor(manipulatorProc.getPointerNaOdabraniProcesor());
+
+    //Sada procesiraj
+    signalUnderAnalysis->procesirajSignal();
+
+    //Osvjezavanje bi trebalo ici automatski ali nema veze
+    prikaz2.osvjeziPrikaz();
+    populateTableWidget_zaSignale(pAnsamblSignala);
+}
+
+
+
+void MainWindow::on_pushButton_importFile_clicked()
+{
+    /*
+    QString executableDir = QCoreApplication::applicationDirPath();
+    QString relativeFilePath = "../60.MAT";
+    QString absoluteFilePath = QDir::cleanPath(executableDir + QDir::separator() + relativeFilePath);
+    QString filePath = absoluteFilePath;
+    */
+
+    // Otvaranje dijaloškog prozora za odabir datoteke
+    QString filePath = QFileDialog::getOpenFileName(this, tr("Import File"), "", tr("MAT Files (*.MAT);;All Files (*)"));
+
+    // Provjerite je li datoteka odabrana
+    if (filePath.isEmpty()) {
+        return; // Ako nije odabrana nijedna datoteka, izađite iz funkcije
+    }
+
+    //Opcija brisanja prije ponovnog ucitavanja?
+    pAnsamblSignala->ocisti();
+
+    citajIzMatFajla(filePath, pAnsamblSignala);
+
+    pAnsamblSignala->ispisiSveSignale();
+    ui->label_nazivFajla->setText(filePath);
+
+    populateTableWidget_zaSignale(pAnsamblSignala);
+
+}
+
+void MainWindow::on_pushButton_exportFile_clicked()
+{
+
+}
+
 

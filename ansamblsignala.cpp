@@ -51,3 +51,43 @@ void AnsamblSignala::presloziVektorSignalaPoAbecedi()
 
     vektor_pSignala = vektorSignala;
 }
+
+void AnsamblSignala::citajIzMatFajla(const QString& filePath)
+{
+/*
+    // Pretvorite QString u char* jer MatIO koristi char*
+    const char* filename = filePath.toLocal8Bit().constData();
+
+    // Otvaranje .mat datoteke za čitanje
+    mat_t *mat = Mat_Open(filename, MAT_ACC_RDONLY);
+//    if (mat == NULL) {
+//        qDebug() << "Nije moguće otvoriti datoteku";
+//        return;
+//    }
+
+    matvar_t *matvar;
+    while ((matvar = Mat_VarReadNext(mat)) != nullptr) {
+
+        Signal* pSignal = new Signal;
+        pSignal->ucitajSignalIzMatlabVarijable(matvar);
+
+        pSignal->setPointerNaProcesor(&defaultniProcesor);
+
+        this->dodajUAnsambl(pSignal);
+
+        // Ne zaboravite osloboditi varijablu nakon što završite s njom
+        Mat_VarFree(matvar);
+    }
+
+    //Ovo je malo varanje ali nemam druge varijante
+     connect(this, &AnsamblSignala::changedMarkerValue, &manipulatorProc, &ManipulacijaProcesorima::onChangedMarkerValue);
+
+    //Po zavrsetku napraviti dodjelu markerValue na sve signale iz tog seta
+    this->dodijeliMarkerValueSvimSignalima();
+
+    this->presloziVektorSignalaPoAbecedi();
+
+    // Zatvaranje .mat datoteke
+    Mat_Close(mat);
+*/
+}
