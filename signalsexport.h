@@ -49,7 +49,7 @@ private slots:
 
     void on_pushButton_updateSettings_clicked();
 
-    void on_pushButton_addSignaToFile_clicked();
+    void on_pushButton_addSignalToFile_clicked();
 
     void on_pushButton_removeSignalToFile_clicked();
 

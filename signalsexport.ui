@@ -122,7 +122,7 @@
      <string>Description:</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_addSignaToFile">
+   <widget class="QPushButton" name="pushButton_addSignalToFile">
     <property name="geometry">
      <rect>
       <x>670</x>
@@ -459,7 +459,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="pushButton_addSignaToFile_2">
+   <widget class="QPushButton" name="pushButton_addSignalToFile_2">
     <property name="geometry">
      <rect>
       <x>670</x>

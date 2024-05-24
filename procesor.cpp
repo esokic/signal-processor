@@ -9,6 +9,8 @@ Procesor::Procesor(QWidget *parent) :
     ui(new Ui::Procesor)
 {
     ui->setupUi(this);
+    //Defaultna vrijednost:
+    ime = "---";
 
 }
 

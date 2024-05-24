@@ -21,8 +21,23 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+
+    ManipulacijaProcesorima manProc;
+
+    AnsamblSignala ansamblSignala;
+    ansamblSignala.setPointerNaManipulacijuProcesorima(&manProc);
+
+
+
+    MainWindow glavniProzor;
+    glavniProzor.setPointerAnsamblSignala(&ansamblSignala);
+    glavniProzor.setPointerManipulacijaProcesora(&manProc);
+
+    SignalsExport sigExp;
+    sigExp.setPtrAnsamblSignala(&ansamblSignala);
+
+    manProc.show();
+    glavniProzor.show();
 
 
 

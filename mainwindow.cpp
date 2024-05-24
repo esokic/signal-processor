@@ -6,27 +6,16 @@
 
 
 
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    AnsamblSignala ansamblSignala;
-    pAnsamblSignala = &ansamblSignala;
-
-    defaultniProcesor.setIme("-");
+    //defaultniProcesor.setIme("-");
 
     prikaz1.setPointerQPlot(ui->mojCustomPlot1);
     prikaz2.setPointerQPlot(ui->mojCustomPlot2);
-
-    manipulatorProc.show();
-
-    SignalsExport* sigExp = new SignalsExport();
-    pSigExp = sigExp;
-    pSigExp->setPtrAnsamblSignala(pAnsamblSignala);
-
 
 }
 
@@ -46,7 +35,7 @@ MainWindow::~MainWindow()
 void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
 {
     // Popunjavanje tabele signala
-    auto vektorSignala = ansamblSignala->dajVektorSignala();
+    //auto vektorSignala = ansamblSignala->dajVektorSignala();
 
     /*
     // Poredajte vektor signala po abecednom redu prema imenu
@@ -68,8 +57,8 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
     ui->tableWidget_Signali->setSelectionMode(QAbstractItemView::SingleSelection);
 
     // Dodajte poredane signale u tableWidget
-    for (size_t row = 0; row < vektorSignala.size(); ++row) {
-        Signal* signal = vektorSignala[row];
+    for (size_t row = 0; row < ansamblSignala->dajVektorSignalaSize(); ++row) {
+        Signal* signal = ansamblSignala->dajSignal(row);
 
         tableWidget->insertRow(static_cast<int>(row));
 
@@ -78,15 +67,16 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
         tableWidget->setItem(static_cast<int>(row), 0, nameItem);
 
         // Oznaka procesora
-        QTableWidgetItem *processorItem = new QTableWidgetItem(signal->getPointerNaProcesor()->getIme());
+        QTableWidgetItem *processorItem = new QTableWidgetItem(signal->getTrenutniProcesorIme());
         processorItem->setFlags(processorItem->flags() & ~Qt::ItemIsEditable);
         tableWidget->setItem(static_cast<int>(row), 1, processorItem);
 
         // Datum i vrijeme osvježavanja
-        QDateTime lastUpdate = signal->getPointerNaProcesor()->getLastUpdateTime();
+        QDateTime lastUpdate = signal->getTrenutniProcesorUpdateTime();
         QTableWidgetItem *dateItem = new QTableWidgetItem(lastUpdate.toString(Qt::DefaultLocaleShortDate));
         dateItem->setFlags(dateItem->flags() & ~Qt::ItemIsEditable);
         tableWidget->setItem(static_cast<int>(row), 2, dateItem);
+
 
         // "New name" editable field
         QPlainTextEdit *newNameEdit = new QPlainTextEdit(signal->getNewName());
@@ -96,6 +86,7 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
         QCheckBox *exportCheckBox = new QCheckBox();
         exportCheckBox->setChecked(signal->isMarkedForExport());
         tableWidget->setCellWidget(static_cast<int>(row), 4, exportCheckBox);
+
 
     }
 
@@ -127,14 +118,14 @@ void MainWindow::onItemSelectionChanged() {
     int selectedRow = selectedItems[0]->row();
 
     // Provjerite da li je redni broj u granicama vektora
-    if (selectedRow < 0 || selectedRow >= static_cast<int>(pAnsamblSignala->dajVektorSignala().size())) {
+    if (selectedRow < 0 || selectedRow >= static_cast<int>(pAnsamblSignala->dajVektorSignalaSize())) {
         // Ako nije, poništite odabir i izađite iz metode
         ui->tableWidget_Signali->clearSelection();
         return;
     }
 
     // Dobijte objekat Procesor iz vektora na osnovu rednog broja
-    signalUnderAnalysis = pAnsamblSignala->dajVektorSignala()[static_cast<ulong>(selectedRow)];
+    signalUnderAnalysis = pAnsamblSignala->dajSignal(static_cast<ulong>(selectedRow));
 
 
     prikaz1.setTipPrikaza("ul");
@@ -174,19 +165,22 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
     matvar_t *matvar;
     while ((matvar = Mat_VarReadNext(mat)) != nullptr) {
 
-        Signal* pSignal = new Signal;
+        std::unique_ptr<Signal> pSignal = std::make_unique<Signal>();
+
         pSignal->ucitajSignalIzMatlabVarijable(matvar);
 
-        pSignal->setPointerNaProcesor(&defaultniProcesor);
+        //pSignal->setPointerNaProcesor(&defaultniProcesor);
+        pSignal->setPointerNaProcesor(pManProc->getPointerNaDefaultniProcesor());
 
-        ansamblSignala->dodajUAnsambl(pSignal);
+        //ansamblSignala->dodajUAnsambl(pSignal);
+        ansamblSignala->dodajUAnsambl(std::move(pSignal));
 
         // Ne zaboravite osloboditi varijablu nakon što završite s njom
         Mat_VarFree(matvar);
     }
 
     //Ovo je malo varanje ali nemam druge varijante
-     connect(pAnsamblSignala, &AnsamblSignala::changedMarkerValue, &manipulatorProc, &ManipulacijaProcesorima::onChangedMarkerValue);
+     connect(pAnsamblSignala, &AnsamblSignala::changedMarkerValue, pManProc, &ManipulacijaProcesorima::onChangedMarkerValue);
 
     //Po zavrsetku napraviti dodjelu markerValue na sve signale iz tog seta
     ansamblSignala->dodijeliMarkerValueSvimSignalima();
@@ -202,7 +196,7 @@ void MainWindow::on_pushButton_Refresh_clicked()
 {
 
     //Postavi odabrani procesor kao procesor za odabrani signal
-    signalUnderAnalysis->setPointerNaProcesor(manipulatorProc.getPointerNaOdabraniProcesor());
+    signalUnderAnalysis->setPointerNaProcesor(pManProc->getPointerNaOdabraniProcesor());
 
     //Sada procesiraj
     signalUnderAnalysis->procesirajSignal();

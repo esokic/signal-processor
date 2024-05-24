@@ -45,13 +45,19 @@ private:
     Prikaz prikaz1;
     Prikaz prikaz2;    
 
-    ManipulacijaProcesorima manipulatorProc;
-    Procesor defaultniProcesor;
+    //ManipulacijaProcesorima manipulatorProc;
+    //Procesor defaultniProcesor;
 
     AnsamblSignala* pAnsamblSignala;
+    ManipulacijaProcesorima* pManProc;
     Signal* signalUnderAnalysis;
-
-    SignalsExport sigExpObj;
     SignalsExport* pSigExp;
+
+public:
+    void setPointerAnsamblSignala(AnsamblSignala* _ptr){pAnsamblSignala = _ptr;}
+    void setPointerManipulacijaProcesora(ManipulacijaProcesorima* _ptr){pManProc = _ptr;}
+
+    //SignalsExport sigExpObj;
+
 };
 #endif // MAINWINDOW_H

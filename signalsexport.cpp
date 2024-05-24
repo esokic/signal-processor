@@ -184,7 +184,7 @@ void SignalsExport::populateSignalsTableWidget(ExportFileSetting *currentSetting
     }
 }
 
-void SignalsExport::on_pushButton_addSignaToFile_clicked()
+void SignalsExport::on_pushButton_addSignalToFile_clicked()
 {
     // Dobijanje trenutno selektovanog reda
     int currentRow = ui->tableWidget_ExportFileSettings->currentRow();
@@ -192,6 +192,7 @@ void SignalsExport::on_pushButton_addSignaToFile_clicked()
         ExportFileSetting *currentSetting = vektorFileSettingsa[static_cast<size_t>(currentRow)];
 
         // Otvori dijalog za odabir signala
+
         SelectSignalsDialog dialog(pAnsamblSignala->dajVektorSignala(), this);
         if (dialog.exec() == QDialog::Accepted) {
             // Dodaj odabrane signale u listaSignalaZaExport

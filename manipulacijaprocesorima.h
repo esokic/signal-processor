@@ -19,12 +19,16 @@ public:
     void setPointerNaOdabraniProcesor(Procesor* _pOdabraniProcesor){pOdabraniProcesor = _pOdabraniProcesor;}
     Procesor* getPointerNaOdabraniProcesor(){return pOdabraniProcesor;}
 
+    Procesor* getPointerNaDefaultniProcesor(){return pDefaultniProcesor;}
+
     void dodajProcesor(Procesor* procesor){vektorProcesora.push_back(procesor); populateTableWidget();}
+
 
     int i=0;
 private:
     Ui::ManipulacijaProcesorima *ui;
     Procesor* pOdabraniProcesor = nullptr;
+    Procesor* pDefaultniProcesor = nullptr;
 
     std::vector<Procesor*> vektorProcesora;
 

@@ -8,6 +8,11 @@ ManipulacijaProcesorima::ManipulacijaProcesorima(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    //Generisi defaultni procesor
+    Procesor *defProc = new Procesor;
+    defProc->setIme("------");
+    pDefaultniProcesor = defProc;
+
     // Postavljanje broja redova i kolona
 
     ui->tableWidget_tabelaProcesora->setRowCount(static_cast<int>(vektorProcesora.size()));

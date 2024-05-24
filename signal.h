@@ -12,7 +12,7 @@ class Signal : public QObject
 public:
     explicit Signal(QObject *parent = nullptr);
 
-    static Procesor defaultProcesor;
+
 
     void ucitajSignalIzMatlabVarijable(matvar_t*);
     void ucitajSignalIzDrugogSignala(Signal*& signal); //prakticno kopija
@@ -55,8 +55,10 @@ public:
     void setMarkerValue(double _mv){MarkerValue = _mv; markerValueAssigned = true;}
 
     void setPointerNaProcesor(Procesor* _pProcesor){pProcesor = _pProcesor;}
-    Procesor* getPointerNaProcesor(){return pProcesor;}
+    //Procesor* getPointerNaProcesor(){return pProcesor;}
 
+    QString getTrenutniProcesorIme(){if(pProcesor!=nullptr){return pProcesor->getIme();}else{return "---------";}}
+    QDateTime getTrenutniProcesorUpdateTime(){if(pProcesor!=nullptr){return pProcesor->getLastUpdateTime();}else{return QDateTime::currentDateTime();}}
 private:
     QString imeSignala;                 //Npr. U1
     QString tipPodatka;                 //Npr. MAT_C_DOUBLE
@@ -78,7 +80,7 @@ private:
     QCPGraph *graph;
 
 
-    Procesor* pProcesor;
+    Procesor* pProcesor = nullptr;
 
 signals:
 
