@@ -40,6 +40,9 @@ private:
     ExportFileSetting* getCurrentFileSettings();
 
 
+    void generateOutputHVCBFile_output(const QString& fileName, ExportFileSetting* setting);
+    void generateOutputHVCBFile_input(const QString& fileName, ExportFileSetting* setting);
+
 
 private slots:
     void on_pushButton_newFileExportSettings_clicked();
@@ -53,6 +56,8 @@ private slots:
     void on_pushButton_signalUpList_clicked();
 
     void on_pushButton_signalDownList_clicked();
+
+    void on_pushButton_exportFiles_clicked();
 
 private:
     Ui::SignalsExport *ui;

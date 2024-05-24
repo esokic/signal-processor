@@ -285,3 +285,138 @@ void SignalsExport::on_pushButton_signalDownList_clicked()
     //populateTableWidget();
    // ui->tableWidget_ExportFileSettings->selectRow(currentRow);
 }
+
+void SignalsExport::on_pushButton_exportFiles_clicked()
+{
+    ExportFileSetting *currentSetting = getCurrentFileSettings();
+    if (currentSetting==nullptr)
+    {
+        //vrati gresku da nije nista selektovano za eksport
+    } else
+    {
+        QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "", tr("Text Files (*.txt);;All Files (*)"));
+
+        if (fileName.isEmpty()) {
+            return; // User canceled the dialog
+        }
+
+        if (currentSetting->getExportFileType() == "input") generateOutputHVCBFile_input(fileName, currentSetting);
+        if (currentSetting->getExportFileType() == "output") generateOutputHVCBFile_output(fileName, currentSetting);
+
+        #if defined(Q_OS_WIN)
+            QProcess::startDetached("notepad.exe", QStringList() << fileName);
+        #elif defined(Q_OS_LINUX)
+            QProcess::startDetached("gedit", QStringList() << fileName);
+        #endif
+    }
+}
+
+
+//Ovo je trenutno funkcija za eksportovanje u HVCB - input formatu
+void SignalsExport::generateOutputHVCBFile_output(const QString& fileName, ExportFileSetting* setting) {
+    std::ofstream outFile(fileName.toStdString());
+
+    if (!outFile.is_open()) {
+        // Handle error
+        return;
+    }
+
+    // Provera da li ima signala za eksport
+    if (setting->getListaSignalaZaExport().empty()) {
+        std::cerr << "No signals to export";
+        return;
+    }
+
+    // 1. Header
+    outFile << "\"" +setting->getFileHeader().toStdString() + "\"" << "\n";
+
+    // 2. Description
+    outFile << "\""+ setting->getFileDescription().toStdString() + "\"" << "\n";
+
+    // 3. Some hard-coded value (e.g., 1001)
+    outFile << QString::number(setting->getListaSignalaZaExport()[0]->get_xData_izl().size()).toStdString() + "\n";
+
+    // 4. Number of phases
+    outFile << (setting->getNrPhases() == "1ph" ? "1\n" : "3\n");
+
+    // Dodajte dodatne linije potrebne za formatiranje izlaznog fajla
+
+
+   // Broj redova za ispis
+   size_t rowCount = setting->getListaSignalaZaExport().front()->get_xData_izl().size();
+
+   // Ispis podataka
+   for (size_t row = 0; row < rowCount; ++row) {
+       // Prva kolona je xDataIzl, samo prvi signal
+       outFile << setting->getListaSignalaZaExport().front()->get_xData_izl()[row];
+
+       // Ostale kolone su yDataIzl za svaki signal
+       for (Signal* signal : setting->getListaSignalaZaExport()) {
+           outFile << "\t" << signal->get_yData_izl()[row];
+       }
+
+       outFile << "\n";
+   }
+
+   outFile.close();
+}
+
+void SignalsExport::generateOutputHVCBFile_input(const QString& fileName, ExportFileSetting* setting)
+{
+    std::ofstream outFile(fileName.toStdString());
+
+    if (!outFile.is_open()) {
+        // Handle error
+        return;
+    }
+
+    // Provera da li ima signala za eksport
+    if (setting->getListaSignalaZaExport().empty()) {
+        std::cerr << "No signals to export";
+        return;
+    }
+
+    // 1. Header
+    outFile << "\"Results\"" << "\n";
+
+    // 2. Broj
+    outFile << setting->getListaSignalaZaExport().size() << "\n";
+
+    // 3. Some hard-coded value (e.g., 1001)
+    outFile << QString::number(setting->getListaSignalaZaExport()[0]->get_xData_izl().size()).toStdString() + "\n";
+
+    // 4. Timestep
+    outFile << QString::number(setting->getListaSignalaZaExport()[0]->get_xData_izl()[1] - setting->getListaSignalaZaExport()[0]->get_xData_izl()[0] ).toStdString() + "\n";
+
+    // 5. Opis
+    outFile << "\"" +setting->getFileDescription().toStdString()+ "\""+"\n";
+
+    //Pocetna vrijednost
+    outFile << "0\n";
+    //Skala - implementiraj -----------------------
+    outFile << "0.001\n";
+    //VertPozicija - implementiraj ----------------
+    outFile << "400\n";
+
+
+    // Dodajte dodatne linije potrebne za formatiranje izlaznog fajla
+
+
+   // Broj redova za ispis
+   size_t rowCount = setting->getListaSignalaZaExport().front()->get_xData_izl().size();
+
+   // Ispis podataka
+   for (size_t row = 0; row < rowCount; ++row) {
+       // Prva kolona je xDataIzl, samo prvi signal
+       outFile << setting->getListaSignalaZaExport().front()->get_xData_izl()[row];
+
+       // Ostale kolone su yDataIzl za svaki signal
+       for (Signal* signal : setting->getListaSignalaZaExport()) {
+           outFile << "\t" << signal->get_yData_izl()[row];
+       }
+
+       outFile << "\n";
+   }
+
+   outFile.close();
+}
