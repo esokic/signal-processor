@@ -16,7 +16,7 @@ SelectSignalsDialog::~SelectSignalsDialog()
 }
 
 
-SelectSignalsDialog::SelectSignalsDialog(const std::vector<Signal*>& signali, QWidget *parent) :
+SelectSignalsDialog::SelectSignalsDialog(std::vector<std::unique_ptr<Signal> > &signali, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SelectSignalsDialog),
     availableSignals(signali) {
@@ -40,7 +40,7 @@ SelectSignalsDialog::SelectSignalsDialog(const std::vector<Signal*>& signali, QW
 }
 
 
-std::vector<Signal*> SelectSignalsDialog::getSelectedSignals() const {
+std::vector<std::unique_ptr<Signal>> SelectSignalsDialog::getSelectedSignals() const {
     return selectedSignals;
 }
 
@@ -69,6 +69,9 @@ void SelectSignalsDialog::on_pushButton_clicked()
             selectedSignals.push_back(availableSignals[i]);
         }
     }*/
+
+    //Treba provjeriti ove pokazivace na selectedSignals i availableSignals i otkomentarisati kod ispod
+
 
     for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
         QCheckBox *checkBox = qobject_cast<QCheckBox*>(ui->tableWidget->cellWidget(row, 0));

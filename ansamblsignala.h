@@ -21,6 +21,11 @@ public:
     } //Ovo treba preko delete sve pojedinacno
 
     //Getteri
+    const std::vector<std::unique_ptr<Signal>>& dajVektorSignala() const {
+        return vektor_pSignala;
+    }
+
+    /*
     std::vector<Signal*> dajVektorSignala(){  //Ovo treba ukinuti u principu
         Signal* pSig;
         std::vector<Signal*> vec;
@@ -30,10 +35,11 @@ public:
             vec.push_back(pSig);
         }
         return vec;}
-
+*/
     Signal* dajSignal(ulong rbr) {         //Vraca pokazivac
         return vektor_pSignala[rbr].get();
     }
+
     ulong dajVektorSignalaSize(){return vektor_pSignala.size();}
 
 
