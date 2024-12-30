@@ -3,12 +3,8 @@ QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
-<<<<<<< HEAD
 CONFIG += c++17
-=======
-CONFIG += c++11
-CONFIG += rtti
->>>>>>> grana_test5
+
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.

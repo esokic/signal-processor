@@ -12,14 +12,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-<<<<<<< HEAD
-    //defaultniProcesor.setIme("-");
-=======
-    //AnsamblSignala ansamblSignala;
-    //pAnsamblSignala = &ansamblSignala;
 
-    defaultniProcesor.setIme("-");
->>>>>>> grana_test5
+   // defaultniProcesor.setIme("-");
+
 
     prikaz1.setPointerQPlot(ui->mojCustomPlot1);
     prikaz2.setPointerQPlot(ui->mojCustomPlot2);
@@ -172,7 +167,7 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
     matvar_t *matvar;
     while ((matvar = Mat_VarReadNext(mat)) != nullptr) {
 
-        std::unique_ptr<Signal> pSignal = std::make_unique<Signal>();
+        Signal* pSignal = new Signal; // std::make_unique<Signal>();
 
         pSignal->ucitajSignalIzMatlabVarijable(matvar);
 

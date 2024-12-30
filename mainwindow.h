@@ -20,7 +20,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void setPointerAnsamblSignala(AnsamblSignala* _pAnsamblSignala){pAnsamblSignala = _pAnsamblSignala;}
+    //void setPointerAnsamblSignala(AnsamblSignala* _pAnsamblSignala){pAnsamblSignala = _pAnsamblSignala;}
 
 private slots:
 

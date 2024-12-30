@@ -16,7 +16,7 @@ SelectSignalsDialog::~SelectSignalsDialog()
 }
 
 
-SelectSignalsDialog::SelectSignalsDialog(std::vector<std::unique_ptr<Signal> > &signali, QWidget *parent) :
+SelectSignalsDialog::SelectSignalsDialog(std::vector<Signal*> signali, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SelectSignalsDialog),
     availableSignals(signali) {
@@ -40,7 +40,7 @@ SelectSignalsDialog::SelectSignalsDialog(std::vector<std::unique_ptr<Signal> > &
 }
 
 
-std::vector<std::unique_ptr<Signal>> SelectSignalsDialog::getSelectedSignals() const {
+std::vector<Signal*> SelectSignalsDialog::getSelectedSignals() const {
     return selectedSignals;
 }
 

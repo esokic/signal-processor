@@ -19,9 +19,9 @@ class SelectSignalsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit SelectSignalsDialog(std::vector<std::unique_ptr<Signal>>& signali, QWidget *parent = nullptr);
+    explicit SelectSignalsDialog(std::vector<Signal* > signali, QWidget *parent = nullptr);
     ~SelectSignalsDialog();
-    std::vector<std::unique_ptr<Signal> > getSelectedSignals() const;
+    std::vector<Signal* > getSelectedSignals() const;
 
 private slots:
     void onSelectionChanged(int row, int column);
@@ -32,8 +32,8 @@ private slots:
 
 private:
     Ui::SelectSignalsDialog *ui;
-    std::vector<std::unique_ptr<Signal>> availableSignals;
-    std::vector<std::unique_ptr<Signal>> selectedSignals;
+    std::vector<Signal*> availableSignals;
+    std::vector<Signal*> selectedSignals;
 };
 
 #endif // SELECTSIGNALSDIALOG_H

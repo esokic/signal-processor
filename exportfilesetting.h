@@ -16,7 +16,7 @@ public:
     QString getFileHeader() const { return fileHeader; }
     QString getFileDescription() const { return fileDescription; }
     QString getNrPhases() const { return nrPhases; }
-    std::vector<Signal*> getListaSignalaZaExport() const { return listaSignalaZaExport; }
+    std::vector<Signal*> getListaSignalaZaExport() { return listaSignalaZaExport; }
     QString getExportFileType() const { return exportFileType; }
 
     // Setters

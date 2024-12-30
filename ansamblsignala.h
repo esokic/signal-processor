@@ -12,16 +12,18 @@ public:
     explicit AnsamblSignala(QObject *parent = nullptr);
 
     //Setteri
-    void dodajUAnsambl(std::unique_ptr<Signal> signal);
+    void dodajUAnsambl(Signal* signal);
     void ocisti(){
+        /*
         for (auto& ptr : vektor_pSignala) {
                 ptr.reset(); // Oslobađa memoriju na koju `ptr` pokazuje
             }
+            */
         vektor_pSignala.clear(); // Očisti vektor
     } //Ovo treba preko delete sve pojedinacno
 
     //Getteri
-    const std::vector<std::unique_ptr<Signal>>& dajVektorSignala() const {
+    std::vector<Signal*> dajVektorSignala() {
         return vektor_pSignala;
     }
 
@@ -37,7 +39,7 @@ public:
         return vec;}
 */
     Signal* dajSignal(ulong rbr) {         //Vraca pokazivac
-        return vektor_pSignala[rbr].get();
+        return vektor_pSignala[rbr];
     }
 
     ulong dajVektorSignalaSize(){return vektor_pSignala.size();}
@@ -54,7 +56,7 @@ signals:
     void changedMarkerValue(double);
 
 private:
-    std::vector<std::unique_ptr<Signal>> vektor_pSignala;
+    std::vector<Signal*> vektor_pSignala;
     ManipulacijaProcesorima* manProc;
 
 };
