@@ -63,7 +63,7 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
 
     // Dodajte poredane signale u tableWidget
     for (size_t row = 0; row < vektorSignala.size(); ++row) {
-        Signal* signal = vektorSignala[row];
+        std::shared_ptr<Signal> signal = vektorSignala[row];
 
         tableWidget->insertRow(static_cast<int>(row));
 
@@ -168,12 +168,14 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
     matvar_t *matvar;
     while ((matvar = Mat_VarReadNext(mat)) != nullptr) {
 
-        Signal* pSignal = new Signal;
+        std::shared_ptr<Signal> pSignal = std::make_shared<Signal>();
+
+        //Signal* pSignal = new Signal;
         pSignal->ucitajSignalIzMatlabVarijable(matvar);
 
         pSignal->setPointerNaProcesor(&defaultniProcesor);
 
-        ansamblSignala->dodajUAnsambl(pSignal);
+        pAnsamblSignala->dodajUAnsambl(pSignal);
 
         // Ne zaboravite osloboditi varijablu nakon što završite s njom
         Mat_VarFree(matvar);
@@ -183,9 +185,9 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
      connect(pAnsamblSignala, &AnsamblSignala::changedMarkerValue, &manipulatorProc, &ManipulacijaProcesorima::onChangedMarkerValue);
 
     //Po zavrsetku napraviti dodjelu markerValue na sve signale iz tog seta
-    ansamblSignala->dodijeliMarkerValueSvimSignalima();
+    pAnsamblSignala->dodijeliMarkerValueSvimSignalima();
 
-    ansamblSignala->presloziVektorSignalaPoAbecedi();
+    pAnsamblSignala->presloziVektorSignalaPoAbecedi();
 
     // Zatvaranje .mat datoteke
     Mat_Close(mat);

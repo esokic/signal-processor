@@ -48,7 +48,7 @@ private:
     Procesor defaultniProcesor;
 
     AnsamblSignala* pAnsamblSignala;
-    Signal* signalUnderAnalysis;
+    std::shared_ptr<Signal> signalUnderAnalysis;
 
 };
 #endif // MAINWINDOW_H

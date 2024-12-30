@@ -4,8 +4,10 @@
 
 Signal::Signal(QObject *parent) : QObject(parent)
 {
-
+    // Konstruktor
+    std::cout << "Signal created." << std::endl;
 }
+
 
 void Signal::ucitajSignalIzMatlabVarijable(matvar_t* matvar)
 {

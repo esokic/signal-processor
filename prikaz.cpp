@@ -24,7 +24,7 @@ void Prikaz::osvjeziPrikaz()
 
 
 
-    for (Signal* pSignal : vektor_pSignala)
+    for (std::shared_ptr<Signal> pSignal : vektor_pSignala)
     {
         pSignal->podesiQCPgraph(qplot->addGraph(), getTipPrikaza());
 

@@ -13,7 +13,7 @@ public:
     explicit Prikaz(QObject *parent = nullptr);
 
     void setPointerQPlot(QCustomPlot* _qplt){qplot = _qplt;}
-    void dodajSignaluGrupuZaPrikaz(Signal* signal){vektor_pSignala.push_back(signal);}
+    void dodajSignaluGrupuZaPrikaz(std::shared_ptr<Signal> signal){vektor_pSignala.push_back(signal);}
 
     void ocistiPrikaz(){vektor_pSignala.clear();}
 
@@ -28,7 +28,7 @@ signals:
 
 
 private:
-       std::vector<Signal*> vektor_pSignala;
+       std::vector<std::shared_ptr<Signal>> vektor_pSignala;
 
        QCustomPlot* qplot;
        QCPLegend *legend;

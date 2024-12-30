@@ -4,17 +4,23 @@
 
 AnsamblSignala::AnsamblSignala(QObject *parent) : QObject(parent)
 {
-
+    vektor_pSignala = std::vector<std::shared_ptr<Signal>>();
+    std::cout << "Dodavanje u vektor...\n";
+    vektor_pSignala.push_back(nullptr);
+    std::cout << "Uspješno dodano.\n";
 }
 
-void AnsamblSignala::dodajUAnsambl(Signal *pSignal)
+void AnsamblSignala::dodajUAnsambl(std::shared_ptr<Signal> pSignal)
 {
-    vektor_pSignala.push_back(pSignal);
+    //vektor_pSignala.push_back(pSignal);
+    std::cout << vektor_pSignala.size();
+    vektor_pSignala.push_back(nullptr); // Ili koristite pSignal
+    std::cout << "Uspješno dodano.\n";
 }
 
 void AnsamblSignala::ispisiSveSignale()
 {
-    for (Signal *pSignal : vektor_pSignala) {
+    for (std::shared_ptr<Signal> pSignal : vektor_pSignala) {
             qDebug() << pSignal->ime() ;//<< pSignal->ispisi_dimenzije();
     }
 }
@@ -23,11 +29,11 @@ void AnsamblSignala::dodijeliMarkerValueSvimSignalima()
 {
     //Prvo odredi marker value
     double MarkerValue = 0.0;
-    for (Signal *pSignal : vektor_pSignala) {
+    for (std::shared_ptr<Signal> pSignal : vektor_pSignala) {
         if (pSignal->isMarkerValueAssigned())
         {
             MarkerValue = pSignal->getMarkerValue();
-            for (Signal *pSignal2 : vektor_pSignala) {
+            for (std::shared_ptr<Signal> pSignal2 : vektor_pSignala) {
                 //Sada svima dodijeli
                 if (!(pSignal2->isMarkerValueAssigned())) {pSignal2->setMarkerValue(MarkerValue);}
             }
@@ -45,7 +51,7 @@ void AnsamblSignala::presloziVektorSignalaPoAbecedi()
     auto vektorSignala = vektor_pSignala;
 
     // Poredajte vektor signala po abecednom redu prema imenu
-    std::sort(vektorSignala.begin(), vektorSignala.end(), [](Signal* a, Signal* b) {
+    std::sort(vektorSignala.begin(), vektorSignala.end(), [](std::shared_ptr<Signal> a, std::shared_ptr<Signal> b) {
         return a->ime() < b->ime();
     });
 
