@@ -29,9 +29,14 @@ AnsamblSignala::AnsamblSignala(QObject *parent) : QObject(parent)
 
 void AnsamblSignala::dodajUAnsambl(std::unique_ptr<Signal> pSignal)
 {
+
     //Za pocetak dodaj mu genericki Procesor
     //pSignal->setPointerNaProcesor(manProc->getPointerNaDefaultniProcesor());
     vektor_pSignala.push_back(std::move(pSignal));
+
+
+    //vektor_pSignala.push_back(pSignal);
+    std::cout << "Dodan signal:" << pSignal->ime().toStdString();
 
 }
 

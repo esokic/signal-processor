@@ -12,7 +12,14 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+<<<<<<< HEAD
     //defaultniProcesor.setIme("-");
+=======
+    //AnsamblSignala ansamblSignala;
+    //pAnsamblSignala = &ansamblSignala;
+
+    defaultniProcesor.setIme("-");
+>>>>>>> grana_test5
 
     prikaz1.setPointerQPlot(ui->mojCustomPlot1);
     prikaz2.setPointerQPlot(ui->mojCustomPlot2);
@@ -174,6 +181,7 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
 
         //ansamblSignala->dodajUAnsambl(pSignal);
         ansamblSignala->dodajUAnsambl(std::move(pSignal));
+
 
         // Ne zaboravite osloboditi varijablu nakon što završite s njom
         Mat_VarFree(matvar);
