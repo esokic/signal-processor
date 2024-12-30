@@ -4,6 +4,11 @@
 #include "manipulacijaprocesorima.h"
 #include "signalsexport.h"
 
+#include <fstream>
+#include <sstream>
+#include <QFile>
+#include <QDir>
+#include <QDomDocument>
 
 
 
@@ -172,7 +177,9 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
 //    }
 
     matvar_t *matvar;
-    while ((matvar = Mat_VarReadNext(mat)) != nullptr) {
+    matvar = Mat_VarReadNext(mat);
+    while (matvar != nullptr) {
+        Mat_VarFree(matvar);
 
         Signal* pSignal = new Signal;
         pSignal->ucitajSignalIzMatlabVarijable(matvar);
@@ -181,9 +188,10 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
 
         ansamblSignala->dodajUAnsambl(pSignal);
 
-        // Ne zaboravite osloboditi varijablu nakon što završite s njom
-        Mat_VarFree(matvar);
+        matvar = Mat_VarReadNext(mat);
+        // Ne zaboravite osloboditi varijablu nakon što završite s njom        
     }
+    Mat_VarFree(matvar);
 
     //Ovo je malo varanje ali nemam druge varijante
      connect(pAnsamblSignala, &AnsamblSignala::changedMarkerValue, &manipulatorProc, &ManipulacijaProcesorima::onChangedMarkerValue);
@@ -196,6 +204,81 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
     // Zatvaranje .mat datoteke
     Mat_Close(mat);
 
+}
+
+
+void MainWindow::citajIzDatFajla(const QString& filePath, AnsamblSignala*& ansamblSignala)
+{
+    // Pretvorite QString u std::string
+    std::string datFilePath = filePath.toStdString();
+
+    // Pronađite odgovarajući XML fajl u istom direktorijumu
+    QFileInfo fileInfo(QString::fromStdString(datFilePath));
+    QDir dir = fileInfo.dir();
+    QString xmlFilePath;
+    for (const QString& file : dir.entryList({"*.xml"}, QDir::Files)) {
+        xmlFilePath = dir.filePath(file);
+        break;
+    }
+
+    if (xmlFilePath.isEmpty()) {
+        qDebug() << "XML fajl nije pronađen u direktorijumu";
+        return;
+    }
+
+    // Parsiraj XML fajl
+    QDomDocument xmlDoc;
+    QFile xmlFile(xmlFilePath);
+    if (!xmlFile.open(QIODevice::ReadOnly) || !xmlDoc.setContent(&xmlFile)) {
+        qDebug() << "Nije moguće otvoriti ili parsirati XML fajl";
+        return;
+    }
+    xmlFile.close();
+
+    // Učitaj informacije o signalima iz XML fajla
+    QMap<QString, QString> signalMap; // Mapira ime signala na ID
+    QDomNodeList meas_signals = xmlDoc.elementsByTagName("Signal");
+    for (int i = 0; i < meas_signals.size(); ++i) {
+        QDomElement signal = meas_signals.at(i).toElement();
+        QString name = signal.attribute("name");
+        QString id = signal.attribute("id");
+        signalMap[name] = id;
+    }
+
+    // Učitaj podatke iz DAT fajla
+    std::ifstream datFile(datFilePath, std::ios::binary);
+    if (!datFile.is_open()) {
+        qDebug() << "Nije moguće otvoriti DAT fajl";
+        return;
+    }
+
+    while (!datFile.eof()) {
+        Signal* pSignal = new Signal;
+
+        // Učitavanje signala (ovde se pretpostavlja struktura podataka u DAT fajlu)
+        char nameBuffer[64];
+        datFile.read(nameBuffer, sizeof(nameBuffer));
+        QString signalName = QString::fromStdString(std::string(nameBuffer));
+
+        uint32_t dataSize;
+        datFile.read(reinterpret_cast<char*>(&dataSize), sizeof(dataSize));
+
+        std::vector<double> signalData(dataSize);
+        datFile.read(reinterpret_cast<char*>(signalData.data()), dataSize * sizeof(double));
+
+        // Postavljanje signala
+      //  pSignal->imeSignala = signalName;
+      //  pSignal->novoImeSignala = signalName;
+      //  pSignal->tipPodatka = MAT_C_DOUBLE; // Pretpostavimo da su svi podaci tipa double
+      //  pSignal->xData_ul.clear();
+      //  pSignal->yData_ul = signalData;
+
+        // Dodeli procesor i dodaj signal u ansambl
+        pSignal->setPointerNaProcesor(&defaultniProcesor);
+        ansamblSignala->dodajUAnsambl(pSignal);
+    }
+
+    datFile.close();
 }
 
 void MainWindow::on_pushButton_Refresh_clicked()
@@ -235,6 +318,8 @@ void MainWindow::on_pushButton_importFile_clicked()
     pAnsamblSignala->ocisti();
 
     citajIzMatFajla(filePath, pAnsamblSignala);
+    //citajIzDatFajla(filePath, pAnsamblSignala);
+
 
     pAnsamblSignala->ispisiSveSignale();
     ui->label_nazivFajla->setText(filePath);

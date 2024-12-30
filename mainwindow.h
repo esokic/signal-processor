@@ -39,6 +39,7 @@ private:
 
     //Izbaciti
     void citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansamblSignala);
+    void citajIzDatFajla(const QString& filePath, AnsamblSignala*& ansamblSignala);
 
     Ui::MainWindow *ui;
     QListWidget *listWidget;
