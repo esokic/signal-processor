@@ -21,7 +21,11 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    AnsamblSignala ansamblSignala;
+
     MainWindow w;
+    w.setPointerAnsamblSignala(&ansamblSignala);
     w.show();
 
 

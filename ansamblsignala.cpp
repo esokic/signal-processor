@@ -10,6 +10,7 @@ AnsamblSignala::AnsamblSignala(QObject *parent) : QObject(parent)
 void AnsamblSignala::dodajUAnsambl(Signal *pSignal)
 {
     vektor_pSignala.push_back(pSignal);
+    std::cout << "Dodan signal:" << pSignal->ime().toStdString();
 }
 
 void AnsamblSignala::ispisiSveSignale()

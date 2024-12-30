@@ -13,8 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    AnsamblSignala ansamblSignala;
-    pAnsamblSignala = &ansamblSignala;
+    //AnsamblSignala ansamblSignala;
+    //pAnsamblSignala = &ansamblSignala;
 
     defaultniProcesor.setIme("-");
 
@@ -179,7 +179,7 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
 
         pSignal->setPointerNaProcesor(&defaultniProcesor);
 
-        ansamblSignala->dodajUAnsambl(pSignal);
+        pAnsamblSignala->dodajUAnsambl(pSignal);
 
         // Ne zaboravite osloboditi varijablu nakon što završite s njom
         Mat_VarFree(matvar);
