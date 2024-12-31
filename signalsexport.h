@@ -42,6 +42,7 @@ private:
 
     void generateOutputHVCBFile_output(const QString& fileName, ExportFileSetting* setting);
     void generateOutputHVCBFile_input(const QString& fileName, ExportFileSetting* setting);
+    void generateOutputExcelFile(const QString& fileName, ExportFileSetting* setting);
 
 
 private slots:

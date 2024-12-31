@@ -4,6 +4,8 @@
 #include "selectsignalsdialog.h"
 #include <QItemSelection>
 
+#include <xlsxdocument.h>
+
 SignalsExport::SignalsExport(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SignalsExport)
@@ -295,20 +297,25 @@ void SignalsExport::on_pushButton_exportFiles_clicked()
         //vrati gresku da nije nista selektovano za eksport
     } else
     {
-        QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "", tr("Text Files (*.txt);;All Files (*)"));
+        QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "", tr("Text Files (*.txt);Excel Files (*.xlsx, *.xls);All Files (*)"));
 
         if (fileName.isEmpty()) {
             return; // User canceled the dialog
         }
 
-        if (currentSetting->getExportFileType() == "input") generateOutputHVCBFile_input(fileName, currentSetting);
+        //if (currentSetting->getExportFileType() == "input") generateOutputHVCBFile_input(fileName, currentSetting);
+        //test
+        if (currentSetting->getExportFileType() == "input") generateOutputExcelFile(fileName, currentSetting);
         if (currentSetting->getExportFileType() == "output") generateOutputHVCBFile_output(fileName, currentSetting);
 
+        //Otvaranje fajla ako treba
+        /*
         #if defined(Q_OS_WIN)
             QProcess::startDetached("notepad.exe", QStringList() << fileName);
         #elif defined(Q_OS_LINUX)
             QProcess::startDetached("gedit", QStringList() << fileName);
         #endif
+        */
     }
 }
 
@@ -406,6 +413,7 @@ void SignalsExport::generateOutputHVCBFile_input(const QString& fileName, Export
    // Broj redova za ispis
    size_t rowCount = setting->getListaSignalaZaExport().front()->get_xData_izl().size();
 
+   //OVDJE MOZE BITI PROBLEM ZBOG FORMATA JER NE MORAJU SVI SIGNALI BITI ISTE DUZINE I OBLIKA (HVCB?)
    // Ispis podataka
    for (size_t row = 0; row < rowCount; ++row) {
        // Prva kolona je xDataIzl, samo prvi signal
@@ -420,4 +428,55 @@ void SignalsExport::generateOutputHVCBFile_input(const QString& fileName, Export
    }
 
    outFile.close();
+}
+
+
+
+
+void SignalsExport::generateOutputExcelFile(const QString& fileName, ExportFileSetting* setting) {
+    // Proveri da li ima signala za eksport
+    if (setting->getListaSignalaZaExport().empty()) {
+        std::cerr << "No signals to export" << std::endl;
+        return;
+    }
+
+    // Kreiraj Excel workbook
+    // Otvaranje dijaloga za odabir datoteke slike
+    //QString fileName = QFileDialog::getOpenFileName(nullptr, tr("Odaberi Excel fajl"), "", tr("Excel Files (*.xls *.xlsx);;Sve datoteke (*)"));
+
+    if (fileName.isEmpty()) {
+        // Korisnik je odabrao otkazivanje dijaloga
+        return;
+    }
+
+    // Stvori Excel radnu knjigu
+    QXlsx::Document workbook(fileName);
+
+    workbook.addSheet("Data");
+    workbook.selectSheet("Data");
+
+    // Postavi header kolona
+    int colIndex = 1;
+
+    for (Signal* signal : setting->getListaSignalaZaExport()) {
+        //Prvo header
+        workbook.write(1, colIndex, "time");
+        workbook.write(1, colIndex+1, signal->getNewName().toStdString().c_str());
+
+        //Potom signale
+        QVector<double> xvec = signal->get_xData_izl();
+        QVector<double> yvec = signal->get_yData_izl();
+
+        for (size_t row = 0; row < xvec.size() ; ++row) {
+            // Prva kolona (xData)
+            workbook.write(row+2, colIndex, xvec[row]);
+            // Druga kolona (yData)
+            workbook.write(row+2, colIndex+1, yvec[row]);
+        }
+
+        colIndex = colIndex + 2 ;
+    }
+
+    // Snimi workbook
+    workbook.saveAs(fileName);
 }
