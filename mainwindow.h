@@ -57,6 +57,7 @@ private:
 public:
     void setPointerAnsamblSignala(AnsamblSignala* _ptr){pAnsamblSignala = _ptr;}
     void setPointerManipulacijaProcesora(ManipulacijaProcesorima* _ptr){pManProc = _ptr;}
+    void setPointerSignalExport(SignalsExport* _pSigExp){pSigExp = _pSigExp;}
 
     //SignalsExport sigExpObj;
 

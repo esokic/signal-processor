@@ -25,16 +25,16 @@ int main(int argc, char *argv[])
     ManipulacijaProcesorima manProc;
 
     AnsamblSignala ansamblSignala;
-    ansamblSignala.setPointerNaManipulacijuProcesorima(&manProc);
+    ansamblSignala.setPointerNaManipulacijuProcesorima(&manProc);    
 
+    SignalsExport sigExp;
+    sigExp.setPtrAnsamblSignala(&ansamblSignala);
 
 
     MainWindow glavniProzor;
     glavniProzor.setPointerAnsamblSignala(&ansamblSignala);
     glavniProzor.setPointerManipulacijaProcesora(&manProc);
-
-    SignalsExport sigExp;
-    sigExp.setPtrAnsamblSignala(&ansamblSignala);
+    glavniProzor.setPointerSignalExport(&sigExp);
 
     manProc.show();
     glavniProzor.show();
