@@ -16,6 +16,7 @@ public:
 
     void ucitajSignalIzMatlabVarijable(matvar_t*);
     void ucitajSignalIzDrugogSignala(Signal*& signal); //prakticno kopija
+    void kopirajPodesenjaIzDrugogSignala(const Signal& drugiSignal);
 
     //Kljucna funkcija
     void procesirajSignal(){if (pProcesor!=nullptr) {pProcesor->procesiraj(xData_ul,yData_ul,xData_izl,yData_izl);}}
@@ -51,8 +52,8 @@ public:
     //Ovdje ima problem jer se mora paziti da se sve mijenja
     void set_xData_ul(QVector<double> xd){xData_ul = xd;}
     void set_yData_ul(QVector<double> yd){yData_ul = yd;}
-    void set_xData_izl(QVector<double> xd){xData_ul = xd;}
-    void set_yData_izl(QVector<double> yd){yData_ul = yd;}
+    void set_xData_izl(QVector<double> xd){xData_izl = xd;}
+    void set_yData_izl(QVector<double> yd){yData_izl = yd;}
     void setMarkerValue(double _mv){MarkerValue = _mv; markerValueAssigned = true;}
     void set_novoIme(QString _ime){novoImeSignala = _ime;}
     void setMarkedForExport(bool _smfe){oznacen_za_export = _smfe;}

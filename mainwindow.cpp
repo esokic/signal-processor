@@ -194,7 +194,7 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
 //    }
 
     //Opcija brisanja prije ponovnog ucitavanja?
-    pAnsamblSignala->ocisti();
+    //pAnsamblSignala->ocisti();
 
     matvar_t *matvar;
     while ((matvar = Mat_VarReadNext(mat)) != nullptr) {
@@ -202,14 +202,30 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
         //Signal* pSignal = new Signal; // std::make_unique<Signal>();
         auto pSignal = std::make_unique<Signal>();
 
+        //ucitano iz fajla
         pSignal->ucitajSignalIzMatlabVarijable(matvar);
-
-        //pSignal->setPointerNaProcesor(&defaultniProcesor);
         pSignal->setPointerNaProcesor(pManProc->getPointerNaDefaultniProcesor());
 
-        //ansamblSignala->dodajUAnsambl(pSignal);
-        ansamblSignala->dodajUAnsambl(std::move(pSignal));
+        // Provjera da li signal sa istim imenom već postoji, ako postoji kopiraj podesenja od interesa
+        //ovo bi trebalo da bude opcija (ako zelis)
+        //postojeci signal je mozda signal sa istim imenom u ansamblu
+        Signal* postojeciSignal = ansamblSignala->dajSignalPoImenu(pSignal->ime());
+        if (postojeciSignal) {
+            std::cout << "ima vec ovaj" << std::endl;
+            //postojeciSignal->kopirajPodesenjaIzDrugogSignala(*pSignal);
+            //ovdje se pravi fuzija - podaci iz pSignala su novi, a postojeciSignal stari (ima i lokacija)
+            //MERGE - izdvoji u odvojenu funkciju
+            postojeciSignal->set_xData_izl(pSignal->get_xData_izl());
+            postojeciSignal->set_xData_ul(pSignal->get_xData_ul());
+            postojeciSignal->set_yData_izl(pSignal->get_yData_izl());
+            postojeciSignal->set_yData_ul(pSignal->get_yData_ul());
+            postojeciSignal->setMarkerValue(pSignal->getMarkerValue());
+            //ostalo je jos podesenje da je marker podesen?
 
+            //OVERWRITE?
+        } else {
+            ansamblSignala->dodajUAnsambl(std::move(pSignal));
+        }
 
         // Ne zaboravite osloboditi varijablu nakon što završite s njom
         Mat_VarFree(matvar);
@@ -234,6 +250,9 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
 
     //Ovaj dio je najkriticniji, trebalo bi da tableWidget bude na neki nacin neovisan od AnsamblaSignala
     populateTableWidget_zaSignale(ansamblSignala);
+
+    //I ovo osvjezavanje isto!!!!!!!!!!!!!!!!!!!!!!
+    onItemSelectionChanged();
 
 }
 

@@ -30,6 +30,9 @@ public:
         return vektor_pSignala[rbr].get();
     }
 
+    //Vraca pokazivac na signal po imenu
+    Signal* dajSignalPoImenu(const QString& ime);
+
     ulong dajVektorSignalaSize(){return vektor_pSignala.size();}
 
 

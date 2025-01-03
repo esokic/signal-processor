@@ -21,6 +21,17 @@ void AnsamblSignala::dodajUAnsambl(std::unique_ptr<Signal> pSignal)
     std::cout << "Dodan signal: " << pSignal_novi->ime().toStdString() << std::endl;
 }
 
+Signal* AnsamblSignala::dajSignalPoImenu(const QString& ime)
+{
+    // Pretražuje vektor i vraća signal sa traženim imenom
+    for (const auto& pSignal : vektor_pSignala) {
+        if (pSignal->ime() == ime) {
+            return pSignal.get();  // Vraća raw pointer na Signal
+        }
+    }
+    return nullptr;  // Ako nije pronađen, vraća nullptr
+}
+
 void AnsamblSignala::ispisiSveSignale()
 {
     for (const std::unique_ptr<Signal>& pSignal : vektor_pSignala) {

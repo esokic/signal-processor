@@ -142,6 +142,14 @@ void Signal::ucitajSignalIzDrugogSignala(Signal*& signal)
     set_yData_ul(signal->get_yData_ul());
 }
 
+void Signal::kopirajPodesenjaIzDrugogSignala(const Signal& drugiSignal)
+{
+    this->oznacen_za_export = drugiSignal.oznacen_za_export;
+    this->oznacen_za_prikaz = drugiSignal.oznacen_za_prikaz;
+    this->novoImeSignala = drugiSignal.novoImeSignala;
+    this->pProcesor = drugiSignal.pProcesor;  // Pokazivač na isti procesor, ne kopiramo objekat
+}
+
 
 
 
