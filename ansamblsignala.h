@@ -14,36 +14,19 @@ public:
     //Setteri
     void dodajUAnsambl(Signal* signal);
     void ocisti(){
-        /*
-        for (auto& ptr : vektor_pSignala) {
-                ptr.reset(); // Oslobađa memoriju na koju `ptr` pokazuje
-            }
-            */
         vektor_pSignala.clear(); // Očisti vektor
-    } //Ovo treba preko delete sve pojedinacno
+    }
 
     //Getteri
     std::vector<Signal*> dajVektorSignala() {
         return vektor_pSignala;
     }
 
-    /*
-    std::vector<Signal*> dajVektorSignala(){  //Ovo treba ukinuti u principu
-        Signal* pSig;
-        std::vector<Signal*> vec;
-        for (ulong i=0; i<vektor_pSignala.size(); i++)
-        {
-            pSig = vektor_pSignala[i].get();
-            vec.push_back(pSig);
-        }
-        return vec;}
-*/
     Signal* dajSignal(ulong rbr) {         //Vraca pokazivac
         return vektor_pSignala[rbr];
     }
 
     ulong dajVektorSignalaSize(){return vektor_pSignala.size();}
-
 
 
     void ispisiSveSignale();
