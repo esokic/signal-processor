@@ -61,13 +61,14 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
 
         tableWidget->insertRow(static_cast<int>(row));
 
-        // Checkbox for export
+        // Checkbox for prikaz
         QCheckBox *showCheckBox = new QCheckBox();
         showCheckBox->setChecked(signal->isMarkedForPrikaz());
         tableWidget->setCellWidget(static_cast<int>(row), 0, showCheckBox);
         connect(showCheckBox, &QCheckBox::toggled, [signal, showCheckBox]() {
-            signal->setMarkedForExport(showCheckBox->isChecked());  // Postavljanje statusa prikaza na signal
+            signal->setMarkedForPrikaz(showCheckBox->isChecked());  // Postavljanje statusa prikaza na signal
         });
+        connect(showCheckBox, &QCheckBox::toggled, this, &MainWindow::onItemSelectionChanged);
 
         // Ime signala
         QTableWidgetItem *nameItem = new QTableWidgetItem(signal->ime());
@@ -104,15 +105,9 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
     connect(ui->tableWidget_Signali, &QTableWidget::itemSelectionChanged, this, &MainWindow::onItemSelectionChanged);
 }
 
-
+//Stara verzija koja je omogucavala promjenu prikaza (za selektovanje i crtanje samo jednog dijagrama)
+/*
 void MainWindow::onItemSelectionChanged() {
-    /*
-    QTableWidgetItem *item = ui->tableWidget_tabelaProcesora->currentItem();
-    if (item) {
-        // Do something with the selected item
-        qDebug() << "Selected item:" << item->text();
-    }
-    */
 
     // Dobijte listu odabranih indeksa u tabeli
     QList<QTableWidgetItem *> selectedItems = ui->tableWidget_Signali->selectedItems();
@@ -149,6 +144,31 @@ void MainWindow::onItemSelectionChanged() {
     prikaz2.setTipPrikaza("izl");
     prikaz2.ocistiPrikaz();
     prikaz2.dodajSignaluGrupuZaPrikaz(signalUnderAnalysis);
+    prikaz2.osvjeziPrikaz();
+}
+*/
+
+
+//Stara verzija koja je omogucavala promjenu prikaza (za selektovanje i crtanje samo jednog dijagrama)
+void MainWindow::onItemSelectionChanged() {
+    // Očisti prikaz za oba objekta
+    prikaz1.setTipPrikaza("ul");
+    prikaz1.ocistiPrikaz();
+    prikaz2.setTipPrikaza("izl");
+    prikaz2.ocistiPrikaz();
+
+    // Dodaj signalima koji su označeni za prikaz u obe grupe
+    for (ulong i = 0; i < pAnsamblSignala->dajVektorSignalaSize(); ++i) {
+        Signal* signal = pAnsamblSignala->dajSignal(i);
+        if (signal->isMarkedForPrikaz()) {
+            // Dodaj signal u oba prikaza ako je označen
+            prikaz1.dodajSignaluGrupuZaPrikaz(signal);
+            prikaz2.dodajSignaluGrupuZaPrikaz(signal);
+        }
+    }
+
+    // Osveži prikaze
+    prikaz1.osvjeziPrikaz();
     prikaz2.osvjeziPrikaz();
 }
 

@@ -54,8 +54,9 @@ void Signal::ucitajSignalIzMatlabVarijable(matvar_t* matvar)
 }
 
 
-void Signal::podesiQCPgraph(QCPGraph* vanjski_graph, QString tip_grafika)
+void Signal::podesiQCPgraph(QCPGraph* vanjski_graph, QString tip_grafika, QColor boja)
 {
+
     if (tip_grafika == "ul")
     {
         graph = vanjski_graph;
@@ -69,6 +70,7 @@ void Signal::podesiQCPgraph(QCPGraph* vanjski_graph, QString tip_grafika)
         //Prikaz originalnih podataka
         graph->setLineStyle(QCPGraph::lsLine);
         graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));
+        graph->setPen(boja);
         //graph_org->setPen(QPen(Qt::blue));
     }
 
@@ -85,6 +87,7 @@ void Signal::podesiQCPgraph(QCPGraph* vanjski_graph, QString tip_grafika)
         //Prikaz originalnih podataka
         graph->setLineStyle(QCPGraph::lsLine);
         graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));
+        graph->setPen(boja);
         //graph_org->setPen(QPen(Qt::blue));
     }
 

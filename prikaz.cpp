@@ -22,11 +22,12 @@ void Prikaz::osvjeziPrikaz()
     qplot->legend = legendica;
 
 
-
+    int index = 0;
 
     for (Signal* pSignal : vektor_pSignala)
     {
-        pSignal->podesiQCPgraph(qplot->addGraph(), getTipPrikaza());
+        QColor boja = boje[index % boje.size()]; index ++;
+        pSignal->podesiQCPgraph(qplot->addGraph(), getTipPrikaza(), boja);
 
 
       //  qplot->xAxis->setLabel(pVekMjerenja->legendaXosa);

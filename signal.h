@@ -45,7 +45,7 @@ public:
 
     //setteri
     //Sluzi za podesavanje prikaza ovog signala
-    void podesiQCPgraph(QCPGraph*, QString tip_grafika); //moze biti "ul" i "izl"
+    void podesiQCPgraph(QCPGraph*, QString tip_grafika, QColor boja); //moze biti "ul" i "izl"
     void dodajSignalULegendu(QCPLegend*);
 
     //Ovdje ima problem jer se mora paziti da se sve mijenja
