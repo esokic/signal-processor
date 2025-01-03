@@ -41,6 +41,7 @@ public:
 
     QString getNewName(){return novoImeSignala;}
     bool isMarkedForExport(){return oznacen_za_export;}
+    bool isMarkedForPrikaz(){return oznacen_za_prikaz;}
 
     //setteri
     //Sluzi za podesavanje prikaza ovog signala
@@ -53,6 +54,9 @@ public:
     void set_xData_izl(QVector<double> xd){xData_ul = xd;}
     void set_yData_izl(QVector<double> yd){yData_ul = yd;}
     void setMarkerValue(double _mv){MarkerValue = _mv; markerValueAssigned = true;}
+    void set_novoIme(QString _ime){novoImeSignala = _ime;}
+    void setMarkedForExport(bool _smfe){oznacen_za_export = _smfe;}
+    void setMarkedForPrikaz(bool _smfe){oznacen_za_prikaz = _smfe;}
 
     void setPointerNaProcesor(Procesor* _pProcesor){pProcesor = _pProcesor;}
     //Procesor* getPointerNaProcesor(){return pProcesor;}
@@ -64,6 +68,7 @@ private:
     QString tipPodatka;                 //Npr. MAT_C_DOUBLE
 
     bool oznacen_za_export = false;
+    bool oznacen_za_prikaz= false;
     QString novoImeSignala;
 
     QVector<double> xData_ul;

@@ -36,27 +36,24 @@ MainWindow::~MainWindow()
 
 void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
 {
-    // Popunjavanje tabele signala
-    //auto vektorSignala = ansamblSignala->dajVektorSignala();
-
-    /*
-    // Poredajte vektor signala po abecednom redu prema imenu
-    std::sort(vektorSignala.begin(), vektorSignala.end(), [](Signal* a, Signal* b) {
-        return a->ime() < b->ime();
-    });
-    */
-
     // Očistite postojeće stavke u tableWidgetu
     QTableWidget *tableWidget = ui->tableWidget_Signali;
     tableWidget->clearContents();
     tableWidget->setRowCount(0);
-    tableWidget->setColumnCount(5);
-    //Ovo je za tabelu
+    tableWidget->setColumnCount(6);
+
+    // Postavite zaglavlja
     QStringList headers;
-    headers << "Signal name" << "Processor name" << "Refresh time" << "New signal name" << "Export (Yes/No)";
+    headers << "Show" << "Signal name" << "Processor name" << "Refresh time" << "New signal name" << "Export (Yes/No)";
     ui->tableWidget_Signali->setHorizontalHeaderLabels(headers);
-    //Da se moze odabrati samo jedan red:
+
+    // Da se može odabrati samo jedan red
     ui->tableWidget_Signali->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    // Provjera da li je ansamblSignala validan
+    if (ansamblSignala == nullptr || ansamblSignala->dajVektorSignalaSize() == 0) {
+        return;  // Nema signala za prikaz
+    }
 
     // Dodajte poredane signale u tableWidget
     for (size_t row = 0; row < ansamblSignala->dajVektorSignalaSize(); ++row) {
@@ -64,37 +61,49 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
 
         tableWidget->insertRow(static_cast<int>(row));
 
+        // Checkbox for export
+        QCheckBox *showCheckBox = new QCheckBox();
+        showCheckBox->setChecked(signal->isMarkedForPrikaz());
+        tableWidget->setCellWidget(static_cast<int>(row), 0, showCheckBox);
+        connect(showCheckBox, &QCheckBox::toggled, [signal, showCheckBox]() {
+            signal->setMarkedForExport(showCheckBox->isChecked());  // Postavljanje statusa prikaza na signal
+        });
+
         // Ime signala
         QTableWidgetItem *nameItem = new QTableWidgetItem(signal->ime());
-        tableWidget->setItem(static_cast<int>(row), 0, nameItem);
+        tableWidget->setItem(static_cast<int>(row), 1, nameItem);
 
         // Oznaka procesora
         QTableWidgetItem *processorItem = new QTableWidgetItem(signal->getTrenutniProcesorIme());
         processorItem->setFlags(processorItem->flags() & ~Qt::ItemIsEditable);
-        tableWidget->setItem(static_cast<int>(row), 1, processorItem);
+        tableWidget->setItem(static_cast<int>(row), 2, processorItem);
 
         // Datum i vrijeme osvježavanja
         QDateTime lastUpdate = signal->getTrenutniProcesorUpdateTime();
         QTableWidgetItem *dateItem = new QTableWidgetItem(lastUpdate.toString(Qt::DefaultLocaleShortDate));
         dateItem->setFlags(dateItem->flags() & ~Qt::ItemIsEditable);
-        tableWidget->setItem(static_cast<int>(row), 2, dateItem);
-
+        tableWidget->setItem(static_cast<int>(row), 3, dateItem);
 
         // "New name" editable field
         QPlainTextEdit *newNameEdit = new QPlainTextEdit(signal->getNewName());
-        tableWidget->setCellWidget(static_cast<int>(row), 3, newNameEdit);
+        tableWidget->setCellWidget(static_cast<int>(row), 4, newNameEdit);
+        connect(newNameEdit, &QPlainTextEdit::textChanged, [signal, newNameEdit]() {
+            signal->set_novoIme(newNameEdit->toPlainText());  // Postavljanje novog imena na signal
+        });
 
         // Checkbox for export
         QCheckBox *exportCheckBox = new QCheckBox();
         exportCheckBox->setChecked(signal->isMarkedForExport());
-        tableWidget->setCellWidget(static_cast<int>(row), 4, exportCheckBox);
-
-
+        tableWidget->setCellWidget(static_cast<int>(row), 5, exportCheckBox);
+        connect(exportCheckBox, &QCheckBox::toggled, [signal, exportCheckBox]() {
+            signal->setMarkedForExport(exportCheckBox->isChecked());  // Postavljanje statusa eksportovanja na signal
+        });
     }
 
+    // Povezivanje signala selekcije u tabeli sa odgovarajućim slotom
     connect(ui->tableWidget_Signali, &QTableWidget::itemSelectionChanged, this, &MainWindow::onItemSelectionChanged);
-
 }
+
 
 void MainWindow::onItemSelectionChanged() {
     /*

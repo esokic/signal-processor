@@ -63,7 +63,7 @@ private:
     SignalsExport* pSigExp;
 
 
-    //Sluzi za navigaciju desno lijevo
+    //Sluzi za navigaciju desno lijevo kod izbora fajla unutar foldera
     QStringList matFajlovi;
     int trenutniIndeks;
     QString folderPath;
