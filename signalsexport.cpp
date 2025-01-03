@@ -188,6 +188,8 @@ void SignalsExport::populateSignalsTableWidget(ExportFileSetting *currentSetting
 
 void SignalsExport::on_pushButton_addSignalToFile_clicked()
 {
+    //PRIVREMENO ZAKOMENTARISANO DOK NE POPRAVIMO
+    /*
     // Dobijanje trenutno selektovanog reda
     int currentRow = ui->tableWidget_ExportFileSettings->currentRow();
     if (currentRow >= 0 && currentRow < static_cast<int>(vektorFileSettingsa.size())) {
@@ -213,6 +215,7 @@ void SignalsExport::on_pushButton_addSignalToFile_clicked()
         ui->tableWidget_ExportFileSettings->selectRow(currentRow);
 
     }
+    */
 
 }
 

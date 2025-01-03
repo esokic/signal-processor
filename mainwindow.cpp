@@ -167,7 +167,8 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
     matvar_t *matvar;
     while ((matvar = Mat_VarReadNext(mat)) != nullptr) {
 
-        Signal* pSignal = new Signal; // std::make_unique<Signal>();
+        //Signal* pSignal = new Signal; // std::make_unique<Signal>();
+        auto pSignal = std::make_unique<Signal>();
 
         pSignal->ucitajSignalIzMatlabVarijable(matvar);
 
