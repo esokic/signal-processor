@@ -23,7 +23,7 @@ public:
        // return vektor_pSignala;
     }
 
-    Signal* dajSignal(ulong rbr) {         //Vraca pokazivac
+    Signal* dajSignal(ulong rbr) {         //Vraca pokazivac na Signal (iz vektora)
         if (rbr >= vektor_pSignala.size()) {
             throw std::out_of_range("Indeks signala je izvan granica.");
         }

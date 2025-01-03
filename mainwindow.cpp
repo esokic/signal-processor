@@ -164,6 +164,9 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
 //        return;
 //    }
 
+    //Opcija brisanja prije ponovnog ucitavanja?
+    pAnsamblSignala->ocisti();
+
     matvar_t *matvar;
     while ((matvar = Mat_VarReadNext(mat)) != nullptr) {
 
@@ -194,6 +197,15 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
     // Zatvaranje .mat datoteke
     Mat_Close(mat);
 
+
+    //IZMJESTITI OVO ODAVDE
+    //Dio koji se tice osvjezavanja
+    ansamblSignala->ispisiSveSignale();
+    ui->label_nazivFajla->setText(filePath);
+
+    //Ovaj dio je najkriticniji, trebalo bi da tableWidget bude na neki nacin neovisan od AnsamblaSignala
+    populateTableWidget_zaSignale(ansamblSignala);
+
 }
 
 void MainWindow::on_pushButton_Refresh_clicked()
@@ -214,13 +226,6 @@ void MainWindow::on_pushButton_Refresh_clicked()
 
 void MainWindow::on_pushButton_importFile_clicked()
 {
-    /*
-    QString executableDir = QCoreApplication::applicationDirPath();
-    QString relativeFilePath = "../60.MAT";
-    QString absoluteFilePath = QDir::cleanPath(executableDir + QDir::separator() + relativeFilePath);
-    QString filePath = absoluteFilePath;
-    */
-
     // Otvaranje dijaloškog prozora za odabir datoteke
     QString filePath = QFileDialog::getOpenFileName(this, tr("Import File"), "", tr("MAT Files (*.MAT);;All Files (*)"));
 
@@ -229,17 +234,18 @@ void MainWindow::on_pushButton_importFile_clicked()
         return; // Ako nije odabrana nijedna datoteka, izađite iz funkcije
     }
 
-    //Opcija brisanja prije ponovnog ucitavanja?
-    pAnsamblSignala->ocisti();
-
     citajIzMatFajla(filePath, pAnsamblSignala);
 
-    pAnsamblSignala->ispisiSveSignale();
-    ui->label_nazivFajla->setText(filePath);
+    //Ovo je jos da se omoguci klikanje lijevo desno za navigaciju po fajlovima
+    QFileInfo fileInfo(filePath);
+    folderPath = fileInfo.absolutePath();
+    matFajlovi = dohvatiMatFajloveIzFoldera(folderPath);
+    trenutniIndeks = matFajlovi.indexOf(fileInfo.fileName());
 
-    populateTableWidget_zaSignale(pAnsamblSignala);
+
 
 }
+
 
 void MainWindow::on_pushButton_exportFile_clicked()
 {
@@ -247,3 +253,51 @@ void MainWindow::on_pushButton_exportFile_clicked()
 }
 
 
+
+QStringList MainWindow::dohvatiMatFajloveIzFoldera(const QString& folderPath)
+{
+    QDir folder(folderPath);
+    QStringList filters;
+    filters << "*.mat"; // Filtriraj samo .mat fajlove
+    return folder.entryList(filters, QDir::Files);
+}
+
+
+void MainWindow::ucitajNaredniFajl()
+{
+    // Ako folder nije prazan
+    if (!matFajlovi.isEmpty()) {
+        // Povećaj indeks za naredni fajl
+        trenutniIndeks = (trenutniIndeks + 1) % matFajlovi.size();
+        QString noviFajl = matFajlovi[trenutniIndeks];
+        QString fullPath = folderPath + "/" + noviFajl;
+
+        // Učitaj fajl
+        citajIzMatFajla(fullPath, pAnsamblSignala);
+    }
+}
+
+void MainWindow::ucitajPrethodniFajl()
+{
+    // Ako folder nije prazan
+    if (!matFajlovi.isEmpty()) {
+        // Povećaj indeks za prethodni fajl
+        trenutniIndeks = (trenutniIndeks - 1 + matFajlovi.size()) % matFajlovi.size();
+        QString noviFajl = matFajlovi[trenutniIndeks];
+        QString fullPath = folderPath + "/" + noviFajl;
+
+        // Učitaj fajl
+        citajIzMatFajla(fullPath, pAnsamblSignala);
+    }
+}
+
+
+void MainWindow::on_pushButton_prevFile_clicked()
+{
+    ucitajPrethodniFajl();
+}
+
+void MainWindow::on_pushButton_nextFile_clicked()
+{
+    ucitajNaredniFajl();
+}

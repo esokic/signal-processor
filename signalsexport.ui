@@ -484,6 +484,35 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>pushButton_saveFileExportSettings</tabstop>
+  <tabstop>pushButton_exportFiles</tabstop>
+  <tabstop>pushButton_newFileExportSettings</tabstop>
+  <tabstop>pushButton_loadFileExportSettings</tabstop>
+  <tabstop>tableWidget_ExportFileSettings</tabstop>
+  <tabstop>pushButton_signalDownList</tabstop>
+  <tabstop>pushButton_addSignalToFile</tabstop>
+  <tabstop>lineEdit_fileHeader</tabstop>
+  <tabstop>pushButton_removeSignalToFile</tabstop>
+  <tabstop>pushButton_signalUpList</tabstop>
+  <tabstop>lineEdit_fileDescription</tabstop>
+  <tabstop>lineEdit_nazivFileSettingsa</tabstop>
+  <tabstop>pushButton_updateSettings</tabstop>
+  <tabstop>tableWidget_listaSignalaZaExport</tabstop>
+  <tabstop>pushButton_addSignalToFile_2</tabstop>
+  <tabstop>radioButton_1phase</tabstop>
+  <tabstop>radioButton_3phase</tabstop>
+  <tabstop>radioButton_fileTypeInput</tabstop>
+  <tabstop>radioButton_fileTypeOutput</tabstop>
+  <tabstop>doubleSpinBox_US</tabstop>
+  <tabstop>doubleSpinBox_UP</tabstop>
+  <tabstop>doubleSpinBox_IS</tabstop>
+  <tabstop>doubleSpinBox_IP</tabstop>
+  <tabstop>doubleSpinBox_PS</tabstop>
+  <tabstop>doubleSpinBox_PP</tabstop>
+  <tabstop>doubleSpinBox_TS</tabstop>
+  <tabstop>doubleSpinBox_TP</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

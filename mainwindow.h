@@ -34,6 +34,14 @@ private slots:
     void on_pushButton_exportFile_clicked();
     void on_pushButton_Refresh_clicked();
 
+    QStringList dohvatiMatFajloveIzFoldera(const QString& folderPath);
+    void ucitajNaredniFajl();
+    void ucitajPrethodniFajl();
+
+    void on_pushButton_prevFile_clicked();
+
+    void on_pushButton_nextFile_clicked();
+
 private:
 
     void populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala);
@@ -53,6 +61,12 @@ private:
     ManipulacijaProcesorima* pManProc;
     Signal* signalUnderAnalysis;
     SignalsExport* pSigExp;
+
+
+    //Sluzi za navigaciju desno lijevo
+    QStringList matFajlovi;
+    int trenutniIndeks;
+    QString folderPath;
 
 public:
     void setPointerAnsamblSignala(AnsamblSignala* _ptr){pAnsamblSignala = _ptr;}
