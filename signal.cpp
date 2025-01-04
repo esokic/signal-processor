@@ -53,50 +53,29 @@ void Signal::ucitajSignalIzMatlabVarijable(matvar_t* matvar)
     }
 }
 
-
-void Signal::podesiQCPgraph(QCPGraph* vanjski_graph, QString tip_grafika, QColor boja)
-{
-
-    if (tip_grafika == "ul")
-    {
-        graph = vanjski_graph;
-
-        graph->setName(ime());
-        graph->data()->clear();
-
-        //Crtanje originalnih podataka
-        graph->setData(get_xData_ul(), get_yData_ul());
-
-        //Prikaz originalnih podataka
-        graph->setLineStyle(QCPGraph::lsLine);
-        graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));
-        graph->setPen(boja);
-        //graph_org->setPen(QPen(Qt::blue));
+QVector<double> Signal::resampleData(const QVector<double>& data, int N) {
+    int originalSize = data.size();
+    if (originalSize <= N) {
+        return data;  // Ako je broj uzoraka manji ili jednak N, ne radimo resempliranje
     }
 
-    if (tip_grafika == "izl")
-    {
-        graph = vanjski_graph;
+    QVector<double> resampledData;
+    double step = static_cast<double>(originalSize) / N;
 
-        graph->setName(ime());
-        graph->data()->clear();
-
-        //Crtanje originalnih podataka
-        graph->setData(get_xData_izl(), get_yData_izl());
-
-        //Prikaz originalnih podataka
-        graph->setLineStyle(QCPGraph::lsLine);
-        graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));
-        graph->setPen(boja);
-        //graph_org->setPen(QPen(Qt::blue));
+    for (int i = 0; i < N; ++i) {
+        int index = static_cast<int>(i * step);
+        resampledData.append(data[index]);
     }
 
+    return resampledData;
 }
 
+/*
 void Signal::dodajSignalULegendu(QCPLegend *legendica)
 {
     graph->addToLegend(legendica);
 }
+*/
 
 /*
 QVector<double> Signal::get_xData()

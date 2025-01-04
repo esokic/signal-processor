@@ -18,7 +18,7 @@ void AnsamblSignala::dodajUAnsambl(std::unique_ptr<Signal> pSignal)
     // Dohvatiti referencu na posljednji element vektora
     const std::unique_ptr<Signal>& pSignal_novi = vektor_pSignala.back();
 
-    std::cout << "Dodan signal: " << pSignal_novi->ime().toStdString() << std::endl;
+    //std::cout << "Dodan signal: " << pSignal_novi->ime().toStdString() << std::endl;
 }
 
 Signal* AnsamblSignala::dajSignalPoImenu(const QString& ime)
@@ -35,7 +35,7 @@ Signal* AnsamblSignala::dajSignalPoImenu(const QString& ime)
 void AnsamblSignala::ispisiSveSignale()
 {
     for (const std::unique_ptr<Signal>& pSignal : vektor_pSignala) {
-        qDebug() << pSignal->ime();
+        //qDebug() << pSignal->ime();
     }
 }
 

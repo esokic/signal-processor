@@ -102,7 +102,7 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
     }
 
     // Povezivanje signala selekcije u tabeli sa odgovarajućim slotom
-    connect(ui->tableWidget_Signali, &QTableWidget::itemSelectionChanged, this, &MainWindow::onItemSelectionChanged);
+    //connect(ui->tableWidget_Signali, &QTableWidget::itemSelectionChanged, this, &MainWindow::onItemSelectionChanged);
 }
 
 //Stara verzija koja je omogucavala promjenu prikaza (za selektovanje i crtanje samo jednog dijagrama)
@@ -168,8 +168,8 @@ void MainWindow::onItemSelectionChanged() {
     }
 
     // Osveži prikaze
-    prikaz1.osvjeziPrikaz();
-    prikaz2.osvjeziPrikaz();
+  prikaz1.osvjeziPrikaz();
+ // prikaz2.osvjeziPrikaz();
 }
 
 
@@ -182,77 +182,103 @@ void MainWindow::onItemSelectionChanged() {
 
 void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansamblSignala)
 {
+    // Kreiraj modalni dijalog za prikaz poruke "Loading..."
+        QDialog loadingDialog(this);
+        loadingDialog.setWindowTitle("Please Wait");
+        loadingDialog.setModal(true);
 
-    // Pretvorite QString u char* jer MatIO koristi char*
-    const char* filename = filePath.toLocal8Bit().constData();
+        QVBoxLayout layout(&loadingDialog);
+        QLabel label("Loading...");
+        layout.addWidget(&label);
 
-    // Otvaranje .mat datoteke za čitanje
-    mat_t *mat = Mat_Open(filename, MAT_ACC_RDONLY);
-//    if (mat == NULL) {
-//        qDebug() << "Nije moguće otvoriti datoteku";
-//        return;
-//    }
+        // Postavi veličinu i prikaži dijalog
+        loadingDialog.resize(200, 100);
+        loadingDialog.show();
 
-    //Opcija brisanja prije ponovnog ucitavanja?
-    //pAnsamblSignala->ocisti();
+        // Koristi timer za pokretanje dugotrajnog zadatka u sledećem događaju glavne petlje
+        QTimer::singleShot(100, [&]() {
 
-    matvar_t *matvar;
-    while ((matvar = Mat_VarReadNext(mat)) != nullptr) {
+            // Pretvorite QString u char* jer MatIO koristi char*
+            const char* filename = filePath.toLocal8Bit().constData();
 
-        //Signal* pSignal = new Signal; // std::make_unique<Signal>();
-        auto pSignal = std::make_unique<Signal>();
+            // Otvaranje .mat datoteke za čitanje
+            mat_t *mat = Mat_Open(filename, MAT_ACC_RDONLY);
+            //    if (mat == NULL) {
+            //        qDebug() << "Nije moguće otvoriti datoteku";
+            //        return;
+            //    }
 
-        //ucitano iz fajla
-        pSignal->ucitajSignalIzMatlabVarijable(matvar);
-        pSignal->setPointerNaProcesor(pManProc->getPointerNaDefaultniProcesor());
+            //Opcija brisanja prije ponovnog ucitavanja?
+            //pAnsamblSignala->ocisti();
 
-        // Provjera da li signal sa istim imenom već postoji, ako postoji kopiraj podesenja od interesa
-        //ovo bi trebalo da bude opcija (ako zelis)
-        //postojeci signal je mozda signal sa istim imenom u ansamblu
-        Signal* postojeciSignal = ansamblSignala->dajSignalPoImenu(pSignal->ime());
-        if (postojeciSignal) {
-            std::cout << "ima vec ovaj" << std::endl;
-            //postojeciSignal->kopirajPodesenjaIzDrugogSignala(*pSignal);
-            //ovdje se pravi fuzija - podaci iz pSignala su novi, a postojeciSignal stari (ima i lokacija)
-            //MERGE - izdvoji u odvojenu funkciju
-            postojeciSignal->set_xData_izl(pSignal->get_xData_izl());
-            postojeciSignal->set_xData_ul(pSignal->get_xData_ul());
-            postojeciSignal->set_yData_izl(pSignal->get_yData_izl());
-            postojeciSignal->set_yData_ul(pSignal->get_yData_ul());
-            postojeciSignal->setMarkerValue(pSignal->getMarkerValue());
-            //ostalo je jos podesenje da je marker podesen?
+            matvar_t *matvar;
+            while ((matvar = Mat_VarReadNext(mat)) != nullptr) {
 
-            //OVERWRITE?
-        } else {
-            ansamblSignala->dodajUAnsambl(std::move(pSignal));
-        }
+                //Signal* pSignal = new Signal; // std::make_unique<Signal>();
+                auto pSignal = std::make_unique<Signal>();
 
-        // Ne zaboravite osloboditi varijablu nakon što završite s njom
-        Mat_VarFree(matvar);
-    }
+                //ucitano iz fajla
+                pSignal->ucitajSignalIzMatlabVarijable(matvar);
+                pSignal->setPointerNaProcesor(pManProc->getPointerNaDefaultniProcesor());
 
-    //Ovo je malo varanje ali nemam druge varijante
-     connect(pAnsamblSignala, &AnsamblSignala::changedMarkerValue, pManProc, &ManipulacijaProcesorima::onChangedMarkerValue);
+                // Provjera da li signal sa istim imenom već postoji, ako postoji kopiraj podesenja od interesa
+                //ovo bi trebalo da bude opcija (ako zelis)
+                //postojeci signal je mozda signal sa istim imenom u ansamblu -
+                //OVA METODOLOGIJA NAZALOST SAMO DODAJE NOVE SIGNALE (moze ucitati "lazne")!!!!!!!!!!!!
+                Signal* postojeciSignal = ansamblSignala->dajSignalPoImenu(pSignal->ime());
+                if (postojeciSignal) {
+                    //std::cout << "ima vec ovaj" << std::endl;
+                    //postojeciSignal->kopirajPodesenjaIzDrugogSignala(*pSignal);
+                    //ovdje se pravi fuzija - podaci iz pSignala su novi, a postojeciSignal stari (ima i lokacija)
+                    //MERGE - izdvoji u odvojenu funkciju ------------------------------------------------------------
+                    postojeciSignal->set_xData_izl(pSignal->get_xData_izl());
+                    postojeciSignal->set_xData_ul(pSignal->get_xData_ul());
+                    postojeciSignal->set_yData_izl(pSignal->get_yData_izl());
+                    postojeciSignal->set_yData_ul(pSignal->get_yData_ul());
+                    postojeciSignal->setMarkerValue(pSignal->getMarkerValue());
+                    //ostalo je jos podesenje da je marker podesen?
+                    //OVERWRITE?
+                    //------------------------------------------------------------
 
-    //Po zavrsetku napraviti dodjelu markerValue na sve signale iz tog seta
-    ansamblSignala->dodijeliMarkerValueSvimSignalima();
+                } else {
+                    ansamblSignala->dodajUAnsambl(std::move(pSignal));
+                }
 
-    ansamblSignala->presloziVektorSignalaPoAbecedi();
+                // Ne zaboravite osloboditi varijablu nakon što završite s njom
+                Mat_VarFree(matvar);
+            }
 
-    // Zatvaranje .mat datoteke
-    Mat_Close(mat);
+            //Ovo je malo varanje ali nemam druge varijante
+             connect(pAnsamblSignala, &AnsamblSignala::changedMarkerValue, pManProc, &ManipulacijaProcesorima::onChangedMarkerValue);
+
+            //Po zavrsetku napraviti dodjelu markerValue na sve signale iz tog seta
+            ansamblSignala->dodijeliMarkerValueSvimSignalima();
+
+            ansamblSignala->presloziVektorSignalaPoAbecedi();
+
+            // Zatvaranje .mat datoteke
+            Mat_Close(mat);
 
 
-    //IZMJESTITI OVO ODAVDE
-    //Dio koji se tice osvjezavanja
-    ansamblSignala->ispisiSveSignale();
-    ui->label_nazivFajla->setText(filePath);
+            //IZMJESTITI OVO ODAVDE -------------------------------------------------------------------------
+            //Dio koji se tice osvjezavanja
+            ansamblSignala->ispisiSveSignale();
+            ui->label_nazivFajla->setText(filePath);
 
-    //Ovaj dio je najkriticniji, trebalo bi da tableWidget bude na neki nacin neovisan od AnsamblaSignala
-    populateTableWidget_zaSignale(ansamblSignala);
+            //Ovaj dio je najkriticniji, trebalo bi da tableWidget bude na neki nacin neovisan od AnsamblaSignala
+            populateTableWidget_zaSignale(ansamblSignala);
 
-    //I ovo osvjezavanje isto!!!!!!!!!!!!!!!!!!!!!!
-    onItemSelectionChanged();
+            //I ovo osvjezavanje isto!!!!!!!!!!!!!!!!!!!!!!
+            onItemSelectionChanged();
+            //-------------------------------------------------------------------------
+
+
+            // Zatvori dijalog nakon završetka zadatka
+                loadingDialog.accept();
+            });
+
+        // Prikazuj dijalog dok se zadatak izvršava
+        loadingDialog.exec();
 
 }
 

@@ -37,6 +37,15 @@ public:
     QVector<double> get_xData_izl(){return xData_izl;}
     QVector<double> get_yData_izl(){return yData_izl;}
 
+    #define br_samplova_za_prikaz 1000
+    QVector<double> get_xData_ul_resampled() {return resampleData(xData_ul, br_samplova_za_prikaz);}
+    QVector<double> get_yData_ul_resampled() {return resampleData(yData_ul, br_samplova_za_prikaz);}
+    QVector<double> get_xData_izl_resampled() {return resampleData(xData_izl, br_samplova_za_prikaz);}
+    QVector<double> get_yData_izl_resampled() {return resampleData(yData_izl, br_samplova_za_prikaz);}
+
+    QVector<double> resampleData(const QVector<double>& data, int N);
+
+
     double getMarkerValue(){return MarkerValue;}
     bool isMarkerValueAssigned(){return markerValueAssigned;}
 
@@ -46,8 +55,8 @@ public:
 
     //setteri
     //Sluzi za podesavanje prikaza ovog signala
-    void podesiQCPgraph(QCPGraph*, QString tip_grafika, QColor boja); //moze biti "ul" i "izl"
-    void dodajSignalULegendu(QCPLegend*);
+    //void podesiQCPgraph(QCPGraph*, QString tip_grafika, QColor boja); //moze biti "ul" i "izl"
+    //void dodajSignalULegendu(QCPLegend*);
 
     //Ovdje ima problem jer se mora paziti da se sve mijenja
     void set_xData_ul(QVector<double> xd){xData_ul = xd;}
@@ -83,7 +92,7 @@ private:
     bool markerValueAssigned = false;
 
     //Pomocni pokazivac na graph
-    QCPGraph *graph;
+   // QCPGraph *graph;
 
 
     Procesor* pProcesor = nullptr;
