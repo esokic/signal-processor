@@ -300,26 +300,43 @@ void SignalsExport::on_pushButton_exportFiles_clicked()
         //vrati gresku da nije nista selektovano za eksport
     } else
     {
-        QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "", tr("Text Files (*.txt);Excel Files (*.xlsx, *.xls);All Files (*)"));
+        QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "", tr("Text Files (*.txt);All Files (*)"));
 
         if (fileName.isEmpty()) {
             return; // User canceled the dialog
         }
 
-        //if (currentSetting->getExportFileType() == "input") generateOutputHVCBFile_input(fileName, currentSetting);
-        //test
-        if (currentSetting->getExportFileType() == "input") generateOutputExcelFile(fileName, currentSetting);
+        if (currentSetting->getExportFileType() == "input") generateOutputHVCBFile_input(fileName, currentSetting);
         if (currentSetting->getExportFileType() == "output") generateOutputHVCBFile_output(fileName, currentSetting);
 
         //Otvaranje fajla ako treba
-        /*
+
         #if defined(Q_OS_WIN)
             QProcess::startDetached("notepad.exe", QStringList() << fileName);
         #elif defined(Q_OS_LINUX)
             QProcess::startDetached("gedit", QStringList() << fileName);
         #endif
-        */
+
     }
+}
+
+//Privremeno
+void SignalsExport::exportFileExcel()
+{
+
+        QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "", tr("Excel Files (*.xlsx);All Files (*)"));
+
+
+        if (fileName.isEmpty()) {
+            return; // User canceled the dialog
+        }
+
+        generateOutputExcelFile(fileName);
+
+        //Otvaranje fajla ako treba
+        QUrl fileUrl = QUrl::fromLocalFile(fileName);
+        QDesktopServices::openUrl(fileUrl);
+
 }
 
 
@@ -436,12 +453,8 @@ void SignalsExport::generateOutputHVCBFile_input(const QString& fileName, Export
 
 
 
-void SignalsExport::generateOutputExcelFile(const QString& fileName, ExportFileSetting* setting) {
+void SignalsExport::generateOutputExcelFile(const QString& fileName) {
     // Proveri da li ima signala za eksport
-    if (setting->getListaSignalaZaExport().empty()) {
-        std::cerr << "No signals to export" << std::endl;
-        return;
-    }
 
     // Kreiraj Excel workbook
     // Otvaranje dijaloga za odabir datoteke slike
@@ -461,25 +474,34 @@ void SignalsExport::generateOutputExcelFile(const QString& fileName, ExportFileS
     // Postavi header kolona
     int colIndex = 1;
 
-    for (Signal* signal : setting->getListaSignalaZaExport()) {
-        //Prvo header
-        workbook.write(1, colIndex, "time");
-        workbook.write(1, colIndex+1, signal->getNewName().toStdString().c_str());
+    for (ulong i=0; i<pAnsamblSignala->dajVektorSignalaSize(); i++ ) {
+        Signal* signal = pAnsamblSignala->dajSignal(i);
 
-        //Potom signale
-        QVector<double> xvec = signal->get_xData_izl();
-        QVector<double> yvec = signal->get_yData_izl();
+        //Potom signale ako su oznaceni za eksport
+        if (signal->isMarkedForExport())   //ovo treba svesti na onu listu za eksport
+        {
+            //Prvo header
+            workbook.write(1, colIndex, "time");
+            workbook.write(1, colIndex+1, signal->getNewName().toStdString().c_str());
 
-        for (size_t row = 0; row < xvec.size() ; ++row) {
-            // Prva kolona (xData)
-            workbook.write(row+2, colIndex, xvec[row]);
-            // Druga kolona (yData)
-            workbook.write(row+2, colIndex+1, yvec[row]);
+            QVector<double> xvec = signal->get_xData_izl();
+            QVector<double> yvec = signal->get_yData_izl();
+
+            for (int row = 0; row < xvec.size() ; ++row) {
+                // Prva kolona (xData)
+                workbook.write(row+2, colIndex, xvec[row]);
+                // Druga kolona (yData)
+                workbook.write(row+2, colIndex+1, yvec[row]);
+            }
+
+            colIndex = colIndex + 2 ;
         }
-
-        colIndex = colIndex + 2 ;
     }
 
-    // Snimi workbook
-    workbook.saveAs(fileName);
+    // Spremi fajl
+    if (workbook.saveAs(fileName)) {
+        QMessageBox::information(this, tr("File Saved"), tr("The file has been saved successfully."));
+    } else {
+        QMessageBox::warning(this, tr("Save Failed"), tr("The file could not be saved."));
+    }
 }

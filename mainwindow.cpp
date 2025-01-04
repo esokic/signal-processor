@@ -169,7 +169,7 @@ void MainWindow::onItemSelectionChanged() {
 
     // Osveži prikaze
   prikaz1.osvjeziPrikaz();
- // prikaz2.osvjeziPrikaz();
+  prikaz2.osvjeziPrikaz();
 }
 
 
@@ -374,4 +374,9 @@ void MainWindow::on_pushButton_prevFile_clicked()
 void MainWindow::on_pushButton_nextFile_clicked()
 {
     ucitajNaredniFajl();
+}
+
+void MainWindow::on_pushButton_exportExcel_clicked()
+{
+    pSigExp->exportFileExcel();
 }

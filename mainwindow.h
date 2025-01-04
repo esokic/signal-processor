@@ -42,6 +42,8 @@ private slots:
 
     void on_pushButton_nextFile_clicked();
 
+    void on_pushButton_exportExcel_clicked();
+
 private:
 
     void populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala);

@@ -104,8 +104,27 @@
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_exportFile">
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="text">
-         <string>Export file ...</string>
+         <string>Export HVCB file ...</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_exportExcel">
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Export Excel file ...</string>
         </property>
        </widget>
       </item>

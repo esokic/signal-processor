@@ -35,7 +35,7 @@ private:
 
     void populateTableWidget();
 
-    double MarkerValue = 0.0; //To je pocetna vrijednost signala u odnosu na referentnu tacku
+    double MarkerValue = 0.0; //To je pocetna vrijednost signala u odnosu na referentnu tacku (za KEMA FAJLOVE)
 
 public slots:
 

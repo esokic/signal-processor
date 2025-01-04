@@ -16,8 +16,10 @@ public:
     QString getFileHeader() const { return fileHeader; }
     QString getFileDescription() const { return fileDescription; }
     QString getNrPhases() const { return nrPhases; }
-    std::vector<Signal*> getListaSignalaZaExport() { return listaSignalaZaExport; }
     QString getExportFileType() const { return exportFileType; }
+    //Lista signala se treba vezati za nazive signala a ne za pokazivace na signale!------------------
+    std::vector<Signal*> getListaSignalaZaExport() { return listaSignalaZaExport; }
+
 
     // Setters
     void setFileType(const QString& value) { fileType = value; }
@@ -25,9 +27,12 @@ public:
     void setFileHeader(const QString& value) { fileHeader = value; }
     void setFileDescription(const QString& value) { fileDescription = value; }
     void setNrPhases(const QString& value) { nrPhases = value; }
-    void setListaSignalaZaExport(const std::vector<Signal*>& value) { listaSignalaZaExport = value; }
     void setExportFileType(const QString& value) { exportFileType = value; }
+    //Lista signala se treba vezati za nazive signala a ne za pokazivace na signale!------------------
+    void setListaSignalaZaExport(const std::vector<Signal*>& value) { listaSignalaZaExport = value; }
 
+
+    //Lista signala se treba vezati za nazive signala a ne za pokazivace na signale!------------------
     void dodajUListuSignalaZaExport(Signal* signal){listaSignalaZaExport.push_back(signal);}
 
     void izbrisiElementIzVektoraSignalaZaEksport(ulong currentRow);
@@ -40,11 +45,13 @@ private:
 
     QString fileType = "HVCB";
     QString nazivFileSettingsa = "File setting A";
-    QString fileHeader = "Travel, current and acr voltage";
+    QString fileHeader = "Travel, current and arc voltage";
     QString fileDescription = "Description note";
     QString nrPhases = "1ph";
-    std::vector<Signal*> listaSignalaZaExport;
     QString exportFileType = "input";
+    //Lista signala se treba vezati za nazive signala a ne za pokazivace na signale!------------------
+    std::vector<Signal*> listaSignalaZaExport;
+
 
 
 };
