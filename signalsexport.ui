@@ -11,12 +11,15 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Export to HVCB file</string>
   </property>
   <widget class="QPushButton" name="pushButton_loadFileExportSettings">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="geometry">
     <rect>
-     <x>790</x>
+     <x>800</x>
      <y>120</y>
      <width>201</width>
      <height>25</height>
@@ -27,9 +30,12 @@
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_saveFileExportSettings">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="geometry">
     <rect>
-     <x>790</x>
+     <x>800</x>
      <y>150</y>
      <width>201</width>
      <height>25</height>
@@ -42,10 +48,10 @@
   <widget class="QPushButton" name="pushButton_exportFiles">
    <property name="geometry">
     <rect>
-     <x>800</x>
-     <y>230</y>
-     <width>191</width>
-     <height>41</height>
+     <x>730</x>
+     <y>680</y>
+     <width>281</width>
+     <height>51</height>
     </rect>
    </property>
    <property name="font">
@@ -55,7 +61,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Export file (s) ...</string>
+    <string>Export to HVCB format file...</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -74,7 +80,7 @@
   <widget class="QPushButton" name="pushButton_newFileExportSettings">
    <property name="geometry">
     <rect>
-     <x>790</x>
+     <x>800</x>
      <y>90</y>
      <width>201</width>
      <height>25</height>
@@ -88,7 +94,7 @@
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>300</y>
+     <y>230</y>
      <width>951</width>
      <height>431</height>
     </rect>
@@ -149,6 +155,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_removeSignalToFile">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>670</x>
@@ -325,9 +334,9 @@
    <widget class="QPushButton" name="pushButton_updateSettings">
     <property name="geometry">
      <rect>
-      <x>810</x>
-      <y>354</y>
-      <width>131</width>
+      <x>400</x>
+      <y>350</y>
+      <width>251</width>
       <height>61</height>
      </rect>
     </property>
@@ -341,7 +350,7 @@
       <x>400</x>
       <y>30</y>
       <width>251</width>
-      <height>381</height>
+      <height>311</height>
      </rect>
     </property>
    </widget>
@@ -459,7 +468,10 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="pushButton_addSignalToFile_2">
+   <widget class="QPushButton" name="pushButton_addSignalToFile_automatically">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>670</x>
@@ -479,7 +491,7 @@
      <x>60</x>
      <y>90</y>
      <width>721</width>
-     <height>192</height>
+     <height>131</height>
     </rect>
    </property>
   </widget>
@@ -499,7 +511,7 @@
   <tabstop>lineEdit_nazivFileSettingsa</tabstop>
   <tabstop>pushButton_updateSettings</tabstop>
   <tabstop>tableWidget_listaSignalaZaExport</tabstop>
-  <tabstop>pushButton_addSignalToFile_2</tabstop>
+  <tabstop>pushButton_addSignalToFile_automatically</tabstop>
   <tabstop>radioButton_1phase</tabstop>
   <tabstop>radioButton_3phase</tabstop>
   <tabstop>radioButton_fileTypeInput</tabstop>

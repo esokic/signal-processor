@@ -19,23 +19,18 @@ class SelectSignalsDialog : public QDialog
     Q_OBJECT
 
 public:
-    //OVAJ DIO NE VALJA JER RADI EKSPLICITNO KOPIRANJE VEKTORA SIGNALA A TO NECEMO
-    explicit SelectSignalsDialog(std::vector<Signal* > signali, QWidget *parent = nullptr);
+    explicit SelectSignalsDialog(std::vector<QString> signalNames, QWidget *parent = nullptr);
     ~SelectSignalsDialog();
-    std::vector<Signal* > getSelectedSignals() const;
+    std::vector<QString> getSelectedSignalNames() const;
 
 private slots:
     void onSelectionChanged(int row, int column);
-
     void on_pushButton_clicked();
-
     void on_pushButton_2_clicked();
 
 private:
     Ui::SelectSignalsDialog *ui;
-    //OVAJ DIO NE VALJA JER RADI EKSPLICITNO KOPIRANJE VEKTORA SIGNALA A TO NECEMO
-    std::vector<Signal*> availableSignals;
-    std::vector<Signal*> selectedSignals;
+    std::vector<QString> availableSignalNames;
+    std::vector<QString> selectedSignalNames; // Čuva selektovane nazive signala
 };
-
 #endif // SELECTSIGNALSDIALOG_H

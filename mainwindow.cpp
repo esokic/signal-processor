@@ -44,7 +44,7 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
 
     // Postavite zaglavlja
     QStringList headers;
-    headers << "Show" << "Signal name" << "Processor name" << "Refresh time" << "New signal name" << "Export (Yes/No)";
+    headers << "Show" << "Signal name" << "Processor name" << "Refresh time" << "New signal name" << "Export to Excel (Yes/No)";
     ui->tableWidget_Signali->setHorizontalHeaderLabels(headers);
 
     // Da se može odabrati samo jedan red
@@ -68,7 +68,7 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
         connect(showCheckBox, &QCheckBox::toggled, [signal, showCheckBox]() {
             signal->setMarkedForPrikaz(showCheckBox->isChecked());  // Postavljanje statusa prikaza na signal
         });
-        connect(showCheckBox, &QCheckBox::toggled, this, &MainWindow::onItemSelectionChanged);
+        connect(showCheckBox, &QCheckBox::toggled, this, &MainWindow::onOdabraniPrikazChanged);
 
         // Ime signala
         QTableWidgetItem *nameItem = new QTableWidgetItem(signal->ime());
@@ -102,55 +102,40 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
     }
 
     // Povezivanje signala selekcije u tabeli sa odgovarajućim slotom
-    //connect(ui->tableWidget_Signali, &QTableWidget::itemSelectionChanged, this, &MainWindow::onItemSelectionChanged);
+    connect(ui->tableWidget_Signali, &QTableWidget::itemSelectionChanged, this, &MainWindow::onItemSelectionChanged);
 }
 
-//Stara verzija koja je omogucavala promjenu prikaza (za selektovanje i crtanje samo jednog dijagrama)
-/*
+
 void MainWindow::onItemSelectionChanged() {
 
     // Dobijte listu odabranih indeksa u tabeli
     QList<QTableWidgetItem *> selectedItems = ui->tableWidget_Signali->selectedItems();
 
+    /*
     // Provjerite da li je izabran tačno jedan red
     if (selectedItems.size() != 1) {
         // Ako nije izabran tačno jedan red, poništite odabir i izađite iz metode
         ui->tableWidget_Signali->clearSelection();
         return;
     }
+    */
 
+    if (selectedItems.size() > 0)
+    {
+        // Dobijte redni broj izabranog reda - uzima samo prvi
+        int selectedRow = selectedItems[0]->row();
 
-    // Dobijte redni broj izabranog reda
-    int selectedRow = selectedItems[0]->row();
-
-    // Provjerite da li je redni broj u granicama vektora
-    if (selectedRow < 0 || selectedRow >= static_cast<int>(pAnsamblSignala->dajVektorSignalaSize())) {
-        // Ako nije, poništite odabir i izađite iz metode
-        ui->tableWidget_Signali->clearSelection();
-        return;
+        // Dobijte objekat Procesor iz vektora na osnovu rednog broja
+        signalUnderAnalysis = pAnsamblSignala->dajSignal(static_cast<ulong>(selectedRow));
     }
 
-    // Dobijte objekat Procesor iz vektora na osnovu rednog broja
-    signalUnderAnalysis = pAnsamblSignala->dajSignal(static_cast<ulong>(selectedRow));
-
-
-    prikaz1.setTipPrikaza("ul");
-    prikaz1.ocistiPrikaz();
-    prikaz1.dodajSignaluGrupuZaPrikaz(signalUnderAnalysis);
-    prikaz1.osvjeziPrikaz();
-
-
-
-    prikaz2.setTipPrikaza("izl");
-    prikaz2.ocistiPrikaz();
-    prikaz2.dodajSignaluGrupuZaPrikaz(signalUnderAnalysis);
-    prikaz2.osvjeziPrikaz();
 }
-*/
+
 
 
 //Stara verzija koja je omogucavala promjenu prikaza (za selektovanje i crtanje samo jednog dijagrama)
-void MainWindow::onItemSelectionChanged() {
+void MainWindow::onOdabraniPrikazChanged() {
+
     // Očisti prikaz za oba objekta
     prikaz1.setTipPrikaza("ul");
     prikaz1.ocistiPrikaz();

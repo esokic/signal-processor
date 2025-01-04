@@ -28,6 +28,7 @@ private slots:
     //void onTableWidgetItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);
 
     void onItemSelectionChanged();
+    void onOdabraniPrikazChanged();
 
 
     void on_pushButton_importFile_clicked();

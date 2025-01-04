@@ -35,7 +35,10 @@ public:
     QVector<double> get_xData_ul(){return xData_ul;}
     QVector<double> get_yData_ul(){return yData_ul;}
     QVector<double> get_xData_izl(){return xData_izl;}
+    double get_xData_izl(int row){if (row < xData_izl.size()) return xData_izl[row]; else return -5000.0;}
     QVector<double> get_yData_izl(){return yData_izl;}
+    double get_yData_izl(int row){if (row < xData_izl.size()) return xData_izl[row]; else return -5000.0;}
+
 
     #define br_samplova_za_prikaz 1000
     QVector<double> get_xData_ul_resampled() {return resampleData(xData_ul, br_samplova_za_prikaz);}

@@ -172,6 +172,7 @@ void SignalsExport::on_pushButton_updateSettings_clicked()
     ui->tableWidget_ExportFileSettings->selectRow(currentRow);
 }
 
+/*
 void SignalsExport::populateSignalsTableWidget(ExportFileSetting *currentSetting)
 {
     // Osvježi tableWidget_listaSignalaZaExport
@@ -184,10 +185,52 @@ void SignalsExport::populateSignalsTableWidget(ExportFileSetting *currentSetting
        // ui->tableWidget_listaSignalaZaExport->setItem(i, 3, new QTableWidgetItem("New name")); // Ovo je placeholder
        // ui->tableWidget_listaSignalaZaExport->setCellWidget(i, 4, new QCheckBox(this));
     }
+
+}
+*/
+void SignalsExport::populateSignalsTableWidget(ExportFileSetting *currentSetting)
+{
+    // Osvježi tableWidget_listaSignalaZaExport
+    ui->tableWidget_listaSignalaZaExport->setRowCount(currentSetting->getListaSignalaZaExport().size());
+    ui->tableWidget_listaSignalaZaExport->setColumnCount(1);
+    for (size_t i = 0; i < currentSetting->getListaSignalaZaExport().size(); ++i) {
+        ui->tableWidget_listaSignalaZaExport->setItem(i, 0, new QTableWidgetItem(currentSetting->getListaSignalaZaExport()[i]));
+    }
+
 }
 
 void SignalsExport::on_pushButton_addSignalToFile_clicked()
 {
+    int currentRow = ui->tableWidget_ExportFileSettings->currentRow();
+    if (currentRow >= 0 && currentRow < static_cast<int>(vektorFileSettingsa.size())) {
+        ExportFileSetting *currentSetting = vektorFileSettingsa[static_cast<size_t>(currentRow)];
+
+
+        std::vector<QString> signalNames;
+        for (int i=0; i< pAnsamblSignala->dajVektorSignalaSize(); i++) {
+            signalNames.push_back(pAnsamblSignala->dajSignal(i)->ime());  // Dodajte ime signala u listu
+        }
+
+        SelectSignalsDialog dialog(signalNames, this);
+        if (dialog.exec() == QDialog::Accepted) {
+            std::vector<QString> selectedNames = dialog.getSelectedSignalNames();
+            // Ovdje možete obraditi selektovane nazive
+            for (const auto& signal : selectedNames) {
+                currentSetting->dodajUListuSignalaZaExport(signal);
+            }
+
+                populateSignalsTableWidget(currentSetting);
+
+            }
+
+            // Osvježavanje tabele nakon ažuriranja
+            populateTableWidget();
+
+            ui->tableWidget_ExportFileSettings->selectRow(currentRow);
+
+        }
+
+
     //PRIVREMENO ZAKOMENTARISANO DOK NE POPRAVIMO
     /*
     // Dobijanje trenutno selektovanog reda
@@ -216,6 +259,7 @@ void SignalsExport::on_pushButton_addSignalToFile_clicked()
 
     }
     */
+
 
 }
 
@@ -362,7 +406,8 @@ void SignalsExport::generateOutputHVCBFile_output(const QString& fileName, Expor
     outFile << "\""+ setting->getFileDescription().toStdString() + "\"" << "\n";
 
     // 3. Some hard-coded value (e.g., 1001)
-    outFile << QString::number(setting->getListaSignalaZaExport()[0]->get_xData_izl().size()).toStdString() + "\n";
+
+    outFile << QString::number(pAnsamblSignala->dajSignalPoImenu(setting->getListaSignalaZaExport()[0])->get_xData_izl().size()).toStdString() + "\n";
 
     // 4. Number of phases
     outFile << (setting->getNrPhases() == "1ph" ? "1\n" : "3\n");
@@ -371,17 +416,18 @@ void SignalsExport::generateOutputHVCBFile_output(const QString& fileName, Expor
 
 
    // Broj redova za ispis
-   size_t rowCount = setting->getListaSignalaZaExport().front()->get_xData_izl().size();
+   size_t rowCount = pAnsamblSignala->dajSignalPoImenu(setting->getListaSignalaZaExport().front())->get_xData_izl().size();
 
    // Ispis podataka
    for (size_t row = 0; row < rowCount; ++row) {
        // Prva kolona je xDataIzl, samo prvi signal
-       outFile << setting->getListaSignalaZaExport().front()->get_xData_izl()[row];
+       outFile << pAnsamblSignala->dajSignalPoImenu(setting->getListaSignalaZaExport().front())->get_xData_izl(row);
 
        // Ostale kolone su yDataIzl za svaki signal
-       for (Signal* signal : setting->getListaSignalaZaExport()) {
-           outFile << "\t" << signal->get_yData_izl()[row];
-       }
+       for (ulong i=0; i<setting->getListaSignalaZaExport().size(); i++)
+       {
+            outFile << "\t" << pAnsamblSignala->dajSignalPoImenu(setting->getListaSignalaZaExport()[i])->get_yData_izl(row);
+        }
 
        outFile << "\n";
    }
@@ -411,10 +457,10 @@ void SignalsExport::generateOutputHVCBFile_input(const QString& fileName, Export
     outFile << setting->getListaSignalaZaExport().size() << "\n";
 
     // 3. Some hard-coded value (e.g., 1001)
-    outFile << QString::number(setting->getListaSignalaZaExport()[0]->get_xData_izl().size()).toStdString() + "\n";
+    outFile << QString::number(pAnsamblSignala->dajSignalPoImenu(setting->getListaSignalaZaExport()[0])->get_xData_izl().size()).toStdString() + "\n";
 
     // 4. Timestep
-    outFile << QString::number(setting->getListaSignalaZaExport()[0]->get_xData_izl()[1] - setting->getListaSignalaZaExport()[0]->get_xData_izl()[0] ).toStdString() + "\n";
+    outFile << QString::number(pAnsamblSignala->dajSignalPoImenu(setting->getListaSignalaZaExport()[0])->get_xData_izl()[1] - pAnsamblSignala->dajSignalPoImenu(setting->getListaSignalaZaExport()[0])->get_xData_izl()[0] ).toStdString() + "\n";
 
     // 5. Opis
     outFile << "\"" +setting->getFileDescription().toStdString()+ "\""+"\n";
@@ -431,18 +477,20 @@ void SignalsExport::generateOutputHVCBFile_input(const QString& fileName, Export
 
 
    // Broj redova za ispis
-   size_t rowCount = setting->getListaSignalaZaExport().front()->get_xData_izl().size();
+   size_t rowCount = pAnsamblSignala->dajSignalPoImenu(setting->getListaSignalaZaExport().front())->get_xData_izl().size();
 
    //OVDJE MOZE BITI PROBLEM ZBOG FORMATA JER NE MORAJU SVI SIGNALI BITI ISTE DUZINE I OBLIKA (HVCB?)
    // Ispis podataka
    for (size_t row = 0; row < rowCount; ++row) {
        // Prva kolona je xDataIzl, samo prvi signal
-       outFile << setting->getListaSignalaZaExport().front()->get_xData_izl()[row];
+       outFile << pAnsamblSignala->dajSignalPoImenu(setting->getListaSignalaZaExport().front())->get_xData_izl(row);
 
-       // Ostale kolone su yDataIzl za svaki signal
-       for (Signal* signal : setting->getListaSignalaZaExport()) {
-           outFile << "\t" << signal->get_yData_izl()[row];
-       }
+
+      for (ulong i=0; i<setting->getListaSignalaZaExport().size(); i++)
+      {
+
+         outFile << "\t" << pAnsamblSignala->dajSignalPoImenu(setting->getListaSignalaZaExport()[i])->get_yData_izl(row);
+      }
 
        outFile << "\n";
    }
