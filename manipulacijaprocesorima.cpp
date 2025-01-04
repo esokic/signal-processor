@@ -13,6 +13,8 @@ ManipulacijaProcesorima::ManipulacijaProcesorima(QWidget *parent) :
     defProc->setIme("------");
     pDefaultniProcesor = defProc;
 
+    dodajProcesor(pDefaultniProcesor);
+
     // Postavljanje broja redova i kolona
 
     ui->tableWidget_tabelaProcesora->setRowCount(static_cast<int>(vektorProcesora.size()));
@@ -33,6 +35,7 @@ ManipulacijaProcesorima::ManipulacijaProcesorima(QWidget *parent) :
 
     connect(ui->tableWidget_tabelaProcesora, &QTableWidget::itemSelectionChanged, this, &ManipulacijaProcesorima::onItemSelectionChanged);
     connect(ui->tableWidget_tabelaProcesora, &QTableWidget::cellDoubleClicked, this, &ManipulacijaProcesorima::onTableItemDoubleClicked);
+
 }
 
 ManipulacijaProcesorima::~ManipulacijaProcesorima()
@@ -51,6 +54,7 @@ void ManipulacijaProcesorima::populateTableWidget() {
         ui->tableWidget_tabelaProcesora->setItem(static_cast<int>(row), 0, nameItem);
         ui->tableWidget_tabelaProcesora->setItem(static_cast<int>(row), 1, descriptionItem);
     }
+    ui->tableWidget_tabelaProcesora->resizeColumnsToContents();
 }
 
 void ManipulacijaProcesorima::onItemSelectionChanged() {

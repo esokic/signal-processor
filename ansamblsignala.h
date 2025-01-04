@@ -17,11 +17,15 @@ public:
         vektor_pSignala.clear(); // Očisti vektor
     }
 
-    //Getteri
-    //Ovo isto ukini - glupo je sve vracati
-    std::vector<Signal*> dajVektorSignala() {
-       // return vektor_pSignala;
+    void ocistiVisakSignala(QStringList listaNaziva)
+    {
+    vektor_pSignala.erase(std::remove_if(vektor_pSignala.begin(), vektor_pSignala.end(),
+        [&listaNaziva](const std::unique_ptr<Signal>& signal) {
+            return !listaNaziva.contains(signal->ime());
+        }),
+        vektor_pSignala.end());
     }
+    //Getteri
 
     Signal* dajSignal(ulong rbr) {         //Vraca pokazivac na Signal (iz vektora)
         if (rbr >= vektor_pSignala.size()) {

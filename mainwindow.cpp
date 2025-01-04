@@ -38,6 +38,8 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
 {
     // Očistite postojeće stavke u tableWidgetu
     QTableWidget *tableWidget = ui->tableWidget_Signali;
+
+
     tableWidget->clearContents();
     tableWidget->setRowCount(0);
     tableWidget->setColumnCount(6);
@@ -46,6 +48,7 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
     QStringList headers;
     headers << "Show" << "Signal name" << "Processor name" << "Refresh time" << "New signal name" << "Export to Excel (Yes/No)";
     ui->tableWidget_Signali->setHorizontalHeaderLabels(headers);
+    ui->tableWidget_Signali->resizeColumnsToContents();
 
     // Da se može odabrati samo jedan red
     ui->tableWidget_Signali->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -195,6 +198,7 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
 
             //Opcija brisanja prije ponovnog ucitavanja?
             //pAnsamblSignala->ocisti();
+            QStringList listaNaziva; //Pravi listu svih signala u novoucitanom fajlu
 
             matvar_t *matvar;
             while ((matvar = Mat_VarReadNext(mat)) != nullptr) {
@@ -206,21 +210,26 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
                 pSignal->ucitajSignalIzMatlabVarijable(matvar);
                 pSignal->setPointerNaProcesor(pManProc->getPointerNaDefaultniProcesor());
 
+                // Dodaj ime u listu ako nije prazno
+                QString ime = pSignal->ime();
+                if (!ime.isEmpty()) {
+                    listaNaziva.append(ime);
+                }
+
                 // Provjera da li signal sa istim imenom već postoji, ako postoji kopiraj podesenja od interesa
                 //ovo bi trebalo da bude opcija (ako zelis)
                 //postojeci signal je mozda signal sa istim imenom u ansamblu -
-                //OVA METODOLOGIJA NAZALOST SAMO DODAJE NOVE SIGNALE (moze ucitati "lazne")!!!!!!!!!!!!
+                //OVA METODOLOGIJA NAZALOST SAMO DODAJE NOVE SIGNALE (moze ucitati "lazne") pa su dole iskljuceni
                 Signal* postojeciSignal = ansamblSignala->dajSignalPoImenu(pSignal->ime());
                 if (postojeciSignal) {
-                    //std::cout << "ima vec ovaj" << std::endl;
-                    //postojeciSignal->kopirajPodesenjaIzDrugogSignala(*pSignal);
+
                     //ovdje se pravi fuzija - podaci iz pSignala su novi, a postojeciSignal stari (ima i lokacija)
                     //MERGE - izdvoji u odvojenu funkciju ------------------------------------------------------------
                     postojeciSignal->set_xData_izl(pSignal->get_xData_izl());
                     postojeciSignal->set_xData_ul(pSignal->get_xData_ul());
                     postojeciSignal->set_yData_izl(pSignal->get_yData_izl());
                     postojeciSignal->set_yData_ul(pSignal->get_yData_ul());
-                    postojeciSignal->setMarkerValue(pSignal->getMarkerValue());
+                    //postojeciSignal->setMarkerValue(pSignal->getMarkerValue());
                     //ostalo je jos podesenje da je marker podesen?
                     //OVERWRITE?
                     //------------------------------------------------------------
@@ -232,6 +241,10 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
                 // Ne zaboravite osloboditi varijablu nakon što završite s njom
                 Mat_VarFree(matvar);
             }
+
+            //Sad pocisti signale koji nisu u listi naziva
+            pAnsamblSignala->ocistiVisakSignala(listaNaziva);
+
 
             //Ovo je malo varanje ali nemam druge varijante
              connect(pAnsamblSignala, &AnsamblSignala::changedMarkerValue, pManProc, &ManipulacijaProcesorima::onChangedMarkerValue);
@@ -255,6 +268,7 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
 
             //I ovo osvjezavanje isto!!!!!!!!!!!!!!!!!!!!!!
             onItemSelectionChanged();
+            onOdabraniPrikazChanged();
             //-------------------------------------------------------------------------
 
 
