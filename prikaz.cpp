@@ -40,6 +40,12 @@ void Prikaz::osvjeziPrikaz()
 
     // Ažuriranje prikaza
     qplot->rescaleAxes();
+
+    if (tip_prikaza == "izl")
+    {
+        //Zbog milisekundi se mnozi sa 0.001
+        qplot->xAxis->setRange(get_initTime()*0.001,get_initTime()*0.001+get_durationTime()*0.001);
+    }
     qplot->replot();
 
     std::cout << "trenutni graph count" << qplot->graphCount() << std::endl;
@@ -65,6 +71,7 @@ void Prikaz::podesiQCPgraphZaSignal(QCPGraph*& graph, Signal* pSignal, QString t
             graph->setAdaptiveSampling(true);
             QVector<double> x = pSignal->get_xData_izl_resampled();
             QVector<double> y = pSignal->get_yData_izl_resampled();
+
             int signal_pos = pSignal->get_signal_position();
             double signal_size = pSignal->get_signal_size();
 
@@ -77,6 +84,7 @@ void Prikaz::podesiQCPgraphZaSignal(QCPGraph*& graph, Signal* pSignal, QString t
             for (int i = 0; i < y.size(); ++i) {
                 scaled_y[i] = signal_pos + ((y[i] - mean) * scale_factor); // Uklanjanje DC, skaliranje, i shiftanje
             }
+
 
             graph->setData(x, scaled_y, true);
 

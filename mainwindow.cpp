@@ -19,6 +19,22 @@ MainWindow::MainWindow(QWidget *parent)
     prikaz1.setPointerQPlot(ui->mojCustomPlot1);
     prikaz2.setPointerQPlot(ui->mojCustomPlot2);
 
+    //Ovo izbaciti u odvojen dio -------------------------------
+    // Time Init signala
+    connect(ui->lineEdit_initTime, &QLineEdit::editingFinished, [this]() {
+        this->prikaz2.set_initTime(ui->lineEdit_initTime->text().toDouble());  // Postavljanje nove pozicije signala
+        //OVO VIDJETI DA LI JE OPTIMALNO DA SE NE DUPLIRA
+        this->onOdabraniPrikazChanged();
+    });
+
+    // Time Duration signala
+    connect(ui->lineEdit_duration, &QLineEdit::editingFinished, [this]() {
+        this->prikaz2.set_durationTime(ui->lineEdit_duration->text().toDouble());  // Postavljanje nove pozicije signala
+        //OVO VIDJETI DA LI JE OPTIMALNO DA SE NE DUPLIRA
+        this->onOdabraniPrikazChanged();
+    });
+    //--------------------------------
+
 }
 
 

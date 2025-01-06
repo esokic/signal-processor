@@ -22,6 +22,11 @@ public:
     QString getTipPrikaza(){return tip_prikaza;}
     void setTipPrikaza(QString _tp){tip_prikaza = _tp;}
 
+    double get_initTime(){return initTime;}
+    double get_durationTime(){return durationTime;}
+
+    void set_initTime(double _t){initTime = _t;}
+    void set_durationTime(double _t){if (_t>0) {durationTime = _t;}}
 
 
 signals:
@@ -43,6 +48,10 @@ private:
        double xmax = 1000.0;
        double ymin = 0.0;
        double ymax = 40000.0;
+
+       //Ovo se tice prikaza na drugom dijagramu
+       double initTime = 0.0;
+       double durationTime = 400.0;
 
 
 
