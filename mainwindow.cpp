@@ -80,15 +80,19 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
         // 3. Position(%) signala
         QLineEdit *signalPositionEdit = new QLineEdit(QString::number(signal->get_signal_position()));
         tableWidget->setCellWidget(static_cast<int>(row), 2, signalPositionEdit);
-        connect(signalPositionEdit, &QLineEdit::textChanged, [signal, signalPositionEdit]() {
+        connect(signalPositionEdit, &QLineEdit::editingFinished, [signal, signalPositionEdit,this]() {
             signal->set_signal_position(signalPositionEdit->text().toInt());  // Postavljanje nove pozicije signala
+            //OVO VIDJETI DA LI JE OPTIMALNO DA SE NE DUPLIRA
+            this->onOdabraniPrikazChanged();
         });
 
         // 4. Size(%) signala
         QLineEdit *signalSizeEdit = new QLineEdit(QString::number(signal->get_signal_size()));
         tableWidget->setCellWidget(static_cast<int>(row), 3, signalSizeEdit);
-        connect(signalSizeEdit, &QLineEdit::textChanged, [signal, signalSizeEdit]() {
-            signal->set_signal_size(signalSizeEdit->text().toInt());  // Postavljanje novog size-a signala
+        connect(signalSizeEdit, &QLineEdit::editingFinished, [signal, signalSizeEdit,this]() {
+            signal->set_signal_size(signalSizeEdit->text().toDouble());  // Postavljanje novog size-a signala
+            //OVO VIDJETI DA LI JE OPTIMALNO DA SE NE DUPLIRA
+            this->onOdabraniPrikazChanged();
         });
 
         // 5. Oznaka procesora
@@ -105,7 +109,7 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
         // 7. "New name" editable field
         QLineEdit *newNameEdit = new QLineEdit(signal->getNewName());
         tableWidget->setCellWidget(static_cast<int>(row), 6, newNameEdit);
-        connect(newNameEdit, &QLineEdit::textChanged, [signal, newNameEdit]() {
+        connect(newNameEdit, &QLineEdit::editingFinished, [signal, newNameEdit]() {
             signal->set_novoIme(newNameEdit->text());  // Postavljanje novog imena na signal
         });
 
@@ -150,7 +154,7 @@ void MainWindow::onItemSelectionChanged() {
 
 
 
-//Stara verzija koja je omogucavala promjenu prikaza (za selektovanje i crtanje samo jednog dijagrama)
+
 void MainWindow::onOdabraniPrikazChanged() {
 
     // Očisti prikaz za oba objekta

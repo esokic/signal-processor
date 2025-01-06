@@ -57,7 +57,7 @@ public:
     bool isMarkedForPrikaz(){return oznacen_za_prikaz;}
 
     int get_signal_position(){return signal_position;}
-    int get_signal_size(){return signal_size;}
+    double get_signal_size(){return signal_size;}
 
     //setteri
     //Sluzi za podesavanje prikaza ovog signala
@@ -74,8 +74,10 @@ public:
     void setMarkedForExport(bool _smfe){oznacen_za_export = _smfe;}
     void setMarkedForPrikaz(bool _smfe){oznacen_za_prikaz = _smfe;}
 
-    void set_signal_position(int _pos){if ((_pos>=0)&&(_pos<=100)) signal_position = _pos;}
-    void set_signal_size(int _percent){if ((_percent>0)&&(_percent<=10000)) signal_size = _percent;}
+    void set_signal_position(int _pos){
+        if ((_pos>=0)&&(_pos<=100)) signal_position = _pos;
+    }
+    void set_signal_size(double _percent){if ((_percent>0)&&(_percent<=10000)) signal_size = _percent;}
 
     void setPointerNaProcesor(Procesor* _pProcesor){pProcesor = _pProcesor;}
     //Procesor* getPointerNaProcesor(){return pProcesor;}
@@ -103,7 +105,7 @@ private:
 
     //Parametri za prikaz koji su kompatibilni sa KEMA vieverom
     int signal_position = 50; //Broj koji ide u procentima i odnosi se na polozaj grafa (0 dno, 100 vrh)
-    int signal_size = 100; //Skaliranje grafika (u procentima) (100% je normalno)
+    double signal_size = 100; //Skaliranje grafika (u procentima) (100% je normalno)
 
 
     Procesor* pProcesor = nullptr;

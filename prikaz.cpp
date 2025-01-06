@@ -63,7 +63,24 @@ void Prikaz::podesiQCPgraphZaSignal(QCPGraph*& graph, Signal* pSignal, QString t
 
         } else if (tip_grafika == "izl") {
             graph->setAdaptiveSampling(true);
-            graph->setData(pSignal->get_xData_izl_resampled(), pSignal->get_yData_izl_resampled(), true);
+            QVector<double> x = pSignal->get_xData_izl_resampled();
+            QVector<double> y = pSignal->get_yData_izl_resampled();
+            int signal_pos = pSignal->get_signal_position();
+            double signal_size = pSignal->get_signal_size();
+
+            // Izračunavanje srednje vrijednosti signala
+            double mean = std::accumulate(y.begin(), y.end(), 0.0) / y.size();
+
+            // Uklanjanje istosmjerne komponente i skaliranje
+            QVector<double> scaled_y(y.size());
+            double scale_factor = signal_size / 10.0; // Skaliranje prema signal_size
+            for (int i = 0; i < y.size(); ++i) {
+                scaled_y[i] = signal_pos + ((y[i] - mean) * scale_factor); // Uklanjanje DC, skaliranje, i shiftanje
+            }
+
+            graph->setData(x, scaled_y, true);
+
+            //graph->setData(x,y, true);
         }
 
         graph->setLineStyle(QCPGraph::lsLine);
