@@ -43,7 +43,18 @@ void Signal::ucitajSignalIzMatlabVarijable(matvar_t* matvar)
             {
                 MarkerValue = matrica_C_Double[0][i];
                 markerValueAssigned = true;
+                //Prosiriti ovo jos da se moze nacrtati
+                xData_ul.push_back(xData_ul[0]);
+                yData_ul.clear();
+                yData_ul.push_back(-10000.0);
+                yData_ul.push_back(10000.0);
             }
+        }
+
+        //Ako se mjeri u milisekundama - ovo vidjeti da li da se transformira ili ne?
+        for (int i=0; i<xData_ul.size(); i++)
+        {
+            xData_ul[i] = xData_ul[i]*1000.0;
         }
         xData_izl = xData_ul;
         yData_izl = yData_ul;

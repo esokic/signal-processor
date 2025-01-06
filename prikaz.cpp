@@ -43,27 +43,48 @@ void Prikaz::osvjeziPrikaz()
 
     if (tip_prikaza == "izl")
     {
-        //Dodavanje koncanice
-
-        // Kreirajte graf
-        QCPGraph* graf_koncanica = qplot->addGraph();
-
+        //Dodavanje koncanice - 1 ---------------------------------------------------
+        QCPGraph* graf_koncanica_1 = qplot->addGraph();
         // Dodajte podatke za vertikalnu liniju od [vrij, -200] do [vrij, +200]
         QVector<double> x(2), y(2);
-        x[0] = get_koncanica()*0.001;  // x koordinata početne točke
-        x[1] = get_koncanica()*0.001;  // x koordinata krajnje točke
+        //x[0] = get_koncanica()*0.001;  // x koordinata početne točke
+        //x[1] = get_koncanica()*0.001;  // x koordinata krajnje točke
+        x[0] = get_koncanica_1();  // x koordinata početne točke
+        x[1] = get_koncanica_1();  // x koordinata krajnje točke
         y[0] = -10000;  // y koordinata početne točke
         y[1] = 10000;   // y koordinata krajnje točke
-
         // Postavite podatke za graf
-        graf_koncanica->setData(x, y);
-
+        graf_koncanica_1->setData(x, y);
         // Postavite liniju kao crtanu (dashed) i crvene boje
-        graf_koncanica->setPen(QPen(Qt::red, 2, Qt::DashLine));
-        graf_koncanica->setName("Cursor");
-
+        graf_koncanica_1->setPen(QPen(Qt::red, 2, Qt::DashLine));
+        graf_koncanica_1->setName("Cursor 1");
         //Zbog milisekundi se mnozi sa 0.001
-        qplot->xAxis->setRange(get_initTime()*0.001,get_initTime()*0.001+get_durationTime()*0.001);
+        //qplot->xAxis->setRange(get_initTime()*0.001,get_initTime()*0.001+get_durationTime()*0.001);
+
+        //Dodavanje koncanice - 1 ---------------------------------------------------
+        QCPGraph* graf_koncanica_2= qplot->addGraph();
+        // Dodajte podatke za vertikalnu liniju od [vrij, -200] do [vrij, +200]
+        QVector<double> xx(2), yy(2);
+        //x[0] = get_koncanica()*0.001;  // x koordinata početne točke
+        //x[1] = get_koncanica()*0.001;  // x koordinata krajnje točke
+        xx[0] = get_koncanica_2();  // x koordinata početne točke
+        xx[1] = get_koncanica_2();  // x koordinata krajnje točke
+        yy[0] = -10000;  // y koordinata početne točke
+        yy[1] = 10000;   // y koordinata krajnje točke
+        // Postavite podatke za graf
+        graf_koncanica_2->setData(xx, yy);
+        // Postavite liniju kao crtanu (dashed) i crvene boje
+        graf_koncanica_2->setPen(QPen(Qt::red, 2, Qt::DashLine));
+        graf_koncanica_2->setName("Cursor 2");
+        //Zbog milisekundi se mnozi sa 0.001
+        //qplot->xAxis->setRange(get_initTime()*0.001,get_initTime()*0.001+get_durationTime()*0.001);
+
+
+
+
+
+        qplot->xAxis->setRange(get_initTime(),get_initTime()+get_durationTime());
+        qplot->yAxis->setRange(0,100);
     }
     qplot->replot();
 
@@ -95,7 +116,9 @@ void Prikaz::podesiQCPgraphZaSignal(QCPGraph*& graph, Signal* pSignal, QString t
             QVector<double> x;
             QVector<double> y;
             //Novi pristup:
-            pSignal->get_xData_yData_from_to(x, y, 0.001*get_initTime(), 0.001*(get_initTime()+get_durationTime()));
+            //pSignal->get_xData_yData_from_to(x, y, 0.001*get_initTime(), 0.001*(get_initTime()+get_durationTime()));
+            pSignal->get_xData_yData_from_to(x, y, get_initTime(), (get_initTime()+get_durationTime()));
+
 
 
             int signal_pos = pSignal->get_signal_position();
@@ -136,16 +159,16 @@ void Prikaz::inicijalizirajKoncanicu()
     connect(horizontalSlider_koncanica, &QSlider::valueChanged, this, [&]() {
         double newValue = get_min_koncanica() + (get_max_koncanica() - get_min_koncanica()) *
                           horizontalSlider_koncanica->value() / 100.0;
-        set_koncanica(newValue);
+        set_koncanica_1(newValue);
         doubleSpinBox_koncanica->blockSignals(true);
-        doubleSpinBox_koncanica->setValue(get_koncanica());
+        doubleSpinBox_koncanica->setValue(get_koncanica_1());
         doubleSpinBox_koncanica->blockSignals(false);
         koncanicaOsvjezena();
     });
 
     connect(doubleSpinBox_koncanica, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [&](double newValue) {
-        set_koncanica(newValue);
-        int sliderValue = static_cast<int>((get_koncanica() - get_min_koncanica()) / (get_max_koncanica() - get_min_koncanica()) * 100.0);
+        set_koncanica_1(newValue);
+        int sliderValue = static_cast<int>((get_koncanica_1() - get_min_koncanica()) / (get_max_koncanica() - get_min_koncanica()) * 100.0);
         horizontalSlider_koncanica->blockSignals(true);
         horizontalSlider_koncanica->setValue(sliderValue);
         horizontalSlider_koncanica->blockSignals(false);
@@ -154,9 +177,104 @@ void Prikaz::inicijalizirajKoncanicu()
 
 }
 
+void Prikaz::inicijalizirajKoncanicu_2()
+{
+
+    // Podesite slider i spin box granice
+    horizontalSlider_koncanica_2->setRange(0, 100);  // Slider radi s cijelim brojevima
+    doubleSpinBox_koncanica_2->setRange(get_min_koncanica(), get_max_koncanica());
+    doubleSpinBox_koncanica_2->setDecimals(2);       // Preciznost za decimalne brojeve
+
+    // Povezivanje slidera i spinBox-a s varijablom
+    connect(horizontalSlider_koncanica_2, &QSlider::valueChanged, this, [&]() {
+        double newValue = get_min_koncanica() + (get_max_koncanica() - get_min_koncanica()) *
+                          horizontalSlider_koncanica_2->value() / 100.0;
+        set_koncanica_2(newValue);
+        doubleSpinBox_koncanica_2->blockSignals(true);
+        doubleSpinBox_koncanica_2->setValue(get_koncanica_2());
+        doubleSpinBox_koncanica_2->blockSignals(false);
+        koncanicaOsvjezena();
+    });
+
+    connect(doubleSpinBox_koncanica_2, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [&](double newValue) {
+        set_koncanica_2(newValue);
+        int sliderValue = static_cast<int>((get_koncanica_2() - get_min_koncanica()) / (get_max_koncanica() - get_min_koncanica()) * 100.0);
+        horizontalSlider_koncanica_2->blockSignals(true);
+        horizontalSlider_koncanica_2->setValue(sliderValue);
+        horizontalSlider_koncanica_2->blockSignals(false);
+        koncanicaOsvjezena();
+    });
+
+}
+
 // Ažuriranje granica pri promjeni min_koncanica ili max_koncanica
 void Prikaz::azurirajGraniceKoncanice() {
     doubleSpinBox_koncanica->setRange(get_min_koncanica(), get_max_koncanica());
-    double sliderValue = (get_koncanica() - get_min_koncanica()) / (get_max_koncanica() - get_min_koncanica()) * 100.0;
+    double sliderValue = (get_koncanica_1() - get_min_koncanica()) / (get_max_koncanica() - get_min_koncanica()) * 100.0;
     horizontalSlider_koncanica->setValue(static_cast<int>(sliderValue));
+
+    doubleSpinBox_koncanica_2->setRange(get_min_koncanica(), get_max_koncanica());
+    double sliderValue_2 = (get_koncanica_2() - get_min_koncanica()) / (get_max_koncanica() - get_min_koncanica()) * 100.0;
+    horizontalSlider_koncanica_2->setValue(static_cast<int>(sliderValue_2));
 };
+
+
+
+void Prikaz::osvjeziTabeluKoncanica()
+{
+    tabelaTrenutnaKoncanica->clearContents();
+    tabelaTrenutnaKoncanica->setRowCount(4);
+    tabelaTrenutnaKoncanica->setColumnCount(vektor_pSignala.size()+2);
+
+
+    QTableWidgetItem *dateItem1 = new QTableWidgetItem("Cursor 1");
+    dateItem1->setFlags(dateItem1->flags() & ~Qt::ItemIsEditable);
+    tabelaTrenutnaKoncanica->setItem(1, 0, dateItem1);
+
+
+    QTableWidgetItem *dateItem2 = new QTableWidgetItem("Cursor 2");
+    dateItem2->setFlags(dateItem2->flags() & ~Qt::ItemIsEditable);
+    tabelaTrenutnaKoncanica->setItem(2, 0, dateItem2);
+
+    QTableWidgetItem *dateItem3 = new QTableWidgetItem("Diff");
+    dateItem3->setFlags(dateItem3->flags() & ~Qt::ItemIsEditable);
+    tabelaTrenutnaKoncanica->setItem(3, 0, dateItem3);
+
+
+
+    QTableWidgetItem* item0 = tabelaTrenutnaKoncanica->item(0, 1);
+    if (!item0) {
+        item0 = new QTableWidgetItem();
+        tabelaTrenutnaKoncanica->setItem(0, 1, item0);
+    }
+    item0->setText("Time [ms]");
+
+    QTableWidgetItem* item = tabelaTrenutnaKoncanica->item(1, 1);
+    if (!item) {
+        item = new QTableWidgetItem();
+        tabelaTrenutnaKoncanica->setItem(1, 1, item);
+    }
+    item->setText(QString::number(get_koncanica_1()));
+
+    QTableWidgetItem* item2 = tabelaTrenutnaKoncanica->item(2, 1);
+    if (!item2) {
+        item2 = new QTableWidgetItem();
+        tabelaTrenutnaKoncanica->setItem(2, 1, item2);
+    }
+    item2->setText(QString::number(get_koncanica_2()));
+
+    int row = 2;
+    //Sad popuni nazive signala
+    for (auto signal: vektor_pSignala)
+    {
+        QTableWidgetItem* item = tabelaTrenutnaKoncanica->item(0, row);
+        if (!item) {
+            item = new QTableWidgetItem();
+            tabelaTrenutnaKoncanica->setItem(0, row, item);
+        }
+        item->setText(signal->ime());
+        row++;
+    }
+
+    tabelaTrenutnaKoncanica->resizeColumnsToContents();
+}

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1740</width>
-    <height>743</height>
+    <height>847</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,7 +31,7 @@
     <property name="geometry">
      <rect>
       <x>1210</x>
-      <y>610</y>
+      <y>620</y>
       <width>521</width>
       <height>80</height>
      </rect>
@@ -120,11 +120,8 @@
       <height>26</height>
      </rect>
     </property>
-    <property name="stepType">
-     <enum>QAbstractSpinBox::DefaultStepType</enum>
-    </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -176,7 +173,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -284,6 +281,39 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QSlider" name="horizontalSlider_koncanica_2">
+    <property name="geometry">
+     <rect>
+      <x>1230</x>
+      <y>596</y>
+      <width>341</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="doubleSpinBox_koncanica_2">
+    <property name="geometry">
+     <rect>
+      <x>1590</x>
+      <y>590</y>
+      <width>131</width>
+      <height>26</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_SnapshotKoncanica">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>570</y>
+      <width>891</width>
+      <height>151</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

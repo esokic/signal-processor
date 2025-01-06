@@ -29,21 +29,28 @@ public:
         initTime = _t;
         min_koncanica = initTime;
         max_koncanica = initTime+durationTime;
-        if (koncanica<min_koncanica) koncanica = min_koncanica;
-        if (koncanica>max_koncanica) koncanica = max_koncanica;
+        if (koncanica_1<min_koncanica) koncanica_1 = min_koncanica;
+        if (koncanica_1>max_koncanica) koncanica_1 = max_koncanica;
+        if (koncanica_2<min_koncanica) koncanica_2 = min_koncanica;
+        if (koncanica_2>max_koncanica) koncanica_2 = max_koncanica;
+
         azurirajGraniceKoncanice();
     }
 
     void set_durationTime(double _t){
         if (_t>0) {durationTime = _t;}
         max_koncanica = initTime+durationTime;
-        if (koncanica<min_koncanica) koncanica = min_koncanica;
-        if (koncanica>max_koncanica) koncanica = max_koncanica;
+        if (koncanica_1<min_koncanica) koncanica_1 = min_koncanica;
+        if (koncanica_1>max_koncanica) koncanica_1 = max_koncanica;
+        if (koncanica_2<min_koncanica) koncanica_2 = min_koncanica;
+        if (koncanica_2>max_koncanica) koncanica_2 = max_koncanica;
         azurirajGraniceKoncanice();
     }
 
-    double get_koncanica(){return koncanica;}
-    void set_koncanica(double _v){koncanica = _v;}
+    double get_koncanica_1(){return koncanica_1;}
+    void set_koncanica_1(double _v){koncanica_1 = _v;}
+    double get_koncanica_2(){return koncanica_2;}
+    void set_koncanica_2(double _v){koncanica_2 = _v;}
     double get_min_koncanica(){return min_koncanica;}
     void set_min_koncanica(double _v){min_koncanica = _v;}
     double get_max_koncanica(){return max_koncanica;}
@@ -54,8 +61,15 @@ public:
 
     void setPointerQDoubleSpinBox(QDoubleSpinBox* _qspinbox){doubleSpinBox_koncanica = _qspinbox;}
     void setPointerQSlider(QSlider* _qhorslid){horizontalSlider_koncanica = _qhorslid;}
+    void setPointerQDoubleSpinBox_2(QDoubleSpinBox* _qspinbox){doubleSpinBox_koncanica_2 = _qspinbox;}
+    void setPointerQSlider_2(QSlider* _qhorslid){horizontalSlider_koncanica_2 = _qhorslid;}
     void inicijalizirajKoncanicu();
+    void inicijalizirajKoncanicu_2();
 
+    void setPointerTableWidget_trenutnaKoncanica(QTableWidget* tab){tabelaTrenutnaKoncanica = tab;}
+    void inicijaliziraj_tabelaTrenutnaKoncanica();
+
+    void osvjeziTabeluKoncanica();
 
 
 signals:
@@ -71,6 +85,9 @@ private:
 
        QDoubleSpinBox *doubleSpinBox_koncanica;
        QSlider *horizontalSlider_koncanica;
+       QDoubleSpinBox *doubleSpinBox_koncanica_2;
+       QSlider *horizontalSlider_koncanica_2;
+       QTableWidget *tabelaTrenutnaKoncanica;
 
        QString tip_prikaza = "ul";
 
@@ -86,12 +103,16 @@ private:
        double durationTime = 400.0;
 
        //Vezano za koncanicu
-       double koncanica = 0.0;
+       double koncanica_1 = 0.0;
+       double koncanica_2 = 0.0;
        double min_koncanica = 0.0;
        double max_koncanica = 100.0;
 
        void azurirajGraniceKoncanice();
-       void koncanicaOsvjezena(){osvjeziPrikaz();}  //OVO mozda treba optimizirati
+       void koncanicaOsvjezena(){
+           osvjeziPrikaz();
+           osvjeziTabeluKoncanica();
+       }  //OVO mozda treba optimizirati
 
 
        // Lista boja koje će se koristiti za signale

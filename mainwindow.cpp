@@ -18,10 +18,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     prikaz1.setPointerQPlot(ui->mojCustomPlot1);
     prikaz2.setPointerQPlot(ui->mojCustomPlot2);
+
+    prikaz2.setPointerTableWidget_trenutnaKoncanica(ui->tableWidget_SnapshotKoncanica);
+    //prikaz2.inicijaliziraj_tabelaTrenutnaKoncanica();
+
     prikaz2.setPointerQDoubleSpinBox(ui->doubleSpinBox_koncanica);
     prikaz2.setPointerQSlider(ui->horizontalSlider_koncanica);
-
+    prikaz2.setPointerQDoubleSpinBox_2(ui->doubleSpinBox_koncanica_2);
+    prikaz2.setPointerQSlider_2(ui->horizontalSlider_koncanica_2);
     prikaz2.inicijalizirajKoncanicu();
+    prikaz2.inicijalizirajKoncanicu_2();
 
     //Ovo izbaciti u odvojen dio -------------------------------
     // Time Init signala
@@ -199,6 +205,8 @@ void MainWindow::onOdabraniPrikazChanged() {
     // Osveži prikaze
   prikaz1.osvjeziPrikaz();
   prikaz2.osvjeziPrikaz();
+
+  prikaz2.osvjeziTabeluKoncanica();
 }
 
 
