@@ -18,6 +18,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     prikaz1.setPointerQPlot(ui->mojCustomPlot1);
     prikaz2.setPointerQPlot(ui->mojCustomPlot2);
+    prikaz2.setPointerQDoubleSpinBox(ui->doubleSpinBox_koncanica);
+    prikaz2.setPointerQSlider(ui->horizontalSlider_koncanica);
+
+    prikaz2.inicijalizirajKoncanicu();
 
     //Ovo izbaciti u odvojen dio -------------------------------
     // Time Init signala
@@ -34,6 +38,9 @@ MainWindow::MainWindow(QWidget *parent)
         this->onOdabraniPrikazChanged();
     });
     //--------------------------------
+
+
+
 
 }
 

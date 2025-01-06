@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1740</width>
-    <height>719</height>
+    <height>743</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,8 +30,8 @@
    <widget class="QGroupBox" name="groupBox_viewSetup">
     <property name="geometry">
      <rect>
-      <x>1200</x>
-      <y>580</y>
+      <x>1210</x>
+      <y>610</y>
       <width>521</width>
       <height>80</height>
      </rect>
@@ -97,6 +97,32 @@
       <string>Init. time [ms]:</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QSlider" name="horizontalSlider_koncanica">
+    <property name="geometry">
+     <rect>
+      <x>1230</x>
+      <y>570</y>
+      <width>341</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="doubleSpinBox_koncanica">
+    <property name="geometry">
+     <rect>
+      <x>1590</x>
+      <y>564</y>
+      <width>131</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::DefaultStepType</enum>
+    </property>
    </widget>
    <widget class="QWidget" name="">
     <property name="geometry">
