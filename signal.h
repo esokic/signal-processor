@@ -40,29 +40,15 @@ public:
     double get_yData_izl(int row){if (row < xData_izl.size()) return xData_izl[row]; else return -5000.0;}
 
 
-    #define br_samplova_za_prikaz 10000
+    #define br_samplova_za_prikaz 2000
     QVector<double> get_xData_ul_resampled() {return resampleData(xData_ul, br_samplova_za_prikaz);}
     QVector<double> get_yData_ul_resampled() {return resampleData(yData_ul, br_samplova_za_prikaz);}
     QVector<double> get_xData_izl_resampled() {return resampleData(xData_izl, br_samplova_za_prikaz);}
     QVector<double> get_yData_izl_resampled() {return resampleData(yData_izl, br_samplova_za_prikaz);}
 
-    void get_xData_yData_from_to(QVector<double>& xData_cutted, QVector<double>& yData_cutted, double start_time, double end_time)
-    {
-        // Provjera da li su ulazni vektori validni
-  //      if (xData_izl || yData_izl || xData_izl.size() != yData_izl.size()) {
-  //          return;  // Možete dodati i logiku za greške ako su podaci nevalidni
-  //      }
+    void get_xData_yData_from_to(QVector<double>& xData_cutted, QVector<double>& yData_cutted, double start_time, double end_time);
+    double vratiVrijednostSignalaUtrenutku(double time_x);
 
-        // Iteriranje kroz podatke
-        for (int i = 0; i < xData_izl.size(); ++i) {
-            double time = xData_izl.at(i);
-            if (time >= start_time && time <= end_time) {
-                // Dodavanje odgovarajućih podataka u ciljne vektore
-                xData_cutted.append(time);
-                yData_cutted.append(yData_izl.at(i));
-            }
-        }
-    }
 
     QVector<double> resampleData(const QVector<double>& data, int N);
 

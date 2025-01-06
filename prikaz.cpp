@@ -263,16 +263,52 @@ void Prikaz::osvjeziTabeluKoncanica()
     }
     item2->setText(QString::number(get_koncanica_2()));
 
+    QTableWidgetItem* item3 = tabelaTrenutnaKoncanica->item(3, 1);
+    if (!item3) {
+        item3 = new QTableWidgetItem();
+        tabelaTrenutnaKoncanica->setItem(3, 1, item3);
+    }
+    item3->setText(QString::number(get_koncanica_1()-get_koncanica_2()));
+
+
+
     int row = 2;
-    //Sad popuni nazive signala
     for (auto signal: vektor_pSignala)
     {
+        //Sad popuni nazive signala
         QTableWidgetItem* item = tabelaTrenutnaKoncanica->item(0, row);
         if (!item) {
             item = new QTableWidgetItem();
             tabelaTrenutnaKoncanica->setItem(0, row, item);
         }
         item->setText(signal->ime());
+
+        QTableWidgetItem* item1 = tabelaTrenutnaKoncanica->item(1, row);
+        if (!item1) {
+            item1 = new QTableWidgetItem();
+            tabelaTrenutnaKoncanica->setItem(1, row, item1);
+        }
+        double vrij_signala_t1 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_1());
+        item1->setText(QString::number(vrij_signala_t1));
+
+        QTableWidgetItem* item2 = tabelaTrenutnaKoncanica->item(2, row);
+        if (!item2) {
+            item2 = new QTableWidgetItem();
+            tabelaTrenutnaKoncanica->setItem(2, row, item2);
+        }
+        double vrij_signala_t2 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_2());
+        item2->setText(QString::number(vrij_signala_t2));
+
+        QTableWidgetItem* item3 = tabelaTrenutnaKoncanica->item(3, row);
+        if (!item3) {
+            item3 = new QTableWidgetItem();
+            tabelaTrenutnaKoncanica->setItem(3, row, item3);
+        }
+        item3->setText(QString::number(vrij_signala_t1-vrij_signala_t2));
+
+
+
+
         row++;
     }
 

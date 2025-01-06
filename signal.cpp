@@ -141,6 +141,47 @@ void Signal::kopirajPodesenjaIzDrugogSignala(const Signal& drugiSignal)
     this->pProcesor = drugiSignal.pProcesor;  // Pokazivač na isti procesor, ne kopiramo objekat
 }
 
+void Signal::get_xData_yData_from_to(QVector<double>& xData_cutted, QVector<double>& yData_cutted, double start_time, double end_time)
+{
+// Iteriranje kroz podatke
+    for (int i = 0; i < xData_izl.size(); ++i) {
+        double time = xData_izl.at(i);
+        if (time >= start_time && time <= end_time) {
+            // Dodavanje odgovarajućih podataka u ciljne vektore
+            xData_cutted.append(time);
+            yData_cutted.append(yData_izl.at(i));
+        }
+    }
+}
+
+double Signal::vratiVrijednostSignalaUtrenutku(double time_x) {
+
+    // Pronađi indeks najbliže vrijednosti u xData_izl
+    auto it = std::lower_bound(xData_izl.begin(), xData_izl.end(), time_x);
+    int idx = std::distance(xData_izl.begin(), it);
+
+    // Ako je tačna vrijednost pronađena, vrati odgovarajući y
+    if (idx < xData_izl.size() && xData_izl[idx] == time_x) {
+        return yData_izl[idx];
+    }
+
+    // Interpolacija između susjednih tačaka
+    int idx1 = std::max(0, idx - 1);       // Donji indeks
+    int idx2 = std::min(idx, xData_izl.size() - 1); // Gornji indeks
+
+    if (idx1 == idx2) {
+        return yData_izl[idx1]; // Samo jedna tačka, vrati njenu vrijednost
+    }
+
+    double x1 = xData_izl[idx1];
+    double x2 = xData_izl[idx2];
+    double y1 = yData_izl[idx1];
+    double y2 = yData_izl[idx2];
+
+    // Linearna interpolacija
+    return y1 + (y2 - y1) * (time_x - x1) / (x2 - x1);
+}
+
 
 
 
