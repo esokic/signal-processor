@@ -21,6 +21,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    // Postavi uniformni stil (npr. Fusion stil je neutralan)
+    a.setStyle(QStyleFactory::create("Fusion"));
 
     ManipulacijaProcesorima manProc;
 
@@ -36,7 +38,7 @@ int main(int argc, char *argv[])
     glavniProzor.setPointerManipulacijaProcesora(&manProc);
     glavniProzor.setPointerSignalExport(&sigExp);
 
-    manProc.show();
+    //manProc.show();
     glavniProzor.show();
 
 
