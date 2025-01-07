@@ -29,10 +29,10 @@ public:
     void setPtrAnsamblSignala(AnsamblSignala* _pAnsamlbSignala){pAnsamblSignala = _pAnsamlbSignala;}
 
     //Podaci za snimanje (kod Prikaza):
-    double initTime = 0.0;
-    double durationTime = 400.0;
-    double koncanica_1 = 0.0;
-    double koncanica_2 = 0.0;
+    //double initTime = 0.0;
+    //double durationTime = 400.0;
+   // double koncanica_1 = 0.0;
+   // double koncanica_2 = 0.0;
 
 
     json to_json()  {
@@ -44,14 +44,11 @@ public:
           json signal_json = (pAnsamblSignala->dajSignal(i))->to_json();
           //  std::cout << "Signal JSON: " << signal_json.dump(4) << std::endl;
           signals_json.push_back(signal_json);
-
         }
-
-
-        return {{"initTime", initTime},
-                {"durationTime", durationTime},
-                {"koncanica_1", koncanica_1},
-                {"koncanica_2", koncanica_2},
+        return {{"initTime", prikaz->get_initTime()},
+                {"durationTime", prikaz->get_durationTime()},
+                {"koncanica_1", prikaz->get_koncanica_1()},
+                {"koncanica_2", prikaz->get_koncanica_2()},
                 {"signalLayouts", signals_json}};}
 
 
@@ -65,10 +62,28 @@ public:
     }
 
     void from_json(const json& j) {
-        safe_get(j, "initTime", initTime, 0.0);
-        safe_get(j, "durationTime", durationTime, 400.0);
-        safe_get(j, "koncanica_1", koncanica_1, 0.0);
-        safe_get(j, "koncanica_2", koncanica_2, 0.0);
+        double pom;
+        safe_get(j, "initTime", pom, 0.0); prikaz->set_initTime(pom);
+        safe_get(j, "durationTime", pom, 400.0); prikaz->set_durationTime(pom);
+        safe_get(j, "koncanica_1", pom, 0.0); prikaz->set_koncanica_1(pom);
+        safe_get(j, "koncanica_2", pom, 0.0); prikaz->set_koncanica_2(pom);
+
+        if (j.contains("signalLayouts")) {
+            for (const auto& s : j.at("signalLayouts")) {
+                if (s.contains("imeSignala")) {
+                        std::string imeSignala = s.at("imeSignala").get<std::string>();
+                        Signal* trazenisignal = pAnsamblSignala->dajSignalPoImenu(QString::fromStdString(imeSignala));
+                        if (trazenisignal!=nullptr)
+                        {
+                            trazenisignal->from_json(s);
+                        }
+                    } else {
+                        //std::cout << "Signal nema imeSignala!" << std::endl;
+                    }
+            }
+
+        }
+        //safe_get(j, "signalLayouts", signalLayout, NULL);
     }
 
 
@@ -82,13 +97,7 @@ public:
         }
     }
 
-    void refresh_layout()
-    {
-        initTime = prikaz->get_initTime();
-        durationTime = prikaz->get_durationTime();
-        koncanica_1 = prikaz->get_koncanica_1();
-        koncanica_2 = prikaz->get_koncanica_2();
-    }
+
 
     void import_from_file(const std::string& filename) {
         std::ifstream file(filename);

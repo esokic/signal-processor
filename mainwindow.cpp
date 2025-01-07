@@ -500,7 +500,7 @@ void MainWindow::on_pushButton_exportLayout_clicked()
     Layout layout;
     layout.setPtrAnsamblSignala(pAnsamblSignala);
     layout.setPrtPrikaz(&prikaz2);
-    layout.refresh_layout();
+    //layout.refresh_layout();
 
 
     //layout.min_koncanica = prikaz2.get_min_koncanica();
@@ -512,10 +512,13 @@ void MainWindow::on_pushButton_exportLayout_clicked()
 void MainWindow::on_pushButton_importLayout_clicked()
 {
     Layout loaded_layout;
+    loaded_layout.setPtrAnsamblSignala(pAnsamblSignala);
+    loaded_layout.setPrtPrikaz(&prikaz2);
     loaded_layout.import_from_file("layout.lt");
 
-    prikaz2.set_koncanica_1(loaded_layout.koncanica_1);
-    prikaz2.set_koncanica_2(loaded_layout.koncanica_2);
-    prikaz2.set_initTime(loaded_layout.initTime);
-    prikaz2.set_durationTime(loaded_layout.durationTime);
+    //I ovo osvjezavanje isto!!!!!!!!!!!!!!!!!!!!!!
+    onItemSelectionChanged();
+    onOdabraniPrikazChanged();
+
+
 }

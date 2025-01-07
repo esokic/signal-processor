@@ -129,17 +129,21 @@ public:
     }
 
     void from_json(const json& j) {
-        safe_get(j, "oznacen_za_export", oznacen_za_export, false);
-        safe_get(j, "oznacen_za_prikaz", oznacen_za_prikaz, false);
+        bool pom;
+        safe_get(j, "oznacen_za_export", pom, false); setMarkedForExport(pom);
+        safe_get(j, "oznacen_za_prikaz", pom, false); setMarkedForPrikaz(pom);
         std::string pom_novo_ime;
-        safe_get(j, "novoImeSignala", pom_novo_ime, QString("Unnamed").toStdString());
-        safe_get(j, "signal_position", signal_position, 50);
-        safe_get(j, "signal_size", signal_size, 100.0);
+        safe_get(j, "novoImeSignala", pom_novo_ime, QString("Unnamed").toStdString()); set_novoIme(QString::fromStdString(pom_novo_ime));
+        int pommie;
+        safe_get(j, "signal_position", pommie, 50); set_signal_position(pommie);
+        double pommie2;
+        safe_get(j, "signal_size", pommie2, 100.0); set_signal_size(pommie2);
         int bojaSignalaR(0),bojaSignalaG(0),bojaSignalaB(0);
         safe_get(j, "bojaSignalaR", bojaSignalaR, 0);
         safe_get(j, "bojaSignalaG", bojaSignalaG, 0);
         safe_get(j, "bojaSignalaB", bojaSignalaB, 0);
-        bojaSignala = QColor(bojaSignalaR, bojaSignalaG, bojaSignalaB);
+        setBojaSignala(QColor(bojaSignalaR, bojaSignalaG, bojaSignalaB));
+
     }
 
 
