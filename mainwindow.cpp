@@ -517,8 +517,14 @@ void MainWindow::on_pushButton_importLayout_clicked()
     loaded_layout.import_from_file("layout.lt");
 
     //I ovo osvjezavanje isto!!!!!!!!!!!!!!!!!!!!!!
+    populateTableWidget_zaSignale(pAnsamblSignala);
     onItemSelectionChanged();
     onOdabraniPrikazChanged();
 
+    prikaz2.osvjeziElementeNaFormi();
+
+    ui->lineEdit_initTime->setText(QString::number(prikaz2.get_initTime()));
+    ui->lineEdit_duration->setText(QString::number(prikaz2.get_durationTime()));
 
 }
+

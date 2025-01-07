@@ -377,3 +377,13 @@ QString Prikaz::getSnapshotAnnotation(QWidget *parent = nullptr) {
     }
     return QString(); // Vraća prazan string ako korisnik otkaže
 }
+
+
+void Prikaz::osvjeziElementeNaFormi()
+{
+    inicijalizirajKoncanicu();
+    inicijalizirajKoncanicu_2();
+    azurirajGraniceKoncanice();
+
+    koncanicaOsvjezena();
+}

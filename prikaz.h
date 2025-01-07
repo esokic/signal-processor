@@ -67,7 +67,7 @@ public:
     void inicijalizirajKoncanicu_2();
 
     void setPointerTableWidget_trenutnaKoncanica(QTableWidget* tab){tabelaTrenutnaKoncanica = tab;}
-    void inicijaliziraj_tabelaTrenutnaKoncanica();
+    //void inicijaliziraj_tabelaTrenutnaKoncanica();
 
     void osvjeziTabeluKoncanica();
 
@@ -75,6 +75,8 @@ public:
 
     void napraviSnapshotKoncanice(QString tekuciFajl);
     QString getSnapshotAnnotation(QWidget *parent);
+
+    void osvjeziElementeNaFormi();
 
 signals:
 
