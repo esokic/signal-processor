@@ -71,11 +71,11 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
 
     tableWidget->clearContents();
     tableWidget->setRowCount(0);
-    tableWidget->setColumnCount(8);
+    tableWidget->setColumnCount(7);
 
     // Postavite zaglavlja
     QStringList headers;
-    headers << "Show" << "Signal name" << "Position(%)" << "Size(%)" << "Processor name" << "Refresh time" << "New signal name" << "Export to Excel (Yes/No)";
+    headers << "Show" << "Signal name" << "Color" << "Position(%)" << "Size(%)" << "Export\nto Excel\n(Yes/No)" << "Applied Processor";// << "Refresh time" << "New signal name" << ;
     ui->tableWidget_Signali->setHorizontalHeaderLabels(headers);
     ui->tableWidget_Signali->resizeColumnsToContents();
 
@@ -96,7 +96,15 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
         // 1. Checkbox for prikaz
         QCheckBox *showCheckBox = new QCheckBox();
         showCheckBox->setChecked(signal->isMarkedForPrikaz());
-        tableWidget->setCellWidget(static_cast<int>(row), 0, showCheckBox);
+        // Centriranje
+        QWidget *containerWidget = new QWidget();
+        QHBoxLayout *layout = new QHBoxLayout(containerWidget);
+        layout->addWidget(showCheckBox);
+        layout->setAlignment(Qt::AlignCenter);
+        layout->setContentsMargins(0, 0, 0, 0);
+        containerWidget->setLayout(layout);
+        tableWidget->setCellWidget(static_cast<int>(row), 0, containerWidget);
+        // -----------
         connect(showCheckBox, &QCheckBox::toggled, [signal, showCheckBox]() {
             signal->setMarkedForPrikaz(showCheckBox->isChecked());  // Postavljanje statusa prikaza na signal
         });
@@ -106,29 +114,59 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
         QTableWidgetItem *nameItem = new QTableWidgetItem(signal->ime());
         tableWidget->setItem(static_cast<int>(row), 1, nameItem);
 
-        // 3. Position(%) signala
+        // 3. Color
+        QPushButton *colorButton = new QPushButton(" ");
+        QObject::connect(colorButton, &QPushButton::clicked, [=]() {
+            QColor color = QColorDialog::getColor(Qt::white, nullptr, "Select Color");
+            if (color.isValid()) {
+                signal->setBojaSignala(color);
+                colorButton->setStyleSheet(QString("background-color: %1; color: white;").arg(signal->getBojaSignala().name()));
+                this->onOdabraniPrikazChanged();
+            }
+        });
+        colorButton->setFixedWidth(50);
+        colorButton->setStyleSheet(QString("background-color: %1; color: white;").arg(signal->getBojaSignala().name()));
+        tableWidget->setCellWidget(row, 2, colorButton);
+
+        // 4. Position(%) signala
         QLineEdit *signalPositionEdit = new QLineEdit(QString::number(signal->get_signal_position()));
-        tableWidget->setCellWidget(static_cast<int>(row), 2, signalPositionEdit);
+        tableWidget->setCellWidget(static_cast<int>(row), 3, signalPositionEdit);
         connect(signalPositionEdit, &QLineEdit::editingFinished, [signal, signalPositionEdit,this]() {
             signal->set_signal_position(signalPositionEdit->text().toInt());  // Postavljanje nove pozicije signala
             //OVO VIDJETI DA LI JE OPTIMALNO DA SE NE DUPLIRA
             this->onOdabraniPrikazChanged();
         });
 
-        // 4. Size(%) signala
+        // 5. Size(%) signala
         QLineEdit *signalSizeEdit = new QLineEdit(QString::number(signal->get_signal_size()));
-        tableWidget->setCellWidget(static_cast<int>(row), 3, signalSizeEdit);
+        tableWidget->setCellWidget(static_cast<int>(row), 4, signalSizeEdit);
         connect(signalSizeEdit, &QLineEdit::editingFinished, [signal, signalSizeEdit,this]() {
             signal->set_signal_size(signalSizeEdit->text().toDouble());  // Postavljanje novog size-a signala
             //OVO VIDJETI DA LI JE OPTIMALNO DA SE NE DUPLIRA
             this->onOdabraniPrikazChanged();
         });
 
-        // 5. Oznaka procesora
+        // 6. Checkbox for export
+        QCheckBox *exportCheckBox = new QCheckBox();
+        exportCheckBox->setChecked(signal->isMarkedForExport());
+        // Centriranje
+        QWidget *containerWidget2 = new QWidget();
+        QHBoxLayout *layout2 = new QHBoxLayout(containerWidget2);
+        layout2->addWidget(exportCheckBox);
+        layout2->setAlignment(Qt::AlignCenter);
+        layout2->setContentsMargins(0, 0, 0, 0);
+        containerWidget2->setLayout(layout2);
+        // -----------
+        tableWidget->setCellWidget(static_cast<int>(row), 5, containerWidget2);
+        connect(exportCheckBox, &QCheckBox::toggled, [signal, exportCheckBox]() {
+            signal->setMarkedForExport(exportCheckBox->isChecked());  // Postavljanje statusa eksportovanja na signal
+        });
+
+        // 7. Oznaka procesora
         QTableWidgetItem *processorItem = new QTableWidgetItem(signal->getTrenutniProcesorIme());
         processorItem->setFlags(processorItem->flags() & ~Qt::ItemIsEditable);
-        tableWidget->setItem(static_cast<int>(row), 4, processorItem);
-
+        tableWidget->setItem(static_cast<int>(row), 6, processorItem);
+/*
         // 6. Datum i vrijeme osvježavanja
         QDateTime lastUpdate = signal->getTrenutniProcesorUpdateTime();
         QTableWidgetItem *dateItem = new QTableWidgetItem(lastUpdate.toString(Qt::DefaultLocaleShortDate));
@@ -141,14 +179,8 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
         connect(newNameEdit, &QLineEdit::editingFinished, [signal, newNameEdit]() {
             signal->set_novoIme(newNameEdit->text());  // Postavljanje novog imena na signal
         });
+*/
 
-        // 8. Checkbox for export
-        QCheckBox *exportCheckBox = new QCheckBox();
-        exportCheckBox->setChecked(signal->isMarkedForExport());
-        tableWidget->setCellWidget(static_cast<int>(row), 7, exportCheckBox);
-        connect(exportCheckBox, &QCheckBox::toggled, [signal, exportCheckBox]() {
-            signal->setMarkedForExport(exportCheckBox->isChecked());  // Postavljanje statusa eksportovanja na signal
-        });
     }
 
     // Povezivanje signala selekcije u tabeli sa odgovarajućim slotom

@@ -31,12 +31,12 @@ void Prikaz::osvjeziPrikaz()
     qplot->legend = legendica;
 
     // Dodavanje grafova
-    int index = 0;
+    //int index = 0;
     for (Signal* pSignal : vektor_pSignala) {
-        QColor boja = boje[index % boje.size()];
-        index++;
+        //QColor boja = boje[index % boje.size()];
+        //index++;
         QCPGraph* grafik = qplot->addGraph();
-        this->podesiQCPgraphZaSignal(grafik, pSignal, getTipPrikaza(), boja);
+        this->podesiQCPgraphZaSignal(grafik, pSignal, getTipPrikaza());
     }
 
     // Ažuriranje prikaza
@@ -94,7 +94,7 @@ void Prikaz::osvjeziPrikaz()
 
 
 
-void Prikaz::podesiQCPgraphZaSignal(QCPGraph*& graph, Signal* pSignal, QString tip_grafika, QColor boja)
+void Prikaz::podesiQCPgraphZaSignal(QCPGraph*& graph, Signal* pSignal, QString tip_grafika)
 {
         graph->setName(pSignal->ime());
         //Ovo je isto viska
@@ -143,7 +143,7 @@ void Prikaz::podesiQCPgraphZaSignal(QCPGraph*& graph, Signal* pSignal, QString t
 
         graph->setLineStyle(QCPGraph::lsLine);
         graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));
-        graph->setPen(boja);
+        graph->setPen(pSignal->getBojaSignala());
 
 }
 
@@ -281,6 +281,9 @@ void Prikaz::osvjeziTabeluKoncanica()
     for (int col = 0; col < columnCount; ++col) {
         tabelaTrenutnaKoncanica->setColumnWidth(col, 100);
     }
+
+    tabelaTrenutnaKoncanica->verticalHeader()->setVisible(false);
+    tabelaTrenutnaKoncanica->horizontalHeader()->setVisible(false);
 
     //tabelaTrenutnaKoncanica->resizeColumnsToContents();
 }

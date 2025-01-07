@@ -88,6 +88,11 @@ public:
 
     QString getTrenutniProcesorIme(){if(pProcesor!=nullptr){return pProcesor->getIme();}else{return "---------";}}
     QDateTime getTrenutniProcesorUpdateTime(){if(pProcesor!=nullptr){return pProcesor->getLastUpdateTime();}else{return QDateTime::currentDateTime();}}
+
+
+    QColor getBojaSignala(){return bojaSignala;}
+    void setBojaSignala(QColor _boja){bojaSignala = _boja;}
+
 private:
     QString imeSignala;                 //Npr. U1
     QString tipPodatka;                 //Npr. MAT_C_DOUBLE
@@ -113,6 +118,8 @@ private:
 
 
     Procesor* pProcesor = nullptr;
+
+    QColor bojaSignala = QColor(0, 0, 255);
 
 signals:
 

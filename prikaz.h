@@ -136,7 +136,7 @@ private:
            QColor(0, 255, 255), QColor(255, 182, 193), QColor(50, 205, 50), QColor(160, 82, 45)
        };
 
-       void podesiQCPgraphZaSignal(QCPGraph*& graph, Signal* pSignal, QString tip_grafika, QColor boja);
+       void podesiQCPgraphZaSignal(QCPGraph*& graph, Signal* pSignal, QString tip_grafika);
 
 };
 
