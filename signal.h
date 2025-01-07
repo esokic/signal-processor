@@ -5,6 +5,12 @@
 #include <matio.h>
 #include <qcustomplot.h>
 #include "procesor.h"
+#include <iostream>
+#include <map>
+#include <string>
+#include <nlohmann/json.hpp>
+#include <fstream>
+
 
 class Signal : public QObject
 {
@@ -92,6 +98,51 @@ public:
 
     QColor getBojaSignala(){return bojaSignala;}
     void setBojaSignala(QColor _boja){bojaSignala = _boja;}
+
+    using json = nlohmann::json;
+    // Metode za JSON konverziju
+    json to_json() const {
+        return {{"imeSignala", imeSignala.toStdString()},
+                {"oznacen_za_export", oznacen_za_export},
+                {"oznacen_za_prikaz", oznacen_za_prikaz},
+                {"novoImeSignala", novoImeSignala.toStdString()},
+                {"signal_position", signal_position},
+                {"signal_size", signal_size},
+                {"bojaSignalaR", bojaSignala.red()},
+                {"bojaSignalaG", bojaSignala.green()},
+                {"bojaSignalaB", bojaSignala.blue()}};}
+
+    // Sigurno dohvaćanje iz JSON-a
+    template <typename T>
+    void safe_get(const json& j, const std::string& key, T& value, const T& default_value) {
+        if (j.contains(key) && !j.at(key).is_null()) {
+            try {
+                value = j.at(key).get<T>();
+            } catch (const json::exception& e) {
+                // Ako ne može konvertovati, postavi na podrazumijevanu vrijednost
+                value = default_value;
+            }
+        } else {
+            // Ako ključ ne postoji ili je null, koristi podrazumijevanu vrijednost
+            value = default_value;
+        }
+    }
+
+    void from_json(const json& j) {
+        safe_get(j, "oznacen_za_export", oznacen_za_export, false);
+        safe_get(j, "oznacen_za_prikaz", oznacen_za_prikaz, false);
+        std::string pom_novo_ime;
+        safe_get(j, "novoImeSignala", pom_novo_ime, QString("Unnamed").toStdString());
+        safe_get(j, "signal_position", signal_position, 50);
+        safe_get(j, "signal_size", signal_size, 100.0);
+        int bojaSignalaR(0),bojaSignalaG(0),bojaSignalaB(0);
+        safe_get(j, "bojaSignalaR", bojaSignalaR, 0);
+        safe_get(j, "bojaSignalaG", bojaSignalaG, 0);
+        safe_get(j, "bojaSignalaB", bojaSignalaB, 0);
+        bojaSignala = QColor(bojaSignalaR, bojaSignalaG, bojaSignalaB);
+    }
+
+
 
 private:
     QString imeSignala;                 //Npr. U1

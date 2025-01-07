@@ -325,7 +325,33 @@
      </rect>
     </property>
     <property name="text">
-     <string>Save measurement snapshot</string>
+     <string>Save measurement snapshot ...</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_exportLayout">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>720</y>
+      <width>161</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Export Layout ...</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_importLayout">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>750</y>
+      <width>161</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Import Layout ...</string>
     </property>
    </widget>
   </widget>

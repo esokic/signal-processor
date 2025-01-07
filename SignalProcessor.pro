@@ -13,6 +13,7 @@ CONFIG += c++17
 SOURCES += \
     ansamblsignala.cpp \
     exportfilesetting.cpp \
+    layout.cpp \
     main.cpp \
     mainwindow.cpp \
     manipulacijaprocesorima.cpp \
@@ -26,8 +27,11 @@ SOURCES += \
 HEADERS += \
     ansamblsignala.h \
     exportfilesetting.h \
+    layout.h \
     mainwindow.h \
     manipulacijaprocesorima.h \
+    nlohmann/json.hpp \
+    nlohmann/json_fwd.hpp \
     prikaz.h \
     procesor.h \
     qcustomplot/qcustomplot.h \

@@ -99,10 +99,12 @@ private:
 
        //QCPAxis::ScaleType skalaXose = QCPAxis::stLogarithmic;
 
+       /*
        double xmin = 0.0;
        double xmax = 1000.0;
        double ymin = 0.0;
        double ymax = 40000.0;
+       */
 
        //Ovo se tice prikaza na drugom dijagramu
        double initTime = 0.0;

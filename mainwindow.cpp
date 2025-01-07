@@ -3,6 +3,7 @@
 #include "ansamblsignala.h"
 #include "manipulacijaprocesorima.h"
 #include "signalsexport.h"
+#include "layout.h"
 
 
 
@@ -44,6 +45,9 @@ MainWindow::MainWindow(QWidget *parent)
         this->onOdabraniPrikazChanged();
     });
     //--------------------------------
+
+
+
 
 
 
@@ -489,4 +493,29 @@ void MainWindow::saveCustomPlotScreenshot(QCustomPlot* customPlot, const QString
                 pixmap = qplot.toPixmap(580,400);
                 xlxs_fajl.insertImage(15,1,pixmap.toImage());
                 */
+}
+
+void MainWindow::on_pushButton_exportLayout_clicked()
+{
+    Layout layout;
+    layout.setPtrAnsamblSignala(pAnsamblSignala);
+    layout.setPrtPrikaz(&prikaz2);
+    layout.refresh_layout();
+
+
+    //layout.min_koncanica = prikaz2.get_min_koncanica();
+    //layout.max_koncanica = prikaz2.get_max_koncanica();
+
+    layout.export_to_file("layout.lt");
+}
+
+void MainWindow::on_pushButton_importLayout_clicked()
+{
+    Layout loaded_layout;
+    loaded_layout.import_from_file("layout.lt");
+
+    prikaz2.set_koncanica_1(loaded_layout.koncanica_1);
+    prikaz2.set_koncanica_2(loaded_layout.koncanica_2);
+    prikaz2.set_initTime(loaded_layout.initTime);
+    prikaz2.set_durationTime(loaded_layout.durationTime);
 }

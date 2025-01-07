@@ -52,6 +52,10 @@ private slots:
 
     void setTrenutniFilePath(QString _filePath){trenutniFilePath = _filePath;}
     QString getTrenutniFilePath(){return trenutniFilePath;}
+
+    void on_pushButton_exportLayout_clicked();
+    void on_pushButton_importLayout_clicked();
+
 private:
 
     void populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala);
