@@ -306,11 +306,12 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
             // Zatvaranje .mat datoteke
             Mat_Close(mat);
 
+            setTrenutniFilePath(filePath);
 
             //IZMJESTITI OVO ODAVDE -------------------------------------------------------------------------
             //Dio koji se tice osvjezavanja
             ansamblSignala->ispisiSveSignale();
-            ui->label_nazivFajla->setText(filePath);
+            ui->label_nazivFajla->setText(getTrenutniFilePath());
 
             //Ovaj dio je najkriticniji, trebalo bi da tableWidget bude na neki nacin neovisan od AnsamblaSignala
             populateTableWidget_zaSignale(ansamblSignala);
@@ -427,4 +428,33 @@ void MainWindow::on_pushButton_nextFile_clicked()
 void MainWindow::on_pushButton_exportExcel_clicked()
 {
     pSigExp->exportFileExcel();
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+
+    prikaz2.napraviSnapshotKoncanice(getTrenutniFilePath());
+    //saveCustomPlotScreenshot(ui->mojCustomPlot2, "screenshot.png");
+}
+
+
+void MainWindow::saveCustomPlotScreenshot(QCustomPlot* customPlot, const QString& filePath) {
+    if (!customPlot) return;
+
+    // Pretvori QCustomPlot u QPixmap
+    QPixmap pixmap = customPlot->toPixmap();
+
+    // Sačuvaj pixmap u datoteku
+    if (!pixmap.save(filePath)) {
+        qDebug() << "Failed to save screenshot to" << filePath;
+    } else {
+        qDebug() << "Screenshot saved to" << filePath;
+    }
+    /*
+    QPixmap pixmap;
+
+                // Sačuvajte sliku na disk
+                pixmap = qplot.toPixmap(580,400);
+                xlxs_fajl.insertImage(15,1,pixmap.toImage());
+                */
 }

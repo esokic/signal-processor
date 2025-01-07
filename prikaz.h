@@ -71,6 +71,10 @@ public:
 
     void osvjeziTabeluKoncanica();
 
+    QString num2str(double value);
+
+    void napraviSnapshotKoncanice(QString tekuciFajl);
+    QString getSnapshotAnnotation(QWidget *parent);
 
 signals:
 
@@ -88,6 +92,8 @@ private:
        QDoubleSpinBox *doubleSpinBox_koncanica_2;
        QSlider *horizontalSlider_koncanica_2;
        QTableWidget *tabelaTrenutnaKoncanica;
+
+       std::vector<std::vector<QString>> matricaSadrzajaTabelaKoncanica;
 
        QString tip_prikaza = "ul";
 

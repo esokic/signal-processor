@@ -1,5 +1,6 @@
 #include "prikaz.h"
 #include "qcustomplot.h"
+#include <xlsxdocument.h>
 
 Prikaz::Prikaz(QObject *parent) : QObject(parent)
 {
@@ -222,95 +223,154 @@ void Prikaz::azurirajGraniceKoncanice() {
 
 void Prikaz::osvjeziTabeluKoncanica()
 {
-    tabelaTrenutnaKoncanica->clearContents();
-    tabelaTrenutnaKoncanica->setRowCount(4);
-    tabelaTrenutnaKoncanica->setColumnCount(vektor_pSignala.size()+2);
+    matricaSadrzajaTabelaKoncanica.clear();
+
+    std::vector<QString> kolona;
+    kolona.push_back(" ");
+    kolona.push_back("Cursor 1");
+    kolona.push_back("Cursor 2");
+    kolona.push_back("Difference");
+    matricaSadrzajaTabelaKoncanica.push_back(kolona);
+
+    kolona.clear();
+    kolona.push_back("Time [ms]");
+    kolona.push_back(QString::number(get_koncanica_1(),'f', 2));
+    kolona.push_back(QString::number(get_koncanica_2(),'f', 2));
+    kolona.push_back(QString::number(get_koncanica_1()-get_koncanica_2(),'f', 2));
+    matricaSadrzajaTabelaKoncanica.push_back(kolona);
 
 
-    QTableWidgetItem *dateItem1 = new QTableWidgetItem("Cursor 1");
-    dateItem1->setFlags(dateItem1->flags() & ~Qt::ItemIsEditable);
-    tabelaTrenutnaKoncanica->setItem(1, 0, dateItem1);
-
-
-    QTableWidgetItem *dateItem2 = new QTableWidgetItem("Cursor 2");
-    dateItem2->setFlags(dateItem2->flags() & ~Qt::ItemIsEditable);
-    tabelaTrenutnaKoncanica->setItem(2, 0, dateItem2);
-
-    QTableWidgetItem *dateItem3 = new QTableWidgetItem("Diff");
-    dateItem3->setFlags(dateItem3->flags() & ~Qt::ItemIsEditable);
-    tabelaTrenutnaKoncanica->setItem(3, 0, dateItem3);
-
-
-
-    QTableWidgetItem* item0 = tabelaTrenutnaKoncanica->item(0, 1);
-    if (!item0) {
-        item0 = new QTableWidgetItem();
-        tabelaTrenutnaKoncanica->setItem(0, 1, item0);
-    }
-    item0->setText("Time [ms]");
-
-    QTableWidgetItem* item = tabelaTrenutnaKoncanica->item(1, 1);
-    if (!item) {
-        item = new QTableWidgetItem();
-        tabelaTrenutnaKoncanica->setItem(1, 1, item);
-    }
-    item->setText(QString::number(get_koncanica_1()));
-
-    QTableWidgetItem* item2 = tabelaTrenutnaKoncanica->item(2, 1);
-    if (!item2) {
-        item2 = new QTableWidgetItem();
-        tabelaTrenutnaKoncanica->setItem(2, 1, item2);
-    }
-    item2->setText(QString::number(get_koncanica_2()));
-
-    QTableWidgetItem* item3 = tabelaTrenutnaKoncanica->item(3, 1);
-    if (!item3) {
-        item3 = new QTableWidgetItem();
-        tabelaTrenutnaKoncanica->setItem(3, 1, item3);
-    }
-    item3->setText(QString::number(get_koncanica_1()-get_koncanica_2()));
-
-
-
-    int row = 2;
     for (auto signal: vektor_pSignala)
     {
-        //Sad popuni nazive signala
-        QTableWidgetItem* item = tabelaTrenutnaKoncanica->item(0, row);
-        if (!item) {
-            item = new QTableWidgetItem();
-            tabelaTrenutnaKoncanica->setItem(0, row, item);
-        }
-        item->setText(signal->ime());
+        kolona.clear();
 
-        QTableWidgetItem* item1 = tabelaTrenutnaKoncanica->item(1, row);
-        if (!item1) {
-            item1 = new QTableWidgetItem();
-            tabelaTrenutnaKoncanica->setItem(1, row, item1);
-        }
+        QString imeSignala = signal->ime();
         double vrij_signala_t1 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_1());
-        item1->setText(QString::number(vrij_signala_t1));
-
-        QTableWidgetItem* item2 = tabelaTrenutnaKoncanica->item(2, row);
-        if (!item2) {
-            item2 = new QTableWidgetItem();
-            tabelaTrenutnaKoncanica->setItem(2, row, item2);
-        }
         double vrij_signala_t2 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_2());
-        item2->setText(QString::number(vrij_signala_t2));
-
-        QTableWidgetItem* item3 = tabelaTrenutnaKoncanica->item(3, row);
-        if (!item3) {
-            item3 = new QTableWidgetItem();
-            tabelaTrenutnaKoncanica->setItem(3, row, item3);
-        }
-        item3->setText(QString::number(vrij_signala_t1-vrij_signala_t2));
 
 
+        kolona.push_back(imeSignala);
+        kolona.push_back(QString::number(vrij_signala_t1));
+        kolona.push_back(QString::number(vrij_signala_t2));
+        kolona.push_back(QString::number(vrij_signala_t1-vrij_signala_t2));
+        matricaSadrzajaTabelaKoncanica.push_back(kolona);
 
-
-        row++;
     }
 
-    tabelaTrenutnaKoncanica->resizeColumnsToContents();
+
+    tabelaTrenutnaKoncanica->clearContents();
+    tabelaTrenutnaKoncanica->setRowCount(4);
+    tabelaTrenutnaKoncanica->setColumnCount(matricaSadrzajaTabelaKoncanica.size());
+
+
+    for (ulong i=0; i<matricaSadrzajaTabelaKoncanica.size(); i++){
+        for (ulong j=0; j<matricaSadrzajaTabelaKoncanica[i].size(); j++)
+        {
+            QTableWidgetItem* item = tabelaTrenutnaKoncanica->item(j, i);
+            if (!item) {
+                item = new QTableWidgetItem();
+                if (i>0) item->setTextAlignment(Qt::AlignRight);
+                tabelaTrenutnaKoncanica->setItem(j, i, item);
+            }
+            item->setText(matricaSadrzajaTabelaKoncanica[i][j]);
+        }
+    }
+
+    //Postavljanje na istu sirinu
+    int columnCount = tabelaTrenutnaKoncanica->columnCount();
+    for (int col = 0; col < columnCount; ++col) {
+        tabelaTrenutnaKoncanica->setColumnWidth(col, 100);
+    }
+
+    //tabelaTrenutnaKoncanica->resizeColumnsToContents();
+}
+
+QString Prikaz::num2str(double value)
+{
+    int totalDigits = 7;    // Ukupan broj cifara
+    int integerDigits = QString::number(static_cast<int>(value)).length(); // Cifre prije decimalne tačke
+    int decimalDigits = qMax(0, totalDigits - integerDigits);              // Cifre poslije decimalne tačke
+
+    QString formattedValue = QString::number(value, 'f', decimalDigits);
+
+    return formattedValue;
+}
+
+
+//Ovo izbaciti u drugu klasu!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+void Prikaz::napraviSnapshotKoncanice(QString tekuciFajl)
+{
+    //Priprema excel fajla
+    QString fileName = QFileDialog::getSaveFileName(
+        nullptr,
+        tr("Save File"),
+        "",
+        tr("Excel Files (*.xls *.xlsx);;All Files (*)"));
+
+    if (fileName.isEmpty()) {
+        return; // User canceled the dialog
+    }
+
+    // Proverite da li fajl ima odgovarajuću ekstenziju
+    if (!fileName.endsWith(".xls", Qt::CaseInsensitive) &&
+        !fileName.endsWith(".xlsx", Qt::CaseInsensitive)) {
+        fileName.append(".xlsx"); // Dodajte podrazumevanu ekstenziju
+    }
+
+
+
+    // Stvori Excel radnu knjigu
+    QXlsx::Document workbook(fileName);
+
+    workbook.addSheet("Snapshot");
+    workbook.selectSheet("Snapshot");
+
+    workbook.write(1, 1, "File name:");
+    workbook.write(1, 2, tekuciFajl);
+
+    workbook.write(2, 1, "Annotation:");
+    QString annotation = getSnapshotAnnotation(nullptr);
+    workbook.write(2, 2, annotation);
+
+    int row = 4;
+
+    for (ulong i=0; i<matricaSadrzajaTabelaKoncanica.size(); i++){
+        for (ulong j=0; j<matricaSadrzajaTabelaKoncanica[i].size(); j++)
+        {
+            workbook.write(row+j,i+1, matricaSadrzajaTabelaKoncanica[i][j]);
+        }
+    }
+
+    // Pretvori QCustomPlot u QPixmap
+    QPixmap pixmap = qplot->toPixmap(800,800);
+    // Sačuvajte sliku na disk
+    workbook.insertImage(8,1,pixmap.toImage());
+
+
+    // Spremi fajl
+    if (workbook.saveAs(fileName)) {
+        QMessageBox::information(nullptr, tr("File Saved"), tr("The file has been saved successfully."));
+    } else {
+        QMessageBox::warning(nullptr, tr("Save Failed"), tr("The file could not be saved."));
+    }
+
+    //Otvaranje fajla ako treba
+    QUrl fileUrl = QUrl::fromLocalFile(fileName);
+    QDesktopServices::openUrl(fileUrl);
+
+
+}
+
+QString Prikaz::getSnapshotAnnotation(QWidget *parent = nullptr) {
+    bool ok;
+    QString text = QInputDialog::getText(parent,
+                                         "Snapshot annotation",
+                                         "Enter snapshot annotation (optional):",
+                                         QLineEdit::Normal,
+                                         "",
+                                         &ok);
+    if (ok && !text.isEmpty()) {
+        return text; // Vraća uneti tekst ako je potvrđeno
+    }
+    return QString(); // Vraća prazan string ako korisnik otkaže
 }

@@ -368,12 +368,24 @@ void SignalsExport::on_pushButton_exportFiles_clicked()
 void SignalsExport::exportFileExcel()
 {
 
-        QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "", tr("Excel Files (*.xlsx);All Files (*)"));
-
+        //Priprema excel fajla
+        QString fileName = QFileDialog::getSaveFileName(
+            nullptr,
+            tr("Save File"),
+            "",
+            tr("Excel Files (*.xls *.xlsx);;All Files (*)"));
 
         if (fileName.isEmpty()) {
             return; // User canceled the dialog
         }
+
+        // Proverite da li fajl ima odgovarajuću ekstenziju
+        if (!fileName.endsWith(".xls", Qt::CaseInsensitive) &&
+            !fileName.endsWith(".xlsx", Qt::CaseInsensitive)) {
+            fileName.append(".xlsx"); // Dodajte podrazumevanu ekstenziju
+        }
+
+
 
         generateOutputExcelFile(fileName);
 

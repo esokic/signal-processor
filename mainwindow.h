@@ -45,6 +45,13 @@ private slots:
 
     void on_pushButton_exportExcel_clicked();
 
+    void on_pushButton_clicked();
+
+    void saveCustomPlotScreenshot(QCustomPlot* customPlot, const QString& filePath);
+
+
+    void setTrenutniFilePath(QString _filePath){trenutniFilePath = _filePath;}
+    QString getTrenutniFilePath(){return trenutniFilePath;}
 private:
 
     void populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala);
@@ -70,6 +77,7 @@ private:
     QStringList matFajlovi;
     int trenutniIndeks;
     QString folderPath;
+    QString trenutniFilePath = "";
 
 public:
     void setPointerAnsamblSignala(AnsamblSignala* _ptr){pAnsamblSignala = _ptr;}
