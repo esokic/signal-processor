@@ -78,6 +78,10 @@ public:
 
     void osvjeziElementeNaFormi();
 
+    void set_ptrAktivniSignal(Signal* _ptr){pAktivniSignal = _ptr;}
+    Signal* get_ptrAktivniSignal(){return pAktivniSignal;}
+
+
 signals:
 
 
@@ -85,6 +89,8 @@ signals:
 private:
 
        std::vector<Signal*> vektor_pSignala;
+
+       Signal* pAktivniSignal = nullptr;
 
        QCustomPlot* qplot;
        QCPLegend *legend;

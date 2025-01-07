@@ -213,6 +213,7 @@ void MainWindow::onItemSelectionChanged() {
 
         // Dobijte objekat Procesor iz vektora na osnovu rednog broja
         signalUnderAnalysis = pAnsamblSignala->dajSignal(static_cast<ulong>(selectedRow));
+        prikaz1.set_ptrAktivniSignal(signalUnderAnalysis);
     }
 
 }

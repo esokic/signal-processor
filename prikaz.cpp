@@ -32,13 +32,19 @@ void Prikaz::osvjeziPrikaz()
 
     // Dodavanje grafova
     //int index = 0;
+    //Svi grafici
+
     for (Signal* pSignal : vektor_pSignala) {
         //QColor boja = boje[index % boje.size()];
         //index++;
         QCPGraph* grafik = qplot->addGraph();
         this->podesiQCPgraphZaSignal(grafik, pSignal, getTipPrikaza());
     }
-
+    /*
+    QCPGraph* grafik = qplot->addGraph();
+    this->podesiQCPgraphZaSignal(grafik, get_ptrAktivniSignal(), getTipPrikaza());
+    //Samo selektovani grafik
+*/
     // Ažuriranje prikaza
     qplot->rescaleAxes();
 
@@ -57,7 +63,7 @@ void Prikaz::osvjeziPrikaz()
         // Postavite podatke za graf
         graf_koncanica_1->setData(x, y);
         // Postavite liniju kao crtanu (dashed) i crvene boje
-        graf_koncanica_1->setPen(QPen(Qt::red, 2, Qt::DashLine));
+        graf_koncanica_1->setPen(QPen(Qt::black, 2, Qt::DashLine));
         graf_koncanica_1->setName("Cursor 1");
         //Zbog milisekundi se mnozi sa 0.001
         //qplot->xAxis->setRange(get_initTime()*0.001,get_initTime()*0.001+get_durationTime()*0.001);
@@ -75,7 +81,7 @@ void Prikaz::osvjeziPrikaz()
         // Postavite podatke za graf
         graf_koncanica_2->setData(xx, yy);
         // Postavite liniju kao crtanu (dashed) i crvene boje
-        graf_koncanica_2->setPen(QPen(Qt::red, 2, Qt::DashLine));
+        graf_koncanica_2->setPen(QPen(Qt::black, 2, Qt::DashDotDotLine));
         graf_koncanica_2->setName("Cursor 2");
         //Zbog milisekundi se mnozi sa 0.001
         //qplot->xAxis->setRange(get_initTime()*0.001,get_initTime()*0.001+get_durationTime()*0.001);
