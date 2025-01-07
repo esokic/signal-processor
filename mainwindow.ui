@@ -331,8 +331,8 @@
    <widget class="QPushButton" name="pushButton_exportLayout">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>720</y>
+      <x>170</x>
+      <y>750</y>
       <width>161</width>
       <height>25</height>
      </rect>
@@ -344,14 +344,40 @@
    <widget class="QPushButton" name="pushButton_importLayout">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>750</y>
+      <x>170</x>
+      <y>720</y>
       <width>161</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
      <string>Import Layout ...</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_exportDefaultLayout">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>750</y>
+      <width>161</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Set Layout as default</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_importDefaultLayout">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>720</y>
+      <width>161</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Use default Layout</string>
     </property>
    </widget>
   </widget>

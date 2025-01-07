@@ -500,13 +500,24 @@ void MainWindow::on_pushButton_exportLayout_clicked()
     Layout layout;
     layout.setPtrAnsamblSignala(pAnsamblSignala);
     layout.setPrtPrikaz(&prikaz2);
-    //layout.refresh_layout();
 
+    //---------------------------------------------------------------
+    // Otvorite QFileDialog za odabir lokacije i imena fajla
+    QString fileName = QFileDialog::getSaveFileName(this, "Save File", "", "Layout Files (*.lt);;All Files (*)");
 
-    //layout.min_koncanica = prikaz2.get_min_koncanica();
-    //layout.max_koncanica = prikaz2.get_max_koncanica();
+    // Provjera da li korisnik nije otkazao dijalog (empty string je rezultat ako se klikne Cancel)
+    if (fileName.isEmpty()) {
+        return;
+    }
 
-    layout.export_to_file("layout.lt");
+    // Provjerite da li ime fajla već ima ekstenziju ".lt"
+    if (!fileName.endsWith(".lt", Qt::CaseInsensitive)) {
+        // Ako nema, dodajte ekstenziju
+        fileName.append(".lt");
+    }
+
+    //---------------------------------------------------------------
+    layout.export_to_file(fileName.toStdString());
 }
 
 void MainWindow::on_pushButton_importLayout_clicked()
@@ -514,7 +525,24 @@ void MainWindow::on_pushButton_importLayout_clicked()
     Layout loaded_layout;
     loaded_layout.setPtrAnsamblSignala(pAnsamblSignala);
     loaded_layout.setPrtPrikaz(&prikaz2);
-    loaded_layout.import_from_file("layout.lt");
+
+    //----------------------------------------------------------------
+    // Otvorite QFileDialog za odabir fajla
+    QString fileName = QFileDialog::getOpenFileName(this, "Open Layout File", "", "Layout Files (*.lt);;All Files (*)");
+
+    // Provjera da li korisnik nije otkazao dijalog (empty string je rezultat ako se klikne Cancel)
+    if (fileName.isEmpty()) {
+        return ;
+    }
+
+    // Provjerite da li ime fajla već ima ekstenziju ".lt"
+    if (!fileName.endsWith(".lt", Qt::CaseInsensitive)) {
+        // Ako nema, dodajte ekstenziju
+        fileName.append(".lt");
+    }
+
+    //_---------------------------------------------------------------
+    loaded_layout.import_from_file(fileName.toStdString());
 
     //I ovo osvjezavanje isto!!!!!!!!!!!!!!!!!!!!!!
     populateTableWidget_zaSignale(pAnsamblSignala);
@@ -528,3 +556,30 @@ void MainWindow::on_pushButton_importLayout_clicked()
 
 }
 
+
+void MainWindow::on_pushButton_importDefaultLayout_clicked()
+{
+    Layout loaded_layout;
+    loaded_layout.setPtrAnsamblSignala(pAnsamblSignala);
+    loaded_layout.setPrtPrikaz(&prikaz2);
+    loaded_layout.import_from_file("default_layout.lt");
+
+    //I ovo osvjezavanje isto!!!!!!!!!!!!!!!!!!!!!!
+    populateTableWidget_zaSignale(pAnsamblSignala);
+    onItemSelectionChanged();
+    onOdabraniPrikazChanged();
+
+    prikaz2.osvjeziElementeNaFormi();
+
+    ui->lineEdit_initTime->setText(QString::number(prikaz2.get_initTime()));
+    ui->lineEdit_duration->setText(QString::number(prikaz2.get_durationTime()));
+}
+
+void MainWindow::on_pushButton_exportDefaultLayout_clicked()
+{
+    Layout layout;
+    layout.setPtrAnsamblSignala(pAnsamblSignala);
+    layout.setPrtPrikaz(&prikaz2);
+
+    layout.export_to_file("default_layout.lt");
+}
