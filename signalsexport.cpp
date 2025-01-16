@@ -3,7 +3,10 @@
 #include "exportfilesetting.h"
 #include "selectsignalsdialog.h"
 #include <QItemSelection>
-
+#include <QFileDialog>
+#include <QProcess>
+#include <QDesktopServices>
+#include <QMessageBox>
 #include <xlsxdocument.h>
 
 SignalsExport::SignalsExport(QWidget *parent) :
@@ -407,7 +410,7 @@ void SignalsExport::generateOutputHVCBFile_output(const QString& fileName, Expor
 
     // Provera da li ima signala za eksport
     if (setting->getListaSignalaZaExport().empty()) {
-        std::cerr << "No signals to export";
+        //std::cerr << "No signals to export";
         return;
     }
 
@@ -458,7 +461,7 @@ void SignalsExport::generateOutputHVCBFile_input(const QString& fileName, Export
 
     // Provera da li ima signala za eksport
     if (setting->getListaSignalaZaExport().empty()) {
-        std::cerr << "No signals to export";
+        //std::cerr << "No signals to export";
         return;
     }
 
@@ -535,7 +538,7 @@ void SignalsExport::generateOutputExcelFile(const QString& fileName) {
     int colIndex = 1;
 
     for (ulong i=0; i<pAnsamblSignala->dajVektorSignalaSize(); i++ ) {
-        Signal* signal = pAnsamblSignala->dajSignal(i);
+        Signall* signal = pAnsamblSignala->dajSignal(i);
 
         //Potom signale ako su oznaceni za eksport
         if (signal->isMarkedForExport())   //ovo treba svesti na onu listu za eksport

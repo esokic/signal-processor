@@ -72,7 +72,7 @@ public:
             for (const auto& s : j.at("signalLayouts")) {
                 if (s.contains("imeSignala")) {
                         std::string imeSignala = s.at("imeSignala").get<std::string>();
-                        Signal* trazenisignal = pAnsamblSignala->dajSignalPoImenu(QString::fromStdString(imeSignala));
+                        Signall* trazenisignal = pAnsamblSignala->dajSignalPoImenu(QString::fromStdString(imeSignala));
                         if (trazenisignal!=nullptr)
                         {
                             trazenisignal->from_json(s);
@@ -87,9 +87,8 @@ public:
     }
 
 
-
+/*
     void export_to_file(const std::string& filename)  {
-
         std::ofstream file(filename);
         if (file.is_open()) {
             file << to_json().dump(4);
@@ -106,6 +105,42 @@ public:
             file >> j;
             from_json(j);
             file.close();
+        }
+    }
+    */
+
+    void export_to_file(const std::string& filename) {
+        QString qFilename = QString::fromStdString(filename);
+
+        QFile file(qFilename);
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            qDebug() << "Failed to open file for writing:" << file.errorString();
+            return;
+        }
+
+        QTextStream out(&file);
+        out << QString::fromStdString(to_json().dump(4));
+        file.close();
+    }
+
+    void import_from_file(const std::string& filename) {
+        QString qFilename = QString::fromStdString(filename);
+
+        QFile file(qFilename);
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            qDebug() << "Failed to open file for reading:" << file.errorString();
+            return;
+        }
+
+        QTextStream in(&file);
+        QString content = in.readAll();
+        file.close();
+
+        try {
+            json j = json::parse(content.toStdString());
+            from_json(j);
+        } catch (const std::exception& e) {
+            qDebug() << "Error parsing JSON:" << e.what();
         }
     }
 

@@ -3,8 +3,9 @@
 
 #include <QObject>
 #include <qcustomplot.h>
-#include <signal.h>
+#include <signall.h>
 
+#define GRANULACIJA_KONCANICE 1000.0
 
 class Prikaz : public QObject
 {
@@ -13,7 +14,7 @@ public:
     explicit Prikaz(QObject *parent = nullptr);
 
     void setPointerQPlot(QCustomPlot* _qplt){qplot = _qplt;}
-    void dodajSignaluGrupuZaPrikaz(Signal* signal){vektor_pSignala.push_back(signal);}
+    void dodajSignaluGrupuZaPrikaz(Signall* signal){vektor_pSignala.push_back(signal);}
 
     void ocistiPrikaz(){vektor_pSignala.clear();}
 
@@ -78,8 +79,8 @@ public:
 
     void osvjeziElementeNaFormi();
 
-    void set_ptrAktivniSignal(Signal* _ptr){pAktivniSignal = _ptr;}
-    Signal* get_ptrAktivniSignal(){return pAktivniSignal;}
+    void set_ptrAktivniSignal(Signall* _ptr){pAktivniSignal = _ptr;}
+    Signall* get_ptrAktivniSignal(){return pAktivniSignal;}
 
 
 signals:
@@ -88,9 +89,9 @@ signals:
 
 private:
 
-       std::vector<Signal*> vektor_pSignala;
+       std::vector<Signall*> vektor_pSignala;
 
-       Signal* pAktivniSignal = nullptr;
+       Signall* pAktivniSignal = nullptr;
 
        QCustomPlot* qplot;
        QCPLegend *legend;
@@ -122,7 +123,7 @@ private:
        double koncanica_1 = 0.0;
        double koncanica_2 = 0.0;
        double min_koncanica = 0.0;
-       double max_koncanica = 100.0;
+       double max_koncanica = GRANULACIJA_KONCANICE;//100.0;
 
        void azurirajGraniceKoncanice();
        void koncanicaOsvjezena(){
@@ -146,7 +147,7 @@ private:
            QColor(0, 255, 255), QColor(255, 182, 193), QColor(50, 205, 50), QColor(160, 82, 45)
        };
 
-       void podesiQCPgraphZaSignal(QCPGraph*& graph, Signal* pSignal, QString tip_grafika);
+       void podesiQCPgraphZaSignal(QCPGraph*& graph, Signall* pSignal, QString tip_grafika);
 
 };
 

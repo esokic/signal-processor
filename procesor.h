@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QWidget>
-#include <armadillo>
+//#include <armadillo>
 
 #include <QWidget>
 #include "QDateTime"
@@ -88,8 +88,8 @@ public:
     double getStartTimeFromMarkerValue(){return startTimeFromMarkerValue;}
 
 
-    //void setPointerSignalUlazni1(Signal* psig){pSignal_ulazni_1 = psig;}
-    //void setPointerSignalIzlazni1(Signal* psig){pSignal_izlazni_1 = psig;}
+    //void setPointerSignalUlazni1(Signall* psig){pSignal_ulazni_1 = psig;}
+    //void setPointerSignalIzlazni1(Signall* psig){pSignal_izlazni_1 = psig;}
 
     //Getteri
     //double getStartTimeFromMarkerValue(){return pSignal_ulazni_1->getMarkerValue();}
@@ -140,11 +140,12 @@ private:
 
 
 
-    //Signal* pSignal_ulazni_1;
-    //Signal* pSignal_izlazni_1;
-
+    //Signall* pSignal_ulazni_1;
+    //Signall* pSignal_izlazni_1;
+/*
     arma::vec QVectorToArmadilloVec(const QVector<double> &qvec);
     QVector<double> ArmadilloVecToQVector(const arma::vec &avec);
+    */
 };
 
 #endif // PROCESOR_H

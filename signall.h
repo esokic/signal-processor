@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <matio.h>
-#include <qcustomplot.h>
 #include "procesor.h"
 #include <iostream>
 #include <map>
@@ -12,17 +11,17 @@
 #include <fstream>
 
 
-class Signal : public QObject
+class Signall : public QObject
 {
     Q_OBJECT
 public:
-    explicit Signal(QObject *parent = nullptr);
+    explicit Signall(QObject *parent = nullptr);
 
 
 
     void ucitajSignalIzMatlabVarijable(matvar_t*);
-    void ucitajSignalIzDrugogSignala(Signal*& signal); //prakticno kopija
-    void kopirajPodesenjaIzDrugogSignala(const Signal& drugiSignal);
+    void ucitajSignalIzDrugogSignala(Signall*& signal); //prakticno kopija
+    void kopirajPodesenjaIzDrugogSignala(const Signall& drugiSignal);
 
     //Kljucna funkcija
     void procesirajSignal(){if (pProcesor!=nullptr) {pProcesor->procesiraj(xData_ul,yData_ul,xData_izl,yData_izl);}}
@@ -68,6 +67,7 @@ public:
 
     int get_signal_position(){return signal_position;}
     double get_signal_size(){return signal_size;}
+    double get_signal_vshift(){return signal_vshift;}
 
     //setteri
     //Sluzi za podesavanje prikaza ovog signala
@@ -85,9 +85,11 @@ public:
     void setMarkedForPrikaz(bool _smfe){oznacen_za_prikaz = _smfe;}
 
     void set_signal_position(int _pos){
-        if ((_pos>=0)&&(_pos<=100)) signal_position = _pos;
+        //if ((_pos>=0)&&(_pos<=100)) signal_position = _pos;
+        signal_position = _pos;
     }
     void set_signal_size(double _percent){if ((_percent>0)&&(_percent<=10000)) signal_size = _percent;}
+    void set_signal_vshift(double _vshift){signal_vshift = _vshift;}
 
     void setPointerNaProcesor(Procesor* _pProcesor){pProcesor = _pProcesor;}
     //Procesor* getPointerNaProcesor(){return pProcesor;}
@@ -108,6 +110,7 @@ public:
                 {"novoImeSignala", novoImeSignala.toStdString()},
                 {"signal_position", signal_position},
                 {"signal_size", signal_size},
+                {"signal_vshift", signal_vshift},
                 {"bojaSignalaR", bojaSignala.red()},
                 {"bojaSignalaG", bojaSignala.green()},
                 {"bojaSignalaB", bojaSignala.blue()}};}
@@ -138,6 +141,8 @@ public:
         safe_get(j, "signal_position", pommie, 50); set_signal_position(pommie);
         double pommie2;
         safe_get(j, "signal_size", pommie2, 100.0); set_signal_size(pommie2);
+        double pommie3;
+        safe_get(j, "signal_vshift", pommie3, 0.0); set_signal_vshift(pommie3);
         int bojaSignalaR(0),bojaSignalaG(0),bojaSignalaB(0);
         safe_get(j, "bojaSignalaR", bojaSignalaR, 0);
         safe_get(j, "bojaSignalaG", bojaSignalaG, 0);
@@ -170,7 +175,7 @@ private:
     //Parametri za prikaz koji su kompatibilni sa KEMA vieverom
     int signal_position = 50; //Broj koji ide u procentima i odnosi se na polozaj grafa (0 dno, 100 vrh)
     double signal_size = 100; //Skaliranje grafika (u procentima) (100% je normalno)
-
+    double signal_vshift = 0.0;
 
     Procesor* pProcesor = nullptr;
 

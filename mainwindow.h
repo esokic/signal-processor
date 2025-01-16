@@ -77,7 +77,7 @@ private:
 
     AnsamblSignala* pAnsamblSignala;
     ManipulacijaProcesorima* pManProc;
-    Signal* signalUnderAnalysis;
+    Signall* signalUnderAnalysis;
     SignalsExport* pSigExp;
 
 

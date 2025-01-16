@@ -2,7 +2,7 @@
 #define ANSAMBLSIGNALA_H
 
 #include <QObject>
-#include <signal.h>
+#include <signall.h>
 #include <manipulacijaprocesorima.h>
 
 class AnsamblSignala : public QObject
@@ -12,7 +12,7 @@ public:
     explicit AnsamblSignala(QObject *parent = nullptr);
 
     //Setteri
-    void dodajUAnsambl(std::unique_ptr<Signal> signal);
+    void dodajUAnsambl(std::unique_ptr<Signall> signal);
     void ocisti(){
         vektor_pSignala.clear(); // Očisti vektor
     }
@@ -20,14 +20,14 @@ public:
     void ocistiVisakSignala(QStringList listaNaziva)
     {
     vektor_pSignala.erase(std::remove_if(vektor_pSignala.begin(), vektor_pSignala.end(),
-        [&listaNaziva](const std::unique_ptr<Signal>& signal) {
+        [&listaNaziva](const std::unique_ptr<Signall>& signal) {
             return !listaNaziva.contains(signal->ime());
         }),
         vektor_pSignala.end());
     }
     //Getteri
 
-    Signal* dajSignal(ulong rbr) {         //Vraca pokazivac na Signal (iz vektora)
+    Signall* dajSignal(ulong rbr) {         //Vraca pokazivac na Signal (iz vektora)
         if (rbr >= vektor_pSignala.size()) {
             throw std::out_of_range("Indeks signala je izvan granica.");
         }
@@ -35,7 +35,7 @@ public:
     }
 
     //Vraca pokazivac na signal po imenu
-    Signal* dajSignalPoImenu(const QString& ime);
+    Signall* dajSignalPoImenu(const QString& ime);
 
     ulong dajVektorSignalaSize(){return vektor_pSignala.size();}
 
@@ -50,7 +50,7 @@ signals:
     void changedMarkerValue(double);
 
 private:
-    std::vector<std::unique_ptr<Signal>> vektor_pSignala;
+    std::vector<std::unique_ptr<Signall>> vektor_pSignala;
     ManipulacijaProcesorima* manProc;
 
 };

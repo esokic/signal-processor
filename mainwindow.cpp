@@ -75,11 +75,11 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
 
     tableWidget->clearContents();
     tableWidget->setRowCount(0);
-    tableWidget->setColumnCount(7);
+    tableWidget->setColumnCount(8);
 
     // Postavite zaglavlja
     QStringList headers;
-    headers << "Show" << "Signal name" << "Color" << "Position(%)" << "Size(%)" << "Export\nto Excel\n(Yes/No)" << "Applied Processor";// << "Refresh time" << "New signal name" << ;
+    headers << "Show" << "Signal name" << "Color" << "Position(%)" << "Size(%)" << "VShift" << "Export\nto Excel\n(Yes/No)" << "Applied Processor";// << "Refresh time" << "New signal name" << ;
     ui->tableWidget_Signali->setHorizontalHeaderLabels(headers);
     ui->tableWidget_Signali->resizeColumnsToContents();
 
@@ -93,7 +93,7 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
 
     // Dodajte poredane signale u tableWidget
     for (size_t row = 0; row < ansamblSignala->dajVektorSignalaSize(); ++row) {
-        Signal* signal = ansamblSignala->dajSignal(row);
+        Signall* signal = ansamblSignala->dajSignal(row);
 
         tableWidget->insertRow(static_cast<int>(row));
 
@@ -128,7 +128,8 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
                 this->onOdabraniPrikazChanged();
             }
         });
-        colorButton->setFixedWidth(50);
+        colorButton->setFixedWidth(30);
+        colorButton->setFixedHeight(30);
         colorButton->setStyleSheet(QString("background-color: %1; color: white;").arg(signal->getBojaSignala().name()));
         tableWidget->setCellWidget(row, 2, colorButton);
 
@@ -150,7 +151,18 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
             this->onOdabraniPrikazChanged();
         });
 
-        // 6. Checkbox for export
+        // 6. VSHIFT signala
+
+        QLineEdit *signalVShiftEdit = new QLineEdit(QString::number(signal->get_signal_vshift()));
+        tableWidget->setCellWidget(static_cast<int>(row), 5, signalVShiftEdit);
+        connect(signalVShiftEdit, &QLineEdit::editingFinished, [signal, signalVShiftEdit,this]() {
+            signal->set_signal_vshift(signalVShiftEdit->text().toDouble());  // Postavljanje novog size-a signala
+            //OVO VIDJETI DA LI JE OPTIMALNO DA SE NE DUPLIRA
+            this->onOdabraniPrikazChanged();
+        });
+
+
+        // 7. Checkbox for export
         QCheckBox *exportCheckBox = new QCheckBox();
         exportCheckBox->setChecked(signal->isMarkedForExport());
         // Centriranje
@@ -161,15 +173,15 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
         layout2->setContentsMargins(0, 0, 0, 0);
         containerWidget2->setLayout(layout2);
         // -----------
-        tableWidget->setCellWidget(static_cast<int>(row), 5, containerWidget2);
+        tableWidget->setCellWidget(static_cast<int>(row), 6, containerWidget2);
         connect(exportCheckBox, &QCheckBox::toggled, [signal, exportCheckBox]() {
             signal->setMarkedForExport(exportCheckBox->isChecked());  // Postavljanje statusa eksportovanja na signal
         });
 
-        // 7. Oznaka procesora
+        // 8. Oznaka procesora
         QTableWidgetItem *processorItem = new QTableWidgetItem(signal->getTrenutniProcesorIme());
         processorItem->setFlags(processorItem->flags() & ~Qt::ItemIsEditable);
-        tableWidget->setItem(static_cast<int>(row), 6, processorItem);
+        tableWidget->setItem(static_cast<int>(row), 7, processorItem);
 /*
         // 6. Datum i vrijeme osvježavanja
         QDateTime lastUpdate = signal->getTrenutniProcesorUpdateTime();
@@ -184,7 +196,7 @@ void MainWindow::populateTableWidget_zaSignale(AnsamblSignala*& ansamblSignala)
             signal->set_novoIme(newNameEdit->text());  // Postavljanje novog imena na signal
         });
 */
-
+        tableWidget->setRowHeight(row, 25);
     }
 
     // Povezivanje signala selekcije u tabeli sa odgovarajućim slotom
@@ -231,7 +243,7 @@ void MainWindow::onOdabraniPrikazChanged() {
 
     // Dodaj signalima koji su označeni za prikaz u obe grupe
     for (ulong i = 0; i < pAnsamblSignala->dajVektorSignalaSize(); ++i) {
-        Signal* signal = pAnsamblSignala->dajSignal(i);
+        Signall* signal = pAnsamblSignala->dajSignal(i);
         if (signal->isMarkedForPrikaz()) {
             // Dodaj signal u oba prikaza ako je označen
             prikaz1.dodajSignaluGrupuZaPrikaz(signal);
@@ -256,6 +268,7 @@ void MainWindow::onOdabraniPrikazChanged() {
 
 void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansamblSignala)
 {
+
     // Kreiraj modalni dijalog za prikaz poruke "Loading..."
         QDialog loadingDialog(this);
         loadingDialog.setWindowTitle("Please Wait");
@@ -289,8 +302,8 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
             matvar_t *matvar;
             while ((matvar = Mat_VarReadNext(mat)) != nullptr) {
 
-                //Signal* pSignal = new Signal; // std::make_unique<Signal>();
-                auto pSignal = std::make_unique<Signal>();
+                //Signall* pSignal = new Signal; // std::make_unique<Signal>();
+                auto pSignal = std::make_unique<Signall>();
 
                 //ucitano iz fajla
                 pSignal->ucitajSignalIzMatlabVarijable(matvar);
@@ -306,7 +319,7 @@ void MainWindow::citajIzMatFajla(const QString& filePath, AnsamblSignala*& ansam
                 //ovo bi trebalo da bude opcija (ako zelis)
                 //postojeci signal je mozda signal sa istim imenom u ansamblu -
                 //OVA METODOLOGIJA NAZALOST SAMO DODAJE NOVE SIGNALE (moze ucitati "lazne") pa su dole iskljuceni
-                Signal* postojeciSignal = ansamblSignala->dajSignalPoImenu(pSignal->ime());
+                Signall* postojeciSignal = ansamblSignala->dajSignalPoImenu(pSignal->ime());
                 if (postojeciSignal) {
 
                     //ovdje se pravi fuzija - podaci iz pSignala su novi, a postojeciSignal stari (ima i lokacija)

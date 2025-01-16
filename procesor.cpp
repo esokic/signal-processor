@@ -69,7 +69,7 @@ void Procesor::procesiraj(QVector<double>& xData_ul, QVector<double>& yData_ul, 
         }
 
         QVector<double> yData_izl_interpolirano;
-
+/*
         arma::vec a = QVectorToArmadilloVec(xData_izl);
         arma::vec b  = QVectorToArmadilloVec(yData_izl);
         arma::vec c = QVectorToArmadilloVec(vektor_vremena);
@@ -82,6 +82,7 @@ void Procesor::procesiraj(QVector<double>& xData_ul, QVector<double>& yData_ul, 
 
         xData_izl = vektor_vremena;
         yData_izl = ArmadilloVecToQVector(d);
+        */
     } else
     {
 
@@ -89,7 +90,7 @@ void Procesor::procesiraj(QVector<double>& xData_ul, QVector<double>& yData_ul, 
 
 
 }
-
+/*
 arma::vec Procesor::QVectorToArmadilloVec(const QVector<double> &qvec) {
     arma::vec avec(qvec.size());
     for (int i = 0; i < qvec.size(); ++i) {
@@ -105,7 +106,7 @@ QVector<double> Procesor::ArmadilloVecToQVector(const arma::vec &avec) {
     }
     return qvec;
 }
-
+*/
 void Procesor::prikaziGUI()
 {
     ui->doubleSpinBox_startTime->setValue(getStartTime());

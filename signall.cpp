@@ -1,14 +1,15 @@
-#include "signal.h"
+#include "signall.h"
 #include <QVector>
 
 
-Signal::Signal(QObject *parent) : QObject(parent)
+Signall::Signall(QObject *parent) : QObject(parent)
 {
 
 }
 
-void Signal::ucitajSignalIzMatlabVarijable(matvar_t* matvar)
+void Signall::ucitajSignalIzMatlabVarijable(matvar_t* matvar)
 {
+
     imeSignala = matvar->name;
     novoImeSignala = imeSignala;
     tipPodatka = matvar->class_type;
@@ -46,8 +47,8 @@ void Signal::ucitajSignalIzMatlabVarijable(matvar_t* matvar)
                 //Prosiriti ovo jos da se moze nacrtati
                 xData_ul.push_back(xData_ul[0]);
                 yData_ul.clear();
-                yData_ul.push_back(-10000.0);
-                yData_ul.push_back(10000.0);
+                yData_ul.push_back(-1000.0);
+                yData_ul.push_back(1000.0);
             }
         }
 
@@ -59,12 +60,11 @@ void Signal::ucitajSignalIzMatlabVarijable(matvar_t* matvar)
         xData_izl = xData_ul;
         yData_izl = yData_ul;
 
-
-
     }
+
 }
 
-QVector<double> Signal::resampleData(const QVector<double>& data, int N) {
+QVector<double> Signall::resampleData(const QVector<double>& data, int N) {
     int originalSize = data.size();
     if (originalSize <= N) {
         return data;  // Ako je broj uzoraka manji ili jednak N, ne radimo resempliranje
@@ -123,7 +123,7 @@ QVector<double> Signal::get_yData()
 }
 
 */
-void Signal::ucitajSignalIzDrugogSignala(Signal*& signal)
+void Signall::ucitajSignalIzDrugogSignala(Signall*& signal)
 {
     imeSignala = signal->imeSignala;
     novoImeSignala = signal->novoImeSignala;
@@ -133,7 +133,7 @@ void Signal::ucitajSignalIzDrugogSignala(Signal*& signal)
     set_yData_ul(signal->get_yData_ul());
 }
 
-void Signal::kopirajPodesenjaIzDrugogSignala(const Signal& drugiSignal)
+void Signall::kopirajPodesenjaIzDrugogSignala(const Signall& drugiSignal)
 {
     this->oznacen_za_export = drugiSignal.oznacen_za_export;
     this->oznacen_za_prikaz = drugiSignal.oznacen_za_prikaz;
@@ -141,7 +141,7 @@ void Signal::kopirajPodesenjaIzDrugogSignala(const Signal& drugiSignal)
     this->pProcesor = drugiSignal.pProcesor;  // Pokazivač na isti procesor, ne kopiramo objekat
 }
 
-void Signal::get_xData_yData_from_to(QVector<double>& xData_cutted, QVector<double>& yData_cutted, double start_time, double end_time)
+void Signall::get_xData_yData_from_to(QVector<double>& xData_cutted, QVector<double>& yData_cutted, double start_time, double end_time)
 {
 // Iteriranje kroz podatke
     for (int i = 0; i < xData_izl.size(); ++i) {
@@ -154,7 +154,7 @@ void Signal::get_xData_yData_from_to(QVector<double>& xData_cutted, QVector<doub
     }
 }
 
-double Signal::vratiVrijednostSignalaUtrenutku(double time_x) {
+double Signall::vratiVrijednostSignalaUtrenutku(double time_x) {
 
     // Pronađi indeks najbliže vrijednosti u xData_izl
     auto it = std::lower_bound(xData_izl.begin(), xData_izl.end(), time_x);

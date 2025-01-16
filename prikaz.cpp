@@ -34,7 +34,7 @@ void Prikaz::osvjeziPrikaz()
     //int index = 0;
     //Svi grafici
 
-    for (Signal* pSignal : vektor_pSignala) {
+    for (Signall* pSignal : vektor_pSignala) {
         //QColor boja = boje[index % boje.size()];
         //index++;
         QCPGraph* grafik = qplot->addGraph();
@@ -63,7 +63,8 @@ void Prikaz::osvjeziPrikaz()
         // Postavite podatke za graf
         graf_koncanica_1->setData(x, y);
         // Postavite liniju kao crtanu (dashed) i crvene boje
-        graf_koncanica_1->setPen(QPen(Qt::black, 2, Qt::DashLine));
+        //graf_koncanica_1->setPen(QPen(Qt::black, 2, Qt::DashLine));
+        graf_koncanica_1->setPen(QPen(Qt::red, 1));
         graf_koncanica_1->setName("Cursor 1");
         //Zbog milisekundi se mnozi sa 0.001
         //qplot->xAxis->setRange(get_initTime()*0.001,get_initTime()*0.001+get_durationTime()*0.001);
@@ -81,7 +82,8 @@ void Prikaz::osvjeziPrikaz()
         // Postavite podatke za graf
         graf_koncanica_2->setData(xx, yy);
         // Postavite liniju kao crtanu (dashed) i crvene boje
-        graf_koncanica_2->setPen(QPen(Qt::black, 2, Qt::DashDotDotLine));
+        //graf_koncanica_2->setPen(QPen(Qt::black, 2, Qt::DashDotDotLine));
+        graf_koncanica_2->setPen(QPen(QColor(200,20,200), 1));
         graf_koncanica_2->setName("Cursor 2");
         //Zbog milisekundi se mnozi sa 0.001
         //qplot->xAxis->setRange(get_initTime()*0.001,get_initTime()*0.001+get_durationTime()*0.001);
@@ -95,12 +97,12 @@ void Prikaz::osvjeziPrikaz()
     }
     qplot->replot();
 
-    std::cout << "trenutni graph count" << qplot->graphCount() << std::endl;
+    //std::cout << "trenutni graph count" << qplot->graphCount() << std::endl;
 }
 
 
 
-void Prikaz::podesiQCPgraphZaSignal(QCPGraph*& graph, Signal* pSignal, QString tip_grafika)
+void Prikaz::podesiQCPgraphZaSignal(QCPGraph*& graph, Signall* pSignal, QString tip_grafika)
 {
         graph->setName(pSignal->ime());
         //Ovo je isto viska
@@ -132,7 +134,8 @@ void Prikaz::podesiQCPgraphZaSignal(QCPGraph*& graph, Signal* pSignal, QString t
             double signal_size = pSignal->get_signal_size();
 
             // Izračunavanje srednje vrijednosti signala
-            double mean = std::accumulate(y.begin(), y.end(), 0.0) / y.size();
+           // double mean = std::accumulate(y.begin(), y.end(), 0.0) / y.size();
+            double mean = 0; //Skalira se u odnosu na nultu vrijednost
 
             // Uklanjanje istosmjerne komponente i skaliranje
             QVector<double> scaled_y(y.size());
@@ -148,9 +151,8 @@ void Prikaz::podesiQCPgraphZaSignal(QCPGraph*& graph, Signal* pSignal, QString t
         }
 
         graph->setLineStyle(QCPGraph::lsLine);
-        graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));
-        graph->setPen(pSignal->getBojaSignala());
-
+        //graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));
+        graph->setPen(QPen(pSignal->getBojaSignala()));
 }
 
 
@@ -158,14 +160,14 @@ void Prikaz::inicijalizirajKoncanicu()
 {
 
     // Podesite slider i spin box granice
-    horizontalSlider_koncanica->setRange(0, 100);  // Slider radi s cijelim brojevima
+    horizontalSlider_koncanica->setRange(0, GRANULACIJA_KONCANICE);  // Slider radi s cijelim brojevima
     doubleSpinBox_koncanica->setRange(get_min_koncanica(), get_max_koncanica());
     doubleSpinBox_koncanica->setDecimals(2);       // Preciznost za decimalne brojeve
 
     // Povezivanje slidera i spinBox-a s varijablom
     connect(horizontalSlider_koncanica, &QSlider::valueChanged, this, [&]() {
         double newValue = get_min_koncanica() + (get_max_koncanica() - get_min_koncanica()) *
-                          horizontalSlider_koncanica->value() / 100.0;
+                          horizontalSlider_koncanica->value() / GRANULACIJA_KONCANICE;
         set_koncanica_1(newValue);
         doubleSpinBox_koncanica->blockSignals(true);
         doubleSpinBox_koncanica->setValue(get_koncanica_1());
@@ -175,7 +177,7 @@ void Prikaz::inicijalizirajKoncanicu()
 
     connect(doubleSpinBox_koncanica, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [&](double newValue) {
         set_koncanica_1(newValue);
-        int sliderValue = static_cast<int>((get_koncanica_1() - get_min_koncanica()) / (get_max_koncanica() - get_min_koncanica()) * 100.0);
+        int sliderValue = static_cast<int>((get_koncanica_1() - get_min_koncanica()) / (get_max_koncanica() - get_min_koncanica()) * GRANULACIJA_KONCANICE);
         horizontalSlider_koncanica->blockSignals(true);
         horizontalSlider_koncanica->setValue(sliderValue);
         horizontalSlider_koncanica->blockSignals(false);
@@ -188,14 +190,14 @@ void Prikaz::inicijalizirajKoncanicu_2()
 {
 
     // Podesite slider i spin box granice
-    horizontalSlider_koncanica_2->setRange(0, 100);  // Slider radi s cijelim brojevima
+    horizontalSlider_koncanica_2->setRange(0, GRANULACIJA_KONCANICE);  // Slider radi s cijelim brojevima
     doubleSpinBox_koncanica_2->setRange(get_min_koncanica(), get_max_koncanica());
     doubleSpinBox_koncanica_2->setDecimals(2);       // Preciznost za decimalne brojeve
 
     // Povezivanje slidera i spinBox-a s varijablom
     connect(horizontalSlider_koncanica_2, &QSlider::valueChanged, this, [&]() {
         double newValue = get_min_koncanica() + (get_max_koncanica() - get_min_koncanica()) *
-                          horizontalSlider_koncanica_2->value() / 100.0;
+                          horizontalSlider_koncanica_2->value() / GRANULACIJA_KONCANICE;
         set_koncanica_2(newValue);
         doubleSpinBox_koncanica_2->blockSignals(true);
         doubleSpinBox_koncanica_2->setValue(get_koncanica_2());
@@ -205,7 +207,7 @@ void Prikaz::inicijalizirajKoncanicu_2()
 
     connect(doubleSpinBox_koncanica_2, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [&](double newValue) {
         set_koncanica_2(newValue);
-        int sliderValue = static_cast<int>((get_koncanica_2() - get_min_koncanica()) / (get_max_koncanica() - get_min_koncanica()) * 100.0);
+        int sliderValue = static_cast<int>((get_koncanica_2() - get_min_koncanica()) / (get_max_koncanica() - get_min_koncanica()) * GRANULACIJA_KONCANICE);
         horizontalSlider_koncanica_2->blockSignals(true);
         horizontalSlider_koncanica_2->setValue(sliderValue);
         horizontalSlider_koncanica_2->blockSignals(false);
@@ -217,11 +219,11 @@ void Prikaz::inicijalizirajKoncanicu_2()
 // Ažuriranje granica pri promjeni min_koncanica ili max_koncanica
 void Prikaz::azurirajGraniceKoncanice() {
     doubleSpinBox_koncanica->setRange(get_min_koncanica(), get_max_koncanica());
-    double sliderValue = (get_koncanica_1() - get_min_koncanica()) / (get_max_koncanica() - get_min_koncanica()) * 100.0;
+    double sliderValue = (get_koncanica_1() - get_min_koncanica()) / (get_max_koncanica() - get_min_koncanica()) * GRANULACIJA_KONCANICE;
     horizontalSlider_koncanica->setValue(static_cast<int>(sliderValue));
 
     doubleSpinBox_koncanica_2->setRange(get_min_koncanica(), get_max_koncanica());
-    double sliderValue_2 = (get_koncanica_2() - get_min_koncanica()) / (get_max_koncanica() - get_min_koncanica()) * 100.0;
+    double sliderValue_2 = (get_koncanica_2() - get_min_koncanica()) / (get_max_koncanica() - get_min_koncanica()) * GRANULACIJA_KONCANICE;
     horizontalSlider_koncanica_2->setValue(static_cast<int>(sliderValue_2));
 };
 
@@ -229,6 +231,97 @@ void Prikaz::azurirajGraniceKoncanice() {
 
 void Prikaz::osvjeziTabeluKoncanica()
 {
+    matricaSadrzajaTabelaKoncanica.clear();
+
+    //dodamo jos i boju
+    QString colorCrna = "#000000";
+
+    std::vector<QString> kolona;
+    kolona.push_back(" ");
+    kolona.push_back("Cursor 1");
+    kolona.push_back("Cursor 2");
+    kolona.push_back("Difference");
+    kolona.push_back(colorCrna);
+    matricaSadrzajaTabelaKoncanica.push_back(kolona);
+
+    kolona.clear();
+    kolona.push_back("Time [ms]");
+    kolona.push_back(QString::number(get_koncanica_1(),'f', 2));
+    kolona.push_back(QString::number(get_koncanica_2(),'f', 2));
+    kolona.push_back(QString::number(get_koncanica_1()-get_koncanica_2(),'f', 2));
+    kolona.push_back(colorCrna);
+    matricaSadrzajaTabelaKoncanica.push_back(kolona);
+
+
+    for (auto signal: vektor_pSignala)
+    {
+        kolona.clear();
+
+        QString imeSignala = signal->ime();
+        //Originalne postavke
+       // double vrij_signala_t1 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_1());
+       // double vrij_signala_t2 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_2());
+        //Sa vshiftom
+        double vrij_signala_t1 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_1())+signal->get_signal_vshift();
+        double vrij_signala_t2 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_2())+signal->get_signal_vshift();
+
+        kolona.push_back(imeSignala);
+        kolona.push_back(QString::number(vrij_signala_t1));
+        kolona.push_back(QString::number(vrij_signala_t2));
+        kolona.push_back(QString::number(vrij_signala_t1-vrij_signala_t2));
+        //dodamo jos i boju
+        QString colorString = signal->getBojaSignala().name();
+        kolona.push_back(colorString);
+        matricaSadrzajaTabelaKoncanica.push_back(kolona);
+
+    }
+
+
+    //Vertikalni layout
+
+    tabelaTrenutnaKoncanica->clearContents();
+    tabelaTrenutnaKoncanica->setRowCount(matricaSadrzajaTabelaKoncanica.size());
+    tabelaTrenutnaKoncanica->setColumnCount(4);
+
+
+    for (ulong i=0; i<matricaSadrzajaTabelaKoncanica.size(); i++){
+        for (ulong j=0; j<matricaSadrzajaTabelaKoncanica[i].size()-1; j++)  //skracujemo za jedan a citamo boju iz posljednje kolone
+        {
+            QTableWidgetItem* item = tabelaTrenutnaKoncanica->item(i, j);
+            if (!item) {
+                item = new QTableWidgetItem();
+                if (i>0) item->setTextAlignment(Qt::AlignRight);
+                tabelaTrenutnaKoncanica->setItem(i, j, item);
+            }
+
+            //zaokruzivanje prikaza
+            if ((i>=1)&&(j>=1)){
+                item->setText(matricaSadrzajaTabelaKoncanica[i][j].left(8)); //ukljuceno zaokruzivanje prikaza na 8 karaktera sve osim headera
+            }
+                else {
+                item->setText(matricaSadrzajaTabelaKoncanica[i][j]);
+            }
+            //farbanje u boju
+            QColor boja = QColor(matricaSadrzajaTabelaKoncanica[i].back());
+            item->setTextColor(boja);
+
+        }
+    }
+
+    //Postavljanje na istu sirinu
+    int columnCount = tabelaTrenutnaKoncanica->columnCount();
+    for (int col = 0; col < columnCount; ++col) {
+        tabelaTrenutnaKoncanica->setColumnWidth(col, 70);
+    }
+
+    tabelaTrenutnaKoncanica->verticalHeader()->setVisible(false);
+    tabelaTrenutnaKoncanica->horizontalHeader()->setVisible(false);
+    tabelaTrenutnaKoncanica->verticalHeader()->setDefaultSectionSize(25);
+
+    //tabelaTrenutnaKoncanica->resizeColumnsToContents();
+
+    /*
+     * horizontalni layout
     matricaSadrzajaTabelaKoncanica.clear();
 
     std::vector<QString> kolona;
@@ -251,9 +344,12 @@ void Prikaz::osvjeziTabeluKoncanica()
         kolona.clear();
 
         QString imeSignala = signal->ime();
-        double vrij_signala_t1 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_1());
-        double vrij_signala_t2 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_2());
-
+        //Originalne postavke
+       // double vrij_signala_t1 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_1());
+       // double vrij_signala_t2 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_2());
+        //Sa vshiftom
+        double vrij_signala_t1 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_1())+signal->get_signal_vshift();
+        double vrij_signala_t2 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_2())+signal->get_signal_vshift();
 
         kolona.push_back(imeSignala);
         kolona.push_back(QString::number(vrij_signala_t1));
@@ -292,6 +388,8 @@ void Prikaz::osvjeziTabeluKoncanica()
     tabelaTrenutnaKoncanica->horizontalHeader()->setVisible(false);
 
     //tabelaTrenutnaKoncanica->resizeColumnsToContents();
+    */
+
 }
 
 QString Prikaz::num2str(double value)

@@ -2,6 +2,7 @@
 #define SIGNALSEXPORT_H
 
 #include <QWidget>
+#include <QItemSelection>
 #include "exportfilesetting.h"
 #include "ansamblsignala.h"
 
@@ -69,7 +70,7 @@ private:
     std::vector<ExportFileSetting*> vektorFileSettingsa;
 
     AnsamblSignala* pAnsamblSignala;
-    //std::vector<Signal*> listaSignalaZaExport;
+    //std::vector<Signall*> listaSignalaZaExport;
 };
 
 #endif // SIGNALSEXPORT_H

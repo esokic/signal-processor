@@ -1,5 +1,6 @@
 #include "selectsignalsdialog.h"
 #include "ui_selectsignalsdialog.h"
+#include <QCheckBox>
 
 
 SelectSignalsDialog::SelectSignalsDialog(std::vector<QString> signalNames, QWidget *parent) :

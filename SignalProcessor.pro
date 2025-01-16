@@ -21,7 +21,7 @@ SOURCES += \
     procesor.cpp \
     qcustomplot/qcustomplot.cpp \
     selectsignalsdialog.cpp \
-    signal.cpp \
+    signall.cpp \
     signalsexport.cpp
 
 HEADERS += \
@@ -36,7 +36,7 @@ HEADERS += \
     procesor.h \
     qcustomplot/qcustomplot.h \
     selectsignalsdialog.h \
-    signal.h \
+    signall.h \
     signalsexport.h
 
 FORMS += \

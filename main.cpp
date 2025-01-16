@@ -7,20 +7,16 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
-#include <matio.h>
-#include <signal.h>
+//#include <matio.h>
+#include <signall.h>
 
 #include <ansamblsignala.h>
 
 #include "signalsexport.h"
 
 
-
-
-
 int main(int argc, char *argv[])
 {
-    //test
     QApplication a(argc, argv);
     // Postavi uniformni stil (npr. Fusion stil je neutralan)
     a.setStyle(QStyleFactory::create("Fusion"));
@@ -41,9 +37,6 @@ int main(int argc, char *argv[])
 
     //manProc.show();
     glavniProzor.show();
-
-
-
 
     return a.exec();
 }
