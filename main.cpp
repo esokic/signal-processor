@@ -20,6 +20,7 @@
 
 int main(int argc, char *argv[])
 {
+    //test
     QApplication a(argc, argv);
     // Postavi uniformni stil (npr. Fusion stil je neutralan)
     a.setStyle(QStyleFactory::create("Fusion"));
