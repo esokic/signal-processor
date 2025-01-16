@@ -87,6 +87,8 @@ private:
     QString folderPath;
     QString trenutniFilePath = "";
 
+
+
 public:
     void setPointerAnsamblSignala(AnsamblSignala* _ptr){pAnsamblSignala = _ptr;}
     void setPointerManipulacijaProcesora(ManipulacijaProcesorima* _ptr){pManProc = _ptr;}

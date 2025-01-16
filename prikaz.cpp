@@ -1,6 +1,7 @@
 #include "prikaz.h"
 #include "qcustomplot.h"
 #include <xlsxdocument.h>
+#include <QDialog>
 
 Prikaz::Prikaz(QObject *parent) : QObject(parent)
 {
@@ -117,6 +118,8 @@ void Prikaz::osvjeziPrikaz()
     qplot->replot();
 
     //std::cout << "trenutni graph count" << qplot->graphCount() << std::endl;
+    // Isključi interakciju za dragovanje osa
+    setupPlot_zaInteraktivniPravougaonik();
 }
 
 
@@ -514,3 +517,142 @@ void Prikaz::osvjeziElementeNaFormi()
 
     koncanicaOsvjezena();
 }
+
+
+
+
+// Funkcija za inicijalizaciju
+void Prikaz::setupPlot_zaInteraktivniPravougaonik()
+{
+
+    qplot->setInteraction(QCP::iRangeDrag, false);
+    qplot->setInteraction(QCP::iRangeZoom , false);
+    qplot->setInteraction(QCP::iSelectItems, true);
+
+    // Inicijalizacija pravougaonika
+    selectionRect = new QCPItemRect(qplot);
+    selectionRect->setPen(QPen(Qt::DashLine));       // Isprekidana linija
+    selectionRect->setBrush(QBrush(QColor(0, 0, 255, 50))); // Poluprozirna boja
+    selectionRect->setVisible(false);               // Skriven do početka selekcije
+
+    // Povezivanje događaja miša
+    connect(qplot, &QCustomPlot::mousePress, this, &Prikaz::onMousePress);
+    connect(qplot, &QCustomPlot::mouseMove, this, &Prikaz::onMouseMove);
+    connect(qplot, &QCustomPlot::mouseRelease, this, &Prikaz::onMouseRelease);
+}
+
+// Funkcija za početak selekcije
+void Prikaz::onMousePress(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        startPoint = QPointF(
+            qplot->xAxis->pixelToCoord(event->pos().x()),
+            qplot->yAxis->pixelToCoord(event->pos().y())
+        );
+        selectionRect->topLeft->setCoords(startPoint);
+        selectionRect->bottomRight->setCoords(startPoint); // Početni pravougaonik
+        selectionRect->setVisible(true);                  // Pokaži pravougaonik
+        qplot->replot();
+    }
+}
+
+// Funkcija za ažuriranje pravougaonika tokom povlačenja
+void Prikaz::onMouseMove(QMouseEvent *event)
+{
+    if (selectionRect->visible())
+    {
+        endPoint = QPointF(qplot->xAxis->pixelToCoord(event->pos().x()),
+                           qplot->yAxis->pixelToCoord(event->pos().y()));
+        selectionRect->bottomRight->setCoords(endPoint); // Postavi krajnje koordinate
+        qplot->replot();
+    }
+}
+
+// Funkcija za završetak selekcije
+void Prikaz::onMouseRelease(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton && selectionRect->visible())
+    {
+        // Finaliziraj pravougaonik
+        endPoint = QPointF(qplot->xAxis->pixelToCoord(event->pos().x()),
+                           qplot->yAxis->pixelToCoord(event->pos().y()));
+
+        // Selektovane koordinate (početne i krajnje)
+        //qDebug() << "Selection rectangle: Start =" << startPoint << ", End =" << endPoint;
+
+        // Sakrij pravougaonik nakon akcije
+        selectionRect->setVisible(false);
+        qplot->replot();
+
+        // Pozovi željenu akciju sa koordinatama
+        handleSelection(startPoint, endPoint);
+    }
+}
+
+// Funkcija za obradu selekcije
+void Prikaz::handleSelection(QPointF start, QPointF end)
+{
+    // Implementiraj šta treba da se uradi sa selektovanim podacima
+    //qDebug() << "Handling selection from" << start << "to" << end;
+    if (tip_prikaza == "ul") {
+        //Ako oznacis na malom promijeni initial time i duration
+        set_initTime(start.x());
+        set_durationTime(end.x()-start.x());
+
+    } else if (tip_prikaza == "izl") {
+        //Ako oznacis na glavnom  prikazi zoomani prozor
+        showSelectedArea(start, end);
+    }
+}
+
+
+void Prikaz::showSelectedArea(QPointF start, QPointF end)
+{
+    // Kreiraj novi dijalog ili widget
+    QDialog *dialog = new QDialog(nullptr);
+    dialog->setWindowTitle("Selected Area");
+    dialog->resize(600, 600);
+
+    // Kreiraj novi QCustomPlot
+    QCustomPlot *plot = new QCustomPlot(dialog);
+    plot->resize(dialog->size());
+    //Opcionalno!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+
+    // Kopiraj podatke sa originalnog grafika
+    for (int i = 0; i < qplot->graphCount(); ++i)
+    {
+        QCPGraph *originalGraph = qplot->graph(i);
+        QCPGraph *newGraph = plot->addGraph();
+
+        // Kopiraj podatke iz originalnog grafa
+        QSharedPointer<QCPGraphDataContainer> dataContainer = originalGraph->data();
+        QSharedPointer<QCPGraphDataContainer> newContainer(new QCPGraphDataContainer);
+
+        for (auto it = dataContainer->constBegin(); it != dataContainer->constEnd(); ++it)
+        {
+            // Dodaj samo podatke unutar selektovanog opsega
+            if (it->key >= start.x() && it->key <= end.x())
+            {
+                newContainer->add(*it);
+            }
+        }
+
+        newGraph->setData(newContainer);
+        newGraph->setPen(originalGraph->pen()); // Kopiraj stil linije
+    }
+
+    // Postavi granice osa na selektovani deo
+    plot->xAxis->setRange(start.x(), end.x());
+    plot->yAxis->setRange(start.y(), end.y());
+
+    // Dodaj QCustomPlot na dijalog i prikaži
+    QVBoxLayout *layout = new QVBoxLayout(dialog);
+    layout->addWidget(plot);
+    dialog->setLayout(layout);
+
+    // Prikaz dijaloga
+    dialog->exec();
+}
+

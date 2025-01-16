@@ -48,6 +48,9 @@ public:
         azurirajGraniceKoncanice();
     }
 
+    QLineEdit* lineEdit_initTime;
+    QLineEdit* lineEdit_durationTime;
+
     double get_koncanica_1(){return koncanica_1;}
     void set_koncanica_1(double _v){koncanica_1 = _v;}
     double get_koncanica_2(){return koncanica_2;}
@@ -89,6 +92,26 @@ public:
 
     void set_ptrAktivniSignal(Signall* _ptr){pAktivniSignal = _ptr;}
     Signall* get_ptrAktivniSignal(){return pAktivniSignal;}
+
+
+    //Interakcija sa kursorom
+    QCPItemRect *selectionRect = nullptr;
+    QPointF startPoint; // Početna tačka
+    QPointF endPoint;   // Krajnja tačka
+    // Funkcija za inicijalizaciju grafa
+    void setupPlot_zaInteraktivniPravougaonik();
+
+    // Funkcije za rukovanje događajima miša
+    void onMousePress(QMouseEvent *event);
+    void onMouseMove(QMouseEvent *event);
+    void onMouseRelease(QMouseEvent *event);
+    // Funkcija za obradu selekcije
+    void handleSelection(QPointF start, QPointF end);
+    //Ovo je za implementaciju zoom prozora
+    void showSelectedArea(QPointF start, QPointF end);
+
+
+
 
 
 signals:
