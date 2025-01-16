@@ -263,6 +263,7 @@ void Prikaz::osvjeziTabeluKoncanica()
     kolona.push_back("Cursor 1");
     kolona.push_back("Cursor 2");
     kolona.push_back("Difference");
+    kolona.push_back("Gradient");
     kolona.push_back(colorCrna);
     matricaSadrzajaTabelaKoncanica.push_back(kolona);
 
@@ -271,6 +272,7 @@ void Prikaz::osvjeziTabeluKoncanica()
     kolona.push_back(QString::number(get_koncanica_1(),'f', 2));
     kolona.push_back(QString::number(get_koncanica_2(),'f', 2));
     kolona.push_back(QString::number(get_koncanica_1()-get_koncanica_2(),'f', 2));
+    kolona.push_back("  ");
     kolona.push_back(colorCrna);
     matricaSadrzajaTabelaKoncanica.push_back(kolona);
 
@@ -291,6 +293,8 @@ void Prikaz::osvjeziTabeluKoncanica()
         kolona.push_back(QString::number(vrij_signala_t1));
         kolona.push_back(QString::number(vrij_signala_t2));
         kolona.push_back(QString::number(vrij_signala_t1-vrij_signala_t2));
+        //Izvod
+        kolona.push_back(QString::number((vrij_signala_t1-vrij_signala_t2)/(get_koncanica_1()-get_koncanica_2())));
         //dodamo jos i boju
         QString colorString = signal->getBojaSignala().name();
         kolona.push_back(colorString);
@@ -303,7 +307,7 @@ void Prikaz::osvjeziTabeluKoncanica()
 
     tabelaTrenutnaKoncanica->clearContents();
     tabelaTrenutnaKoncanica->setRowCount(matricaSadrzajaTabelaKoncanica.size());
-    tabelaTrenutnaKoncanica->setColumnCount(4);
+    tabelaTrenutnaKoncanica->setColumnCount(5);
 
 
     for (ulong i=0; i<matricaSadrzajaTabelaKoncanica.size(); i++){
@@ -463,10 +467,16 @@ void Prikaz::napraviSnapshotKoncanice(QString tekuciFajl)
 
     int row = 4;
 
+    // Definiši format sa promenjenom bojom fonta (crvena boja u ovom slučaju)
+    QXlsx::Format format;
+
     for (ulong i=0; i<matricaSadrzajaTabelaKoncanica.size(); i++){
-        for (ulong j=0; j<matricaSadrzajaTabelaKoncanica[i].size(); j++)
-        {
-            workbook.write(row+j,i+1, matricaSadrzajaTabelaKoncanica[i][j]);
+        //Izvuces boju sa posljednjeg reda
+        QColor boja = QColor(QString::fromStdString(matricaSadrzajaTabelaKoncanica[i].back().toStdString()));
+        for (ulong j=0; j<matricaSadrzajaTabelaKoncanica[i].size()-1; j++) //ide se do posljednjeg (posljednji je boja)
+        {            
+            format.setFontColor(boja); // Možeš koristiti i druge boje (npr. Qt::blue, Qt::green, itd.)
+            workbook.write(row+j,i+1, matricaSadrzajaTabelaKoncanica[i][j],format);
         }
     }
 
@@ -596,9 +606,12 @@ void Prikaz::handleSelection(QPointF start, QPointF end)
     // Implementiraj šta treba da se uradi sa selektovanim podacima
     //qDebug() << "Handling selection from" << start << "to" << end;
     if (tip_prikaza == "ul") {
-        //Ako oznacis na malom promijeni initial time i duration
-        set_initTime(start.x());
-        set_durationTime(end.x()-start.x());
+        //Ako oznacis na malom promijeni initial time i duration u tekstboxovima
+        lineEdit_initTime->setText(QString::number(start.x()));
+        lineEdit_durationTime->setText(QString::number(end.x()-start.x()));
+        // Simuliraj pritisak Enter tastera
+        lineEdit_initTime->editingFinished();
+        lineEdit_durationTime->editingFinished();
 
     } else if (tip_prikaza == "izl") {
         //Ako oznacis na glavnom  prikazi zoomani prozor

@@ -78,6 +78,10 @@ public:
     void setPointerQPushbutton_koncanica1_color(QPushButton* _pB){pushButton_koncanica1_color = _pB;}
     void setPointerQPushbutton_koncanica2_color(QPushButton* _pB){pushButton_koncanica2_color = _pB;}
 
+    void setPointerQlineEdit_initTime(QLineEdit* _l){lineEdit_initTime = _l;}
+    void setPointerQlineEdit_durationTime(QLineEdit* _l){lineEdit_durationTime = _l;}
+
+
     void setPointerTableWidget_trenutnaKoncanica(QTableWidget* tab){tabelaTrenutnaKoncanica = tab;}
     //void inicijaliziraj_tabelaTrenutnaKoncanica();
 

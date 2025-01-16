@@ -32,6 +32,12 @@ MainWindow::MainWindow(QWidget *parent)
     prikaz2.inicijalizirajKoncanicu();
     prikaz2.inicijalizirajKoncanicu_2();
 
+    prikaz1.setPointerQlineEdit_initTime(ui->lineEdit_initTime);
+    prikaz1.setPointerQlineEdit_durationTime(ui->lineEdit_duration);
+
+    //Poveznica prikaz1 i prikaz2 napravljena trenutno preko editboxa inittime i duration
+
+
     //Ovo izbaciti u odvojen dio -------------------------------
     // Time Init signala
     connect(ui->lineEdit_initTime, &QLineEdit::editingFinished, [this]() {
