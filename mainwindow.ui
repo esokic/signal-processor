@@ -128,6 +128,32 @@
 snapshot ...</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="pushButton_koncanica1_color">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_koncanica2_color">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>70</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
@@ -466,7 +492,7 @@ snapshot ...</string>
      <x>0</x>
      <y>0</y>
      <width>1887</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

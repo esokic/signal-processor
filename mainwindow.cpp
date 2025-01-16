@@ -27,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent)
     prikaz2.setPointerQSlider(ui->horizontalSlider_koncanica);
     prikaz2.setPointerQDoubleSpinBox_2(ui->doubleSpinBox_koncanica_2);
     prikaz2.setPointerQSlider_2(ui->horizontalSlider_koncanica_2);
+    prikaz2.setPointerQPushbutton_koncanica1_color(ui->pushButton_koncanica1_color);
+    prikaz2.setPointerQPushbutton_koncanica2_color(ui->pushButton_koncanica2_color);
     prikaz2.inicijalizirajKoncanicu();
     prikaz2.inicijalizirajKoncanicu_2();
 
@@ -45,6 +47,28 @@ MainWindow::MainWindow(QWidget *parent)
         this->onOdabraniPrikazChanged();
     });
     //--------------------------------
+
+    // Color koncanica 1
+    QObject::connect(ui->pushButton_koncanica1_color, &QPushButton::clicked, [=]() {
+        QColor color = QColorDialog::getColor(Qt::white, nullptr, "Select Color");
+        if (color.isValid()) {
+            prikaz2.set_koncanica_1_color(color);
+            ui->pushButton_koncanica1_color->setStyleSheet(QString("background-color: %1; color: white;").arg(color.name()));
+            this->onOdabraniPrikazChanged();
+        }
+    });
+    ui->pushButton_koncanica1_color->setStyleSheet(QString("background-color: %1; color: white;").arg(prikaz2.get_koncanica_1_color().name()));
+
+    // Color koncanica 2
+    QObject::connect(ui->pushButton_koncanica2_color, &QPushButton::clicked, [=]() {
+        QColor color = QColorDialog::getColor(Qt::white, nullptr, "Select Color");
+        if (color.isValid()) {
+            prikaz2.set_koncanica_2_color(color);
+            ui->pushButton_koncanica2_color->setStyleSheet(QString("background-color: %1; color: white;").arg(color.name()));
+            this->onOdabraniPrikazChanged();
+        }
+    });
+    ui->pushButton_koncanica2_color->setStyleSheet(QString("background-color: %1; color: white;").arg(prikaz2.get_koncanica_2_color().name()));
 
 
 

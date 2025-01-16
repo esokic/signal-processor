@@ -58,6 +58,11 @@ public:
     void set_max_koncanica(double _v){max_koncanica = _v;}
 
 
+    QColor get_koncanica_1_color(){return koncanica_1_color;}
+    QColor get_koncanica_2_color(){return koncanica_2_color;}
+    void set_koncanica_1_color(QColor _boja){koncanica_1_color = _boja;}
+    void set_koncanica_2_color(QColor _boja){koncanica_2_color = _boja;}
+
 
 
     void setPointerQDoubleSpinBox(QDoubleSpinBox* _qspinbox){doubleSpinBox_koncanica = _qspinbox;}
@@ -66,6 +71,9 @@ public:
     void setPointerQSlider_2(QSlider* _qhorslid){horizontalSlider_koncanica_2 = _qhorslid;}
     void inicijalizirajKoncanicu();
     void inicijalizirajKoncanicu_2();
+
+    void setPointerQPushbutton_koncanica1_color(QPushButton* _pB){pushButton_koncanica1_color = _pB;}
+    void setPointerQPushbutton_koncanica2_color(QPushButton* _pB){pushButton_koncanica2_color = _pB;}
 
     void setPointerTableWidget_trenutnaKoncanica(QTableWidget* tab){tabelaTrenutnaKoncanica = tab;}
     //void inicijaliziraj_tabelaTrenutnaKoncanica();
@@ -101,6 +109,8 @@ private:
        QDoubleSpinBox *doubleSpinBox_koncanica_2;
        QSlider *horizontalSlider_koncanica_2;
        QTableWidget *tabelaTrenutnaKoncanica;
+       QPushButton* pushButton_koncanica1_color;
+       QPushButton* pushButton_koncanica2_color;
 
        std::vector<std::vector<QString>> matricaSadrzajaTabelaKoncanica;
 
@@ -124,6 +134,9 @@ private:
        double koncanica_2 = 0.0;
        double min_koncanica = 0.0;
        double max_koncanica = GRANULACIJA_KONCANICE;//100.0;
+
+       QColor koncanica_1_color = Qt::green;
+       QColor koncanica_2_color = Qt::blue;
 
        void azurirajGraniceKoncanice();
        void koncanicaOsvjezena(){

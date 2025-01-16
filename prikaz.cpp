@@ -24,11 +24,13 @@ void Prikaz::osvjeziPrikaz()
     if (qplot->plottableCount()>0) qplot->clearPlottables();
 
     // Kreiranje nove legende
+    /*
     QCPLegend *legendica = new QCPLegend();
     legendica->setBrush(QBrush(Qt::white));
     legendica->setBorderPen(QPen(Qt::black));
     qplot->axisRect()->insetLayout()->addElement(legendica, Qt::AlignBottom | Qt::AlignLeft);
     qplot->legend = legendica;
+    */
 
     // Dodavanje grafova
     //int index = 0;
@@ -64,12 +66,23 @@ void Prikaz::osvjeziPrikaz()
         graf_koncanica_1->setData(x, y);
         // Postavite liniju kao crtanu (dashed) i crvene boje
         //graf_koncanica_1->setPen(QPen(Qt::black, 2, Qt::DashLine));
-        graf_koncanica_1->setPen(QPen(Qt::red, 1));
+        graf_koncanica_1->setPen(QPen(get_koncanica_1_color(), 1));
         graf_koncanica_1->setName("Cursor 1");
         //Zbog milisekundi se mnozi sa 0.001
         //qplot->xAxis->setRange(get_initTime()*0.001,get_initTime()*0.001+get_durationTime()*0.001);
+        // Dodavanje dinamičke oznake pored linije
+        QCPItemText *label = new QCPItemText(qplot);
+        // Postavi svojstva oznake
+        label->setPositionAlignment(Qt::AlignLeft | Qt::AlignVCenter); // Poravnanje
+        label->position->setType(QCPItemPosition::ptPlotCoords);       // Koordinate grafika
+        label->position->setCoords(get_koncanica_1(), 3);            // Pozicija
+        label->setText("C1");                           // Postavi broj kao tekst
+        label->setFont(QFont("Arial", 10));                           // Font i veličina
+        label->setColor(get_koncanica_1_color());
 
-        //Dodavanje koncanice - 1 ---------------------------------------------------
+
+
+        //Dodavanje koncanice - 2 ---------------------------------------------------
         QCPGraph* graf_koncanica_2= qplot->addGraph();
         // Dodajte podatke za vertikalnu liniju od [vrij, -200] do [vrij, +200]
         QVector<double> xx(2), yy(2);
@@ -83,13 +96,19 @@ void Prikaz::osvjeziPrikaz()
         graf_koncanica_2->setData(xx, yy);
         // Postavite liniju kao crtanu (dashed) i crvene boje
         //graf_koncanica_2->setPen(QPen(Qt::black, 2, Qt::DashDotDotLine));
-        graf_koncanica_2->setPen(QPen(QColor(200,20,200), 1));
+        graf_koncanica_2->setPen(QPen(get_koncanica_2_color(), 1));
         graf_koncanica_2->setName("Cursor 2");
         //Zbog milisekundi se mnozi sa 0.001
         //qplot->xAxis->setRange(get_initTime()*0.001,get_initTime()*0.001+get_durationTime()*0.001);
-
-
-
+        // Dodavanje dinamičke oznake pored linije
+        QCPItemText *label2 = new QCPItemText(qplot);
+        // Postavi svojstva oznake
+        label2->setPositionAlignment(Qt::AlignLeft | Qt::AlignVCenter); // Poravnanje
+        label2->position->setType(QCPItemPosition::ptPlotCoords);       // Koordinate grafika
+        label2->position->setCoords(get_koncanica_2(), 3);            // Pozicija
+        label2->setText("C2");                           // Postavi broj kao tekst
+        label2->setFont(QFont("Arial", 10));                           // Font i veličina
+        label2->setColor(get_koncanica_2_color());
 
 
         qplot->xAxis->setRange(get_initTime(),get_initTime()+get_durationTime());
@@ -488,6 +507,10 @@ void Prikaz::osvjeziElementeNaFormi()
     inicijalizirajKoncanicu();
     inicijalizirajKoncanicu_2();
     azurirajGraniceKoncanice();
+
+    //Osvjezi jos boje dugmica - ovo se moze ugraditi u zajednicku funkciju
+    pushButton_koncanica1_color->setStyleSheet(QString("background-color: %1; color: white;").arg(get_koncanica_1_color().name()));
+    pushButton_koncanica2_color->setStyleSheet(QString("background-color: %1; color: white;").arg(get_koncanica_2_color().name()));
 
     koncanicaOsvjezena();
 }

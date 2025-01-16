@@ -49,6 +49,8 @@ public:
                 {"durationTime", prikaz->get_durationTime()},
                 {"koncanica_1", prikaz->get_koncanica_1()},
                 {"koncanica_2", prikaz->get_koncanica_2()},
+                {"koncanica_1_color", prikaz->get_koncanica_1_color().name().toStdString()},
+                {"koncanica_2_color", prikaz->get_koncanica_2_color().name().toStdString()},
                 {"signalLayouts", signals_json}};}
 
 
@@ -67,6 +69,9 @@ public:
         safe_get(j, "durationTime", pom, 400.0); prikaz->set_durationTime(pom);
         safe_get(j, "koncanica_1", pom, 0.0); prikaz->set_koncanica_1(pom);
         safe_get(j, "koncanica_2", pom, 0.0); prikaz->set_koncanica_2(pom);
+        std::string pom_str;
+        safe_get(j, "koncanica_1_color", pom_str, QString("#00ff00").toStdString()); prikaz->set_koncanica_1_color(QColor(QString::fromStdString(pom_str)));
+        safe_get(j, "koncanica_2_color", pom_str, QString("#0000ff").toStdString()); prikaz->set_koncanica_2_color(QColor(QString::fromStdString(pom_str)));
 
         if (j.contains("signalLayouts")) {
             for (const auto& s : j.at("signalLayouts")) {
