@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Signal Processor v1.3</string>
+   <string>Signal Processor v1.5</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="pushButton_Refresh">
@@ -466,7 +466,7 @@ snapshot ...</string>
      <x>0</x>
      <y>0</y>
      <width>1900</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

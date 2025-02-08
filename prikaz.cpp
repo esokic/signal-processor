@@ -279,8 +279,20 @@ void Prikaz::azurirajGraniceKoncanice() {
 
 void Prikaz::osvjeziTabeluKoncanica()
 {
+    //Generisanje matrice sadrzaja
+    std::vector<std::vector<QString>> matricaSadrzajaTabelaKoncanica;
     matricaSadrzajaTabelaKoncanica.clear();
 
+    double t1 = get_koncanica_1();
+    double t2 = get_koncanica_2();
+
+    PopuniMatricuKoncanica(matricaSadrzajaTabelaKoncanica, vektor_pSignala, t1, t2);
+    popuniTabeluMatricomKoncanica(tabelaTrenutnaKoncanica, matricaSadrzajaTabelaKoncanica);
+
+}
+
+void Prikaz::PopuniMatricuKoncanica(std::vector<std::vector<QString>> &matricaSadrzajaTabelaKoncanica, std::vector<Signall*> vektor_pSignala, double t1, double t2)
+{
     //dodamo jos i boju
     QString colorCrna = "#000000";
 
@@ -295,9 +307,9 @@ void Prikaz::osvjeziTabeluKoncanica()
 
     kolona.clear();
     kolona.push_back("Time [ms]");
-    kolona.push_back(QString::number(get_koncanica_1(),'f', 2));
-    kolona.push_back(QString::number(get_koncanica_2(),'f', 2));
-    kolona.push_back(QString::number(get_koncanica_1()-get_koncanica_2(),'f', 2));
+    kolona.push_back(QString::number(t1,'f', 2));
+    kolona.push_back(QString::number(t2,'f', 2));
+    kolona.push_back(QString::number(t1-t2,'f', 2));
     kolona.push_back("  ");
     kolona.push_back(colorCrna);
     matricaSadrzajaTabelaKoncanica.push_back(kolona);
@@ -312,15 +324,15 @@ void Prikaz::osvjeziTabeluKoncanica()
        // double vrij_signala_t1 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_1());
        // double vrij_signala_t2 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_2());
         //Sa vshiftom
-        double vrij_signala_t1 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_1())+signal->get_signal_vshift();
-        double vrij_signala_t2 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_2())+signal->get_signal_vshift();
+        double vrij_signala_t1 = signal->vratiVrijednostSignalaUtrenutku(t1)+signal->get_signal_vshift();
+        double vrij_signala_t2 = signal->vratiVrijednostSignalaUtrenutku(t2)+signal->get_signal_vshift();
 
         kolona.push_back(imeSignala);
         kolona.push_back(QString::number(vrij_signala_t1));
         kolona.push_back(QString::number(vrij_signala_t2));
         kolona.push_back(QString::number(vrij_signala_t1-vrij_signala_t2));
         //Izvod (mnozimo zbog milisekundi!)
-        kolona.push_back(QString::number(1000.0*(vrij_signala_t1-vrij_signala_t2)/(get_koncanica_1()-get_koncanica_2())));
+        kolona.push_back(QString::number(1000.0*(vrij_signala_t1-vrij_signala_t2)/(t1-t2)));
         //dodamo jos i boju
         QString colorString = signal->getBojaSignala().name();
         kolona.push_back(colorString);
@@ -328,121 +340,55 @@ void Prikaz::osvjeziTabeluKoncanica()
 
     }
 
+}
 
+void Prikaz::popuniTabeluMatricomKoncanica(QTableWidget* tabela, std::vector<std::vector<QString>> matricaSadrzaja)
+{
+//Popunjavanje tabele
     //Vertikalni layout
+    tabela->clearContents();
+    // Postavi font
+    QFont font("MS Shell Dlg 2", 8); // Naziv fonta i veličina
+    tabela->setFont(font); // Primijeni font na tabelu
+    tabela->setRowCount(matricaSadrzaja.size());
+    tabela->setColumnCount(5);
 
-    tabelaTrenutnaKoncanica->clearContents();
-    tabelaTrenutnaKoncanica->setRowCount(matricaSadrzajaTabelaKoncanica.size());
-    tabelaTrenutnaKoncanica->setColumnCount(5);
 
-
-    for (ulong i=0; i<matricaSadrzajaTabelaKoncanica.size(); i++){
-        for (ulong j=0; j<matricaSadrzajaTabelaKoncanica[i].size()-1; j++)  //skracujemo za jedan a citamo boju iz posljednje kolone
+    for (ulong i=0; i<matricaSadrzaja.size(); i++){
+        for (ulong j=0; j<matricaSadrzaja[i].size()-1; j++)  //skracujemo za jedan a citamo boju iz posljednje kolone
         {
-            QTableWidgetItem* item = tabelaTrenutnaKoncanica->item(i, j);
+            QTableWidgetItem* item = tabela->item(i, j);
             if (!item) {
                 item = new QTableWidgetItem();
                 if (i>0) item->setTextAlignment(Qt::AlignRight);
-                tabelaTrenutnaKoncanica->setItem(i, j, item);
+                tabela->setItem(i, j, item);
             }
 
             //zaokruzivanje prikaza
             if ((i>=1)&&(j>=1)){
-                item->setText(matricaSadrzajaTabelaKoncanica[i][j].left(8)); //ukljuceno zaokruzivanje prikaza na 8 karaktera sve osim headera
+                item->setText(matricaSadrzaja[i][j].left(8)); //ukljuceno zaokruzivanje prikaza na 8 karaktera sve osim headera
             }
                 else {
-                item->setText(matricaSadrzajaTabelaKoncanica[i][j]);
+                item->setText(matricaSadrzaja[i][j]);
             }
             //farbanje u boju
-            QColor boja = QColor(matricaSadrzajaTabelaKoncanica[i].back());
+            QColor boja = QColor(matricaSadrzaja[i].back());
             item->setTextColor(boja);
 
         }
     }
-
     //Postavljanje na istu sirinu
-    int columnCount = tabelaTrenutnaKoncanica->columnCount();
+    int columnCount = tabela->columnCount();
     for (int col = 0; col < columnCount; ++col) {
-        tabelaTrenutnaKoncanica->setColumnWidth(col, 70);
+        tabela->setColumnWidth(col, 70);
     }
 
-    tabelaTrenutnaKoncanica->verticalHeader()->setVisible(false);
-    tabelaTrenutnaKoncanica->horizontalHeader()->setVisible(false);
-    tabelaTrenutnaKoncanica->verticalHeader()->setDefaultSectionSize(25);
-
-    //tabelaTrenutnaKoncanica->resizeColumnsToContents();
-
-    /*
-     * horizontalni layout
-    matricaSadrzajaTabelaKoncanica.clear();
-
-    std::vector<QString> kolona;
-    kolona.push_back(" ");
-    kolona.push_back("Cursor 1");
-    kolona.push_back("Cursor 2");
-    kolona.push_back("Difference");
-    matricaSadrzajaTabelaKoncanica.push_back(kolona);
-
-    kolona.clear();
-    kolona.push_back("Time [ms]");
-    kolona.push_back(QString::number(get_koncanica_1(),'f', 2));
-    kolona.push_back(QString::number(get_koncanica_2(),'f', 2));
-    kolona.push_back(QString::number(get_koncanica_1()-get_koncanica_2(),'f', 2));
-    matricaSadrzajaTabelaKoncanica.push_back(kolona);
-
-
-    for (auto signal: vektor_pSignala)
-    {
-        kolona.clear();
-
-        QString imeSignala = signal->ime();
-        //Originalne postavke
-       // double vrij_signala_t1 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_1());
-       // double vrij_signala_t2 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_2());
-        //Sa vshiftom
-        double vrij_signala_t1 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_1())+signal->get_signal_vshift();
-        double vrij_signala_t2 = signal->vratiVrijednostSignalaUtrenutku(get_koncanica_2())+signal->get_signal_vshift();
-
-        kolona.push_back(imeSignala);
-        kolona.push_back(QString::number(vrij_signala_t1));
-        kolona.push_back(QString::number(vrij_signala_t2));
-        kolona.push_back(QString::number(vrij_signala_t1-vrij_signala_t2));
-        matricaSadrzajaTabelaKoncanica.push_back(kolona);
-
-    }
-
-
-    tabelaTrenutnaKoncanica->clearContents();
-    tabelaTrenutnaKoncanica->setRowCount(4);
-    tabelaTrenutnaKoncanica->setColumnCount(matricaSadrzajaTabelaKoncanica.size());
-
-
-    for (ulong i=0; i<matricaSadrzajaTabelaKoncanica.size(); i++){
-        for (ulong j=0; j<matricaSadrzajaTabelaKoncanica[i].size(); j++)
-        {
-            QTableWidgetItem* item = tabelaTrenutnaKoncanica->item(j, i);
-            if (!item) {
-                item = new QTableWidgetItem();
-                if (i>0) item->setTextAlignment(Qt::AlignRight);
-                tabelaTrenutnaKoncanica->setItem(j, i, item);
-            }
-            item->setText(matricaSadrzajaTabelaKoncanica[i][j]);
-        }
-    }
-
-    //Postavljanje na istu sirinu
-    int columnCount = tabelaTrenutnaKoncanica->columnCount();
-    for (int col = 0; col < columnCount; ++col) {
-        tabelaTrenutnaKoncanica->setColumnWidth(col, 100);
-    }
-
-    tabelaTrenutnaKoncanica->verticalHeader()->setVisible(false);
-    tabelaTrenutnaKoncanica->horizontalHeader()->setVisible(false);
-
-    //tabelaTrenutnaKoncanica->resizeColumnsToContents();
-    */
-
+    tabela->verticalHeader()->setVisible(false);
+    tabela->horizontalHeader()->setVisible(false);
+    tabela->verticalHeader()->setDefaultSectionSize(25);
 }
+
+
 
 QString Prikaz::num2str(double value)
 {
@@ -657,17 +603,22 @@ void Prikaz::showSelectedArea(QPointF start, QPointF end)
     // Kreiraj novi dijalog ili widget
     QDialog *dialog = new QDialog(nullptr);
     dialog->setWindowTitle("Selected Area");
-    dialog->resize(600, 600);
+    dialog->resize(1000, 600);
     // Postavi dijalog kao nemodalan
     dialog->setModal(false);
     // Automatski obriši dijalog kada se zatvori
     dialog->setAttribute(Qt::WA_DeleteOnClose);
 
+
+    // Kreiraj layout za dijalog da se napravi grafik pored tabele
+    QHBoxLayout *layout = new QHBoxLayout(dialog);
+
     // Kreiraj novi QCustomPlot
     QCustomPlot *plot = new QCustomPlot(dialog);
-    plot->resize(dialog->size());
+    plot->resize(600,600);
+    plot->setMinimumWidth(600);
     //Opcionalno!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+    //plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
 
     // Kopiraj podatke sa originalnog grafika
     for (int i = 0; i < qplot->graphCount(); ++i)
@@ -697,10 +648,27 @@ void Prikaz::showSelectedArea(QPointF start, QPointF end)
     plot->yAxis->setRange(start.y(), end.y());
 
     // Dodaj QCustomPlot na dijalog i prikaži
-    QVBoxLayout *layout = new QVBoxLayout(dialog);
     layout->addWidget(plot);
-    dialog->setLayout(layout);
 
+    // Kreiraj QTableWidget
+    QTableWidget *table = new QTableWidget(dialog);
+    table->resize(400,600);
+
+
+    //Generisanje matrice sadrzaja
+    std::vector<std::vector<QString>> matricaSadrzajaTabelaKoncanica;
+    matricaSadrzajaTabelaKoncanica.clear();
+
+    double t1 = start.x();
+    double t2 = end.x();
+
+    PopuniMatricuKoncanica(matricaSadrzajaTabelaKoncanica, vektor_pSignala, t1, t2);
+    popuniTabeluMatricomKoncanica(table, matricaSadrzajaTabelaKoncanica);
+
+
+
+    layout->addWidget(table); // Dodaj tabelu u layout
+    dialog->setLayout(layout);
     // Prikaz dijaloga
    // dialog->exec();
     dialog->show();

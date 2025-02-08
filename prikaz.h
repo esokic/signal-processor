@@ -86,6 +86,8 @@ public:
     //void inicijaliziraj_tabelaTrenutnaKoncanica();
 
     void osvjeziTabeluKoncanica();
+    void PopuniMatricuKoncanica(std::vector<std::vector<QString>> &matricaSadrzajaTabelaKoncanica, std::vector<Signall*> vektor_pSignala, double t1, double t2);
+    void popuniTabeluMatricomKoncanica(QTableWidget* tabela, std::vector<std::vector<QString>> matricaSadrzajaTabelaKoncanica);
 
     QString num2str(double value);
 
