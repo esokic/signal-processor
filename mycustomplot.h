@@ -16,6 +16,9 @@ public:
     double get_cursor1(){return cursor1;}
     double get_cursor2(){return cursor2;}
 
+    void set_color_cursor1(QColor boja){color_cursor1 = boja;}
+    void set_color_cursor2(QColor boja){color_cursor2 = boja;}
+
 protected:
     void mousePressEvent(QMouseEvent* event) override {
         if (event->button() == Qt::LeftButton) {
@@ -27,7 +30,7 @@ protected:
 
             // Kreiraj novu vertikalnu liniju
             cursorLine1 = new QCPItemStraightLine(this);
-            cursorLine1->setPen(QPen(Qt::red)); // Postavi boju linije
+            cursorLine1->setPen(QPen(color_cursor1)); // Postavi boju linije
 
             // Postavi poziciju linije na poziciju miša
             cursor1  = xAxis->pixelToCoord(event->pos().x());
@@ -48,7 +51,7 @@ protected:
 
             // Kreiraj novu vertikalnu liniju
             cursorLine2 = new QCPItemStraightLine(this);
-            cursorLine2->setPen(QPen(Qt::red)); // Postavi boju linije
+            cursorLine2->setPen(QPen(color_cursor2)); // Postavi boju linije
 
             // Postavi poziciju linije na poziciju miša
             cursor2  = xAxis->pixelToCoord(event->pos().x());
@@ -126,6 +129,9 @@ private:
     QCPItemStraightLine* cursorLine2; // Pokazivač na vertikalnu liniju
     double cursor1 = 0.0;  //pozicija kursora 1
     double cursor2 = 0.0;  //pozicija kursora 2
+
+    QColor color_cursor1 = Qt::red;
+    QColor color_cursor2 = Qt::blue;
 };
 
 #endif // MYCUSTOMPLOT_H

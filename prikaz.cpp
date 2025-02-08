@@ -666,6 +666,13 @@ void Prikaz::showSelectedArea(QPointF start, QPointF end)
 
     layout->addWidget(table); // Dodaj tabelu u layout
     dialog->setLayout(layout);
+
+    //Jos jednom osvjezi
+    plot->set_color_cursor1(get_koncanica_1_color());
+    plot->set_color_cursor2(get_koncanica_2_color());
+    updateTabelaKoncanicaZoom(0.0,0.0, table);
+
+
     // Prikaz dijaloga
    // dialog->exec();
     dialog->show();
