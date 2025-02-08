@@ -12,17 +12,19 @@ void Prikaz::osvjeziPrikaz()
 {
 
     // Uklanjanje stare legende
+    /*
     if (qplot->legend) {
         qplot->axisRect()->insetLayout()->remove(qplot->legend);
         delete qplot->legend;
         qplot->legend = nullptr;
     }
+    */
 
 
     // Brisanje svih grafova
     if (qplot->graphCount()>0) qplot->clearGraphs();
-    if (qplot->itemCount()>0) qplot->clearItems();
-    if (qplot->plottableCount()>0) qplot->clearPlottables();
+    //if (qplot->itemCount()>0) qplot->clearItems();
+    //if (qplot->plottableCount()>0) qplot->clearPlottables();
 
     // Kreiranje nove legende
     /*
@@ -71,16 +73,9 @@ void Prikaz::osvjeziPrikaz()
         graf_koncanica_1->setName("Cursor 1");
         //Zbog milisekundi se mnozi sa 0.001
         //qplot->xAxis->setRange(get_initTime()*0.001,get_initTime()*0.001+get_durationTime()*0.001);
-        // Dodavanje dinamičke oznake pored linije
-        QCPItemText *label = new QCPItemText(qplot);
-        // Postavi svojstva oznake
-        label->setPositionAlignment(Qt::AlignLeft | Qt::AlignVCenter); // Poravnanje
-        label->position->setType(QCPItemPosition::ptPlotCoords);       // Koordinate grafika
-        label->position->setCoords(get_koncanica_1(), 3);            // Pozicija
-        label->setText("C1");                           // Postavi broj kao tekst
-        label->setFont(QFont("Arial", 10));                           // Font i veličina
-        label->setColor(get_koncanica_1_color());
 
+       // labelica_koncanica1->setColor(get_koncanica_1_color());
+       // labelica_koncanica1->position->setCoords(get_koncanica_1(), 3);            // Pozicija
 
 
         //Dodavanje koncanice - 2 ---------------------------------------------------
@@ -101,15 +96,9 @@ void Prikaz::osvjeziPrikaz()
         graf_koncanica_2->setName("Cursor 2");
         //Zbog milisekundi se mnozi sa 0.001
         //qplot->xAxis->setRange(get_initTime()*0.001,get_initTime()*0.001+get_durationTime()*0.001);
-        // Dodavanje dinamičke oznake pored linije
-        QCPItemText *label2 = new QCPItemText(qplot);
-        // Postavi svojstva oznake
-        label2->setPositionAlignment(Qt::AlignLeft | Qt::AlignVCenter); // Poravnanje
-        label2->position->setType(QCPItemPosition::ptPlotCoords);       // Koordinate grafika
-        label2->position->setCoords(get_koncanica_2(), 3);            // Pozicija
-        label2->setText("C2");                           // Postavi broj kao tekst
-        label2->setFont(QFont("Arial", 10));                           // Font i veličina
-        label2->setColor(get_koncanica_2_color());
+
+       // labelica_koncanica2->position->setCoords(get_koncanica_2(), 3);            // Pozicija
+       // labelica_koncanica2->setColor(get_koncanica_2_color());
 
 
         qplot->xAxis->setRange(get_initTime(),get_initTime()+get_durationTime());
@@ -119,7 +108,9 @@ void Prikaz::osvjeziPrikaz()
 
     //std::cout << "trenutni graph count" << qplot->graphCount() << std::endl;
     // Isključi interakciju za dragovanje osa
-    setupPlot_zaInteraktivniPravougaonik();
+
+   //setupPlot_zaInteraktivniPravougaonik();
+
 }
 
 
@@ -134,12 +125,12 @@ void Prikaz::podesiQCPgraphZaSignal(QCPGraph*& graph, Signall* pSignal, QString 
 
         if (tip_grafika == "ul") {
             //Moze se dodati alreadysorted=true da se jos ubrza
-            graph->setAdaptiveSampling(true);
+           // graph->setAdaptiveSampling(true);
             //Prikaz je resampliran
             graph->setData(pSignal->get_xData_ul_resampled(), pSignal->get_yData_ul_resampled(), true);
 
         } else if (tip_grafika == "izl") {
-            graph->setAdaptiveSampling(true);
+           // graph->setAdaptiveSampling(true);
             //Stari pristup
             //QVector<double> x = pSignal->get_xData_izl_resampled();
             //QVector<double> y = pSignal->get_yData_izl_resampled();
@@ -166,9 +157,25 @@ void Prikaz::podesiQCPgraphZaSignal(QCPGraph*& graph, Signall* pSignal, QString 
                 scaled_y[i] = signal_pos + ((y[i] - mean) * scale_factor); // Uklanjanje DC, skaliranje, i shiftanje
             }
 
-
+            //Original------------
             graph->setData(x, scaled_y, true);
 
+            /*
+            // Kreiraj kontejner podataka
+            QSharedPointer<QCPGraphDataContainer> dataContainer(new QCPGraphDataContainer);
+
+            // Dodaj podatke u kontejner
+            for (int i = 0; i < x.size(); ++i)
+            {
+                QCPGraphData dataPoint;
+                dataPoint.key = x[i];     // X koordinata
+                dataPoint.value = scaled_y[i];   // Y koordinata
+                dataContainer->add(dataPoint);
+            }
+
+            // Postavi podatke za graf
+            graph->setData(dataContainer);
+            */
             //graph->setData(x,y, true);
         }
 
@@ -206,6 +213,15 @@ void Prikaz::inicijalizirajKoncanicu()
         koncanicaOsvjezena();
     });
 
+    // Dodavanje dinamičke oznake pored linije
+    QCPItemText *label = new QCPItemText(qplot);
+    // Postavi svojstva oznake
+    label->setPositionAlignment(Qt::AlignLeft | Qt::AlignVCenter); // Poravnanje
+    label->position->setType(QCPItemPosition::ptPlotCoords);       // Koordinate grafika
+    label->setText("C1");                           // Postavi broj kao tekst
+    label->setFont(QFont("Arial", 10));                           // Font i veličina
+
+    labelica_koncanica1 = label;
 }
 
 void Prikaz::inicijalizirajKoncanicu_2()
@@ -235,6 +251,16 @@ void Prikaz::inicijalizirajKoncanicu_2()
         horizontalSlider_koncanica_2->blockSignals(false);
         koncanicaOsvjezena();
     });
+
+    // Dodavanje dinamičke oznake pored linije
+    QCPItemText *label = new QCPItemText(qplot);
+    // Postavi svojstva oznake
+    label->setPositionAlignment(Qt::AlignLeft | Qt::AlignVCenter); // Poravnanje
+    label->position->setType(QCPItemPosition::ptPlotCoords);       // Koordinate grafika
+    label->setText("C2");                           // Postavi broj kao tekst
+    label->setFont(QFont("Arial", 10));                           // Font i veličina
+
+    labelica_koncanica2 = label;
 
 }
 
@@ -293,8 +319,8 @@ void Prikaz::osvjeziTabeluKoncanica()
         kolona.push_back(QString::number(vrij_signala_t1));
         kolona.push_back(QString::number(vrij_signala_t2));
         kolona.push_back(QString::number(vrij_signala_t1-vrij_signala_t2));
-        //Izvod
-        kolona.push_back(QString::number((vrij_signala_t1-vrij_signala_t2)/(get_koncanica_1()-get_koncanica_2())));
+        //Izvod (mnozimo zbog milisekundi!)
+        kolona.push_back(QString::number(1000.0*(vrij_signala_t1-vrij_signala_t2)/(get_koncanica_1()-get_koncanica_2())));
         //dodamo jos i boju
         QString colorString = signal->getBojaSignala().name();
         kolona.push_back(colorString);
@@ -537,18 +563,22 @@ void Prikaz::setupPlot_zaInteraktivniPravougaonik()
 
     qplot->setInteraction(QCP::iRangeDrag, false);
     qplot->setInteraction(QCP::iRangeZoom , false);
-    qplot->setInteraction(QCP::iSelectItems, true);
+    qplot->setInteraction(QCP::iSelectItems, false);
 
     // Inicijalizacija pravougaonika
-    selectionRect = new QCPItemRect(qplot);
+
+    QCPItemRect* selRec = new QCPItemRect(qplot);
+    selectionRect = selRec;
     selectionRect->setPen(QPen(Qt::DashLine));       // Isprekidana linija
     selectionRect->setBrush(QBrush(QColor(0, 0, 255, 50))); // Poluprozirna boja
     selectionRect->setVisible(false);               // Skriven do početka selekcije
+
 
     // Povezivanje događaja miša
     connect(qplot, &QCustomPlot::mousePress, this, &Prikaz::onMousePress);
     connect(qplot, &QCustomPlot::mouseMove, this, &Prikaz::onMouseMove);
     connect(qplot, &QCustomPlot::mouseRelease, this, &Prikaz::onMouseRelease);
+
 }
 
 // Funkcija za početak selekcije
@@ -556,6 +586,8 @@ void Prikaz::onMousePress(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
+       // setupPlot_zaInteraktivniPravougaonik();
+
         startPoint = QPointF(
             qplot->xAxis->pixelToCoord(event->pos().x()),
             qplot->yAxis->pixelToCoord(event->pos().y())
@@ -626,6 +658,10 @@ void Prikaz::showSelectedArea(QPointF start, QPointF end)
     QDialog *dialog = new QDialog(nullptr);
     dialog->setWindowTitle("Selected Area");
     dialog->resize(600, 600);
+    // Postavi dijalog kao nemodalan
+    dialog->setModal(false);
+    // Automatski obriši dijalog kada se zatvori
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
 
     // Kreiraj novi QCustomPlot
     QCustomPlot *plot = new QCustomPlot(dialog);
@@ -666,6 +702,7 @@ void Prikaz::showSelectedArea(QPointF start, QPointF end)
     dialog->setLayout(layout);
 
     // Prikaz dijaloga
-    dialog->exec();
+   // dialog->exec();
+    dialog->show();
 }
 

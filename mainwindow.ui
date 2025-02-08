@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1887</width>
+    <width>1900</width>
     <height>992</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Signal Processor v1</string>
+   <string>Signal Processor v1.3</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="pushButton_Refresh">
@@ -20,10 +20,10 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>910</y>
-      <width>161</width>
-      <height>25</height>
+      <x>1740</x>
+      <y>850</y>
+      <width>151</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
@@ -33,20 +33,20 @@
    <widget class="QGroupBox" name="groupBox_viewSetup">
     <property name="geometry">
      <rect>
-      <x>500</x>
-      <y>570</y>
-      <width>1241</width>
-      <height>271</height>
+      <x>710</x>
+      <y>670</y>
+      <width>811</width>
+      <height>121</height>
      </rect>
     </property>
     <property name="title">
-     <string>View Setup</string>
+     <string>Measurement cursors</string>
     </property>
     <widget class="QDoubleSpinBox" name="doubleSpinBox_koncanica">
      <property name="geometry">
       <rect>
-       <x>130</x>
-       <y>24</y>
+       <x>660</x>
+       <y>30</y>
        <width>131</width>
        <height>26</height>
       </rect>
@@ -55,9 +55,9 @@
     <widget class="QSlider" name="horizontalSlider_koncanica_2">
      <property name="geometry">
       <rect>
-       <x>300</x>
-       <y>56</y>
-       <width>741</width>
+       <x>50</x>
+       <y>70</y>
+       <width>601</width>
        <height>20</height>
       </rect>
      </property>
@@ -68,9 +68,9 @@
     <widget class="QSlider" name="horizontalSlider_koncanica">
      <property name="geometry">
       <rect>
-       <x>300</x>
-       <y>30</y>
-       <width>741</width>
+       <x>50</x>
+       <y>40</y>
+       <width>601</width>
        <height>20</height>
       </rect>
      </property>
@@ -81,51 +81,11 @@
     <widget class="QDoubleSpinBox" name="doubleSpinBox_koncanica_2">
      <property name="geometry">
       <rect>
-       <x>130</x>
-       <y>50</y>
+       <x>660</x>
+       <y>60</y>
        <width>131</width>
        <height>26</height>
       </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_4">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>30</y>
-       <width>67</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Cursor 1:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_5">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>53</y>
-       <width>67</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Cursor 2:</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton">
-     <property name="geometry">
-      <rect>
-       <x>940</x>
-       <y>170</y>
-       <width>141</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Save measurement 
-snapshot ...</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_koncanica1_color">
@@ -138,7 +98,7 @@ snapshot ...</string>
       </rect>
      </property>
      <property name="text">
-      <string/>
+      <string>C1</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_koncanica2_color">
@@ -151,7 +111,7 @@ snapshot ...</string>
       </rect>
      </property>
      <property name="text">
-      <string/>
+      <string>C2</string>
      </property>
     </widget>
    </widget>
@@ -338,11 +298,101 @@ snapshot ...</string>
      <string>Use default Layout</string>
     </property>
    </widget>
+   <widget class="QCustomPlot" name="mojCustomPlot2" native="true">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>50</y>
+      <width>1091</width>
+      <height>601</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>500</width>
+      <height>500</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QCustomPlot" name="mojCustomPlot1" native="true">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>670</y>
+      <width>271</width>
+      <height>231</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>200</width>
+      <height>200</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_Signali">
+    <property name="geometry">
+     <rect>
+      <x>12</x>
+      <y>52</y>
+      <width>400</width>
+      <height>791</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>400</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="sizeAdjustPolicy">
+     <enum>QAbstractScrollArea::AdjustToContents</enum>
+    </property>
+    <property name="selectionBehavior">
+     <enum>QAbstractItemView::SelectRows</enum>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_SnapshotKoncanica">
+    <property name="geometry">
+     <rect>
+      <x>1540</x>
+      <y>50</y>
+      <width>351</width>
+      <height>781</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>1570</x>
+      <y>850</y>
+      <width>141</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Save measurement 
+snapshot ...</string>
+    </property>
+   </widget>
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>500</x>
-      <y>450</y>
+      <x>710</x>
+      <y>800</y>
       <width>271</width>
       <height>101</height>
      </rect>
@@ -409,90 +459,14 @@ snapshot ...</string>
      </property>
     </widget>
    </widget>
-   <widget class="QCustomPlot" name="mojCustomPlot2" native="true">
-    <property name="geometry">
-     <rect>
-      <x>780</x>
-      <y>50</y>
-      <width>771</width>
-      <height>500</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>500</width>
-      <height>500</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QCustomPlot" name="mojCustomPlot1" native="true">
-    <property name="geometry">
-     <rect>
-      <x>499</x>
-      <y>50</y>
-      <width>271</width>
-      <height>381</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>200</width>
-      <height>200</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QTableWidget" name="tableWidget_Signali">
-    <property name="geometry">
-     <rect>
-      <x>12</x>
-      <y>52</y>
-      <width>471</width>
-      <height>791</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>400</width>
-      <height>0</height>
-     </size>
-    </property>
-    <property name="font">
-     <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
-     </font>
-    </property>
-    <property name="sizeAdjustPolicy">
-     <enum>QAbstractScrollArea::AdjustToContents</enum>
-    </property>
-    <property name="selectionBehavior">
-     <enum>QAbstractItemView::SelectRows</enum>
-    </property>
-   </widget>
-   <widget class="QTableWidget" name="tableWidget_SnapshotKoncanica">
-    <property name="geometry">
-     <rect>
-      <x>1560</x>
-      <y>50</y>
-      <width>291</width>
-      <height>501</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>MS Shell Dlg 2</family>
-      <pointsize>8</pointsize>
-     </font>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1887</width>
-     <height>22</height>
+     <width>1900</width>
+     <height>26</height>
     </rect>
    </property>
   </widget>

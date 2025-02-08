@@ -1,14 +1,6 @@
-QT       += core gui
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
-
+QT       += core gui widgets printsupport
 CONFIG += c++17
-
-
-# You can make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     ansamblsignala.cpp \
@@ -23,6 +15,7 @@ SOURCES += \
     selectsignalsdialog.cpp \
     signall.cpp \
     signalsexport.cpp
+
 
 HEADERS += \
     ansamblsignala.h \
@@ -39,6 +32,8 @@ HEADERS += \
     signall.h \
     signalsexport.h
 
+
+
 FORMS += \
     mainwindow.ui \
     manipulacijaprocesorima.ui \
@@ -46,9 +41,27 @@ FORMS += \
     selectsignalsdialog.ui \
     signalsexport.ui
 
-LIBS += -lmatio -larmadillo
+FORMS += \
+    mainwindow.ui \
+    manipulacijaprocesorima.ui \
+    procesor.ui \
+    selectsignalsdialog.ui \
+    signalsexport.ui
+
 
 INCLUDEPATH += qcustomplot/
+INCLUDEPATH += nlohmann/
+INCLUDEPATH += armadillo-12.8.3/include/
+
+win32 {
+    INCLUDEPATH += ../matio-master/src
+    INCLUDEPATH += ../matio-master/build/src
+    LIBS += -L../matio-master/build -lmatio
+}
+
+unix {
+    LIBS += -lmatio -larmadillo
+}
 
 include(QtXlsxWriter-master/src/xlsx/qtxlsx.pri)
 
@@ -56,3 +69,4 @@ include(QtXlsxWriter-master/src/xlsx/qtxlsx.pri)
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+

@@ -45,7 +45,7 @@ public:
     double get_yData_izl(int row){if (row < xData_izl.size()) return xData_izl[row]; else return -5000.0;}
 
 
-    #define br_samplova_za_prikaz 2000
+    #define br_samplova_za_prikaz 500
     QVector<double> get_xData_ul_resampled() {return resampleData(xData_ul, br_samplova_za_prikaz);}
     QVector<double> get_yData_ul_resampled() {return resampleData(yData_ul, br_samplova_za_prikaz);}
     QVector<double> get_xData_izl_resampled() {return resampleData(xData_izl, br_samplova_za_prikaz);}

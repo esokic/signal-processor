@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     prikaz2.inicijalizirajKoncanicu();
     prikaz2.inicijalizirajKoncanicu_2();
 
+
     prikaz1.setPointerQlineEdit_initTime(ui->lineEdit_initTime);
     prikaz1.setPointerQlineEdit_durationTime(ui->lineEdit_duration);
 
@@ -77,7 +78,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pushButton_koncanica2_color->setStyleSheet(QString("background-color: %1; color: white;").arg(prikaz2.get_koncanica_2_color().name()));
 
 
-
+    prikaz1.setupPlot_zaInteraktivniPravougaonik();
+    prikaz2.setupPlot_zaInteraktivniPravougaonik();
 
 
 

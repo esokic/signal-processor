@@ -98,12 +98,16 @@ public:
     Signall* get_ptrAktivniSignal(){return pAktivniSignal;}
 
 
+    QCPItemText *labelica_koncanica1;
+    QCPItemText *labelica_koncanica2;
+
     //Interakcija sa kursorom
     QCPItemRect *selectionRect = nullptr;
     QPointF startPoint; // Početna tačka
     QPointF endPoint;   // Krajnja tačka
     // Funkcija za inicijalizaciju grafa
     void setupPlot_zaInteraktivniPravougaonik();
+
 
     // Funkcije za rukovanje događajima miša
     void onMousePress(QMouseEvent *event);
