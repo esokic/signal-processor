@@ -2,6 +2,7 @@
 #include "qcustomplot.h"
 #include <xlsxdocument.h>
 #include <QDialog>
+#include "mycustomplot.h"
 
 Prikaz::Prikaz(QObject *parent) : QObject(parent)
 {
@@ -614,7 +615,9 @@ void Prikaz::showSelectedArea(QPointF start, QPointF end)
     QHBoxLayout *layout = new QHBoxLayout(dialog);
 
     // Kreiraj novi QCustomPlot
-    QCustomPlot *plot = new QCustomPlot(dialog);
+    //QCustomPlot *plot = new QCustomPlot(dialog);
+    MyCustomPlot *plot = new MyCustomPlot(dialog);
+
     plot->resize(600,600);
     plot->setMinimumWidth(600);
     //Opcionalno!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -655,16 +658,10 @@ void Prikaz::showSelectedArea(QPointF start, QPointF end)
     table->resize(400,600);
 
 
-    //Generisanje matrice sadrzaja
-    std::vector<std::vector<QString>> matricaSadrzajaTabelaKoncanica;
-    matricaSadrzajaTabelaKoncanica.clear();
-
-    double t1 = start.x();
-    double t2 = end.x();
-
-    PopuniMatricuKoncanica(matricaSadrzajaTabelaKoncanica, vektor_pSignala, t1, t2);
-    popuniTabeluMatricomKoncanica(table, matricaSadrzajaTabelaKoncanica);
-
+    // Poveži signal sa slotom
+    connect(plot, &MyCustomPlot::cursorPositionChanged, this, [this, table](double t1, double t2) {
+        updateTabelaKoncanicaZoom(t1,t2, table); // Proslijedi tabelu preko lambda funkcije
+    });
 
 
     layout->addWidget(table); // Dodaj tabelu u layout
@@ -674,3 +671,12 @@ void Prikaz::showSelectedArea(QPointF start, QPointF end)
     dialog->show();
 }
 
+
+void Prikaz::updateTabelaKoncanicaZoom(double t1, double t2, QTableWidget* table) {
+    //Generisanje matrice sadrzaja
+    std::vector<std::vector<QString>> matricaSadrzajaTabelaKoncanica;
+    matricaSadrzajaTabelaKoncanica.clear();
+
+    PopuniMatricuKoncanica(matricaSadrzajaTabelaKoncanica, vektor_pSignala, t1, t2);
+    popuniTabeluMatricomKoncanica(table, matricaSadrzajaTabelaKoncanica);
+}

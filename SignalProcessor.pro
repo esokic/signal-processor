@@ -9,6 +9,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     manipulacijaprocesorima.cpp \
+    mycustomplot.cpp \
     prikaz.cpp \
     procesor.cpp \
     qcustomplot/qcustomplot.cpp \
@@ -23,6 +24,7 @@ HEADERS += \
     layout.h \
     mainwindow.h \
     manipulacijaprocesorima.h \
+    mycustomplot.h \
     nlohmann/json.hpp \
     nlohmann/json_fwd.hpp \
     prikaz.h \
